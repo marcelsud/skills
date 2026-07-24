@@ -27,7 +27,7 @@ Model selectors are single, non-empty tokens accepted by the task tool. A `:reas
 
 Parse the skill command's `User:` arguments as follows:
 
-1. Everything before the first `--` is the selector section; everything after it is the prompt, preserved verbatim except for surrounding whitespace.
+1. Everything before the first `--` is the selector section; everything after it is the prompt, preserved exactly except for surrounding whitespace and the credential redactions required below.
 2. The selector section MUST contain exactly two model selectors.
 3. For convenience, when `--` is absent, use the first two whitespace-delimited tokens as selectors and the remainder as the prompt.
 4. Reject missing selectors or an empty prompt with this usage line and do not spawn agents:
@@ -38,18 +38,30 @@ Usage: /skill:fusion <model-a> <model-b> -- <prompt>
 
 Never silently replace a requested model or turn a selector into a fallback chain.
 
+## Redact credentials before delegation
+
+The raw prompt and conversation context may contain credentials. Before placing either into a subagent `context` or `task`, create one sanitized copy:
+
+- Replace secret values with stable placeholders such as `<REDACTED_SECRET_1>`.
+- Treat API keys, access tokens, passwords, authorization headers, cookies, private keys, credential-bearing URLs/DSNs, and values the user identifies as secret as sensitive.
+- Preserve surrounding structure so the candidates can still reason about the problem.
+- Apply the same replacements to both candidate briefs.
+- Never send a raw secret to a subagent or restore a redacted value in candidate or final output.
+
+If the task cannot be solved without delegating an actual secret value, stop the fusion and explain that a non-secret surrogate is required.
+
 ## Prepare the shared brief
 
 Subagents do not inherit the conversation. Build one neutral shared brief containing:
 
-- the user's prompt verbatim;
+- the user's prompt after applying the credential-redaction rules above;
 - only the minimum prior conversation and workspace facts required to understand references such as “this”, “that file”, or “the previous plan”;
 - explicit user constraints and requested output format;
 - no tentative conclusion from the current model.
 
-Both subagents MUST receive the same brief and the same task instructions. They MUST NOT receive each other's identity, work, or output.
+Both subagents MUST receive the same sanitized brief and the same task instructions. They MUST NOT receive each other's identity, work, or output.
 
-This is an analysis workflow. Tell both agents to remain read-only: they may inspect files, sources, and tools needed to ground the answer, but MUST NOT edit files, commit, push, open PRs, start persistent services, or create side effects. They may include proposed code or patches in their answer when the prompt asks for them.
+This is an analysis workflow. Tell both agents to remain read-only: they may inspect files, sources, and tools needed to ground the answer, but MUST NOT edit files, commit, push, open PRs, start persistent services, or create side effects. They may include proposed code or patches in their answer when the prompt asks for them, but credential values MUST remain redacted.
 
 ## Run both models in parallel
 
@@ -77,6 +89,7 @@ Run two independent read-only analyses of the same user prompt for a fusion judg
 - Do not mention the fusion workflow, the other model, or expected consensus.
 - Ground factual claims. Separate evidence, assumptions, and uncertainties.
 - Put the user-facing reply in `answer`, following any requested format exactly.
+- Never reproduce credentials or secrets; retain the supplied redaction placeholders.
 
 # Contract
 Return only the structured candidate object.
@@ -99,14 +112,14 @@ Identical `outputSchema` for both items:
 }
 ```
 
-Identical `task` text for both items (substitute the real prompt and any minimal brief notes):
+Identical `task` text for both items (substitute the sanitized prompt and any sanitized minimal brief notes):
 
 ```text
 # Target
 Solve the user prompt independently.
 
-# User prompt (verbatim)
-<PROMPT>
+# User prompt (credential-redacted when needed)
+<SANITIZED_PROMPT>
 
 # Brief notes (only if needed for pronouns/file refs)
 <OPTIONAL_MINIMAL_CONTEXT_OR_NONE>
@@ -122,6 +135,7 @@ None. Read-only analysis only.
 5. Cover relevant constraints, edge cases, risks, and tradeoffs.
 6. Do not mention fusion, the other model, or expected consensus.
 7. Return a self-contained candidate; do not edit or mutate anything.
+8. Never reproduce or infer redacted credential values.
 ```
 
 ### Wait / failure rules
@@ -146,6 +160,6 @@ After both candidates arrive, analyze them in this order:
 4. **Verify** — when a material factual conflict can be resolved with available tools, check it. Never choose by majority vote, confidence, verbosity, or model reputation. Do not spawn a third judge.
 5. **Synthesize** — write a **new** answer that combines compatible strengths, removes duplication, repairs gaps, and rejects unsupported claims. The result must be more useful than either candidate alone, not a stitched transcript.
 6. **Expose uncertainty** — if a material conflict remains unresolved, state the uncertainty at the exact decision point and explain what evidence would resolve it. Never invent consensus.
-7. **Deliver** — answer the original prompt directly in its requested format and level of detail. Do not lead with process narration or “Agent A says…”. Mention candidate provenance only when the user asks for it.
+7. **Deliver** — answer the original prompt directly in its requested format and level of detail without restoring any redacted credential value. Do not lead with process narration or “Agent A says…”. Mention candidate provenance only when the user asks for it.
 
-Before presenting the result, check that every material recommendation is supported, every explicit user constraint is satisfied, and no contradiction between the candidates was silently ignored.
+Before presenting the result, check that every material recommendation is supported, every explicit user constraint is satisfied, no contradiction between the candidates was silently ignored, and no credential value appears in the answer.
