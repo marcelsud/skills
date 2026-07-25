@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grade Issue Review"
+  short_description: "Filter generated issues by evidence and risk"
+  default_prompt: "Use $grade-issue-review to review these issues, filter duplicates and unsupported reports, and retain only evidence-backed issues."
