@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grade Code Review"
+  short_description: "Classify code findings by evidence and risk"
+  default_prompt: "Use $grade-code-review to review this diff, suppress speculative findings, and return only evidence-backed actions."
