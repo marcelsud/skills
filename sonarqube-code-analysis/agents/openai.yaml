@@ -1,0 +1,4 @@
+interface:
+  display_name: "SonarQube Code Analysis"
+  short_description: "Run and triage local SonarQube scans"
+  default_prompt: "Use $sonarqube-code-analysis to scan this repository locally and return only evidence-backed findings."
