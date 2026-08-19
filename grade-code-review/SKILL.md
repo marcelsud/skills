@@ -1,9 +1,9 @@
 ---
 name: grade-code-review
-description: Review code changes and suspected bugs with evidence-backed severity, diagnostic confidence, operational exposure, and ratchet checks. Use when Codex reviews a diff, pull request, patch, implementation, release candidate, or LLM-generated bug list and must suppress speculative findings, distinguish likely defects from merely possible ones, or decide what must be fixed now, verified, tracked, rejected, or omitted.
+description: Review code changes and suspected bugs with evidence-backed severity, diagnostic confidence, operational exposure, and quality-gate checks. Use for diffs, pull requests, patches, implementations, release candidates, or generated bug lists. Filter speculation and decide what to fix, verify, track, reject, or omit.
 ---
 
-# Grade Code Review
+# Grade code review
 
 Find broadly, report narrowly. Separate the consequence of a defect from confidence that it exists and likelihood that its preconditions occur.
 
@@ -11,9 +11,9 @@ Read [references/rubric.md](references/rubric.md) completely before grading. App
 
 ## Gather frozen inputs
 
-Collect the diff and merge-base SHA, issue or specification, acceptance criteria, tests and CI evidence, project ratchet output, and applicable policy. Do not invent missing context. Mark a fact unknown when source, tests, runtime evidence, or telemetry cannot establish it.
+Collect the diff and merge-base SHA, issue or specification, acceptance criteria, tests and CI evidence, project quality-gate output, and applicable policy. Do not invent missing context. Mark a fact unknown when source, tests, runtime evidence, or telemetry cannot establish it.
 
-Default to diff review: hold the change responsible only for liabilities it introduces or measurably worsens. Inspect pre-existing code when needed to prove behavior, but do not report unrelated baseline debt. Review the whole repository only when explicitly requested.
+Default to diff review. Hold the change responsible only for liabilities it introduces or measurably worsens. Inspect pre-existing code when needed to prove behavior, but do not report unrelated baseline debt. Review the whole repository only when explicitly requested.
 
 ## Review workflow
 
@@ -55,13 +55,13 @@ introduced_or_worsened_by: "Diff hunk or commit"
 resolution: "Binary condition that closes the finding"
 ```
 
-Derive the final decision mechanically: any `ACT_NOW` produces `REWORK`; otherwise any `VERIFY_NOW` produces `NEEDS_EVIDENCE`; otherwise produce `APPROVED`. State the rubric version and whether this was a single review or two-reviewer consensus. Passing CI alone is not proof that changed behavior or its material failure path is correct.
+Derive the final decision from the dispositions. Any `ACT_NOW` produces `REWORK`. Otherwise, any `VERIFY_NOW` produces `NEEDS_EVIDENCE`. With neither, produce `APPROVED`. State the rubric version and whether this was a single review or two-reviewer consensus. Passing CI alone does not prove changed behavior or its material failure path correct.
 
-## Ratchets
+## Quality rules
 
-Treat build, type, test-integrity, coverage, complexity, duplication, dependency, and public-contract tools as evidence producers. Compare with the merge base; do not infer historical repair obligations from current totals. A machine signal affects the decision only through its configured threshold or an evidence-backed classification.
+Build, type, test-integrity, coverage, complexity, duplication, dependency, and public-contract tools produce evidence. Compare their results with the merge base. A machine signal affects the decision only through a configured threshold or an evidence-backed classification.
 
-Apply this finding-quality ratchet:
+Apply these rules to findings:
 
 - Never promote a speculative candidate into a formal finding.
 - Never add new scope in a correction round unless a genuine Blocker is discovered.
@@ -71,7 +71,7 @@ Apply this finding-quality ratchet:
 
 ## Independent consensus
 
-For a ship gate, run two reviewers in separate contexts against identical frozen inputs. Do not reveal either first-pass result to the other. Reconcile only disagreeing facts and rubric clauses. Require agreement on the ship decision and every difference that changes disposition; adjacent labels that do not change action need not block. If independent execution is unavailable, clearly label the result as a single-review assessment.
+For a ship gate, run two reviewers in separate contexts against identical frozen inputs. Do not reveal either first-pass result to the other. Reconcile only disagreeing facts and rubric clauses. Require agreement on the ship decision and every difference that changes disposition. Adjacent labels that do not change action need not block. If independent execution is unavailable, label the result as a single-review assessment.
 
 ## Do not report
 

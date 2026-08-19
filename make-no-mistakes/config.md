@@ -34,8 +34,8 @@ ci:
 | `review.when` | `[pre-publish]` | `[pre-publish]` | from the document |
 | `review.on` | `committed` | `worktree` if dirty, else `committed` | from the document |
 | `deliver.kind` | `pr` | `none` | from the document |
-| `deliver.merge` | `never` | — | from the document |
-| `ci.empty` | `fail` | — | from the document |
+| `deliver.merge` | `never` | n/a | from the document |
+| `ci.empty` | `fail` | n/a | from the document |
 
 `profile: repo` with no seating or delivery document → stop. Do not invent
 a pipeline.

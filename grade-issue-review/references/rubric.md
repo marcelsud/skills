@@ -32,7 +32,7 @@ A retained issue must answer `yes` to every applicable check:
 | IE-9 | Is the problem current at the frozen repository revision? |
 | IE-10 | Is there no existing issue or pull request owning the same root cause and resolution? |
 
-Failure of IE-1 through IE-8 makes the report unsubstantiated. Failure of IE-9 makes it resolved or stale. Failure of IE-10 makes it a duplicate. An unknown fact is not a `no`: use `VERIFY` when a targeted check can decide it.
+Failure of IE-1 through IE-8 makes the report unsubstantiated. Failure of IE-9 makes it resolved or stale. Failure of IE-10 makes it a duplicate. An unknown fact is not a `no`. Use `VERIFY` when one targeted check can decide it.
 
 Canonical consequence categories:
 
@@ -131,7 +131,7 @@ Independent reviewers receive the same issue set, repository revision, specifica
 
 Resolve disagreements by comparing the disputed binary check, exact evidence, and governing clause. Do not average confidence or vote. Escalate for human adjudication only when factual verification cannot resolve a disposition that would suppress or close an issue.
 
-At calibration boundaries, regrade a fixed sample and record:
+During calibration, regrade a fixed sample and record:
 
 - disagreement by IE check and classification axis;
 - reports filtered as speculative, cosmetic, duplicate, resolved, or unreachable;

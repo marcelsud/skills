@@ -1,13 +1,13 @@
 ---
 name: fusion
-description: Run two user-selected models independently on the same prompt, then have the current model reconcile their evidence, disagreements, and complementary insights into one answer.
+description: Run two user-selected models independently on the same prompt. The current model combines their evidence, resolves disagreements, fills gaps, and returns one answer.
 argument-hint: '<model-a> <model-b> -- <prompt>'
 disable-model-invocation: true
 ---
 
 # Fusion
 
-Run two independent candidate analyses in parallel, then synthesize them. The current model is the judge and final author; it MUST reason over both results rather than concatenate, vote, or summarize them.
+Run two candidate analyses in parallel, then reconcile them. The current model judges the evidence and writes the final answer. It must not concatenate, vote, or summarize the candidates.
 
 ## Invocation
 
@@ -27,7 +27,7 @@ Model selectors are single, non-empty tokens accepted by the task tool. A `:reas
 
 Parse the skill command's `User:` arguments as follows:
 
-1. Everything before the first `--` is the selector section; everything after it is the prompt, preserved exactly except for surrounding whitespace and the credential redactions required below.
+1. Everything before the first `--` is the selector section. Everything after it is the prompt, preserved exactly except for surrounding whitespace and required credential redactions.
 2. The selector section MUST contain exactly two model selectors.
 3. For convenience, when `--` is absent, use the first two whitespace-delimited tokens as selectors and the remainder as the prompt.
 4. Reject missing selectors or an empty prompt with this usage line and do not spawn agents:
@@ -55,13 +55,13 @@ If the task cannot be solved without delegating an actual secret value, stop the
 Subagents do not inherit the conversation. Build one neutral shared brief containing:
 
 - the user's prompt after applying the credential-redaction rules above;
-- only the minimum prior conversation and workspace facts required to understand references such as “this”, “that file”, or “the previous plan”;
+- only the prior conversation and workspace facts needed to understand references such as "this," "that file," or "the previous plan";
 - explicit user constraints and requested output format;
 - no tentative conclusion from the current model.
 
 Both subagents MUST receive the same sanitized brief and the same task instructions. They MUST NOT receive each other's identity, work, or output.
 
-This is an analysis workflow. Tell both agents to remain read-only: they may inspect files, sources, and tools needed to ground the answer, but MUST NOT edit files, commit, push, open PRs, start persistent services, or create side effects. They may include proposed code or patches in their answer when the prompt asks for them, but credential values MUST remain redacted.
+This is an analysis workflow. Tell both agents to remain read-only. They may inspect files, sources, and tools needed to ground the answer. They must not edit files, commit, push, open PRs, start persistent services, or create side effects. Proposed code or patches are allowed when the prompt asks for them. Credentials must stay redacted.
 
 ## Run both models in parallel
 
@@ -146,20 +146,20 @@ None. Read-only analysis only.
 - A transient execution failure MAY be retried once with the **same exact** selector.
 - If a requested selector remains unavailable or either candidate cannot be obtained, report which selector failed and stop. Do not present the surviving candidate as a fusion.
 
-## Fuse intelligently
+## Reconcile the candidates
 
-After both candidates arrive, analyze them in this order:
+Work through both results in this order:
 
-1. **Normalize** — extract each candidate's proposed answer, claims, evidence, assumptions, uncertainties, constraints, and recommendations.
-2. **Compare** — identify agreements, complementary contributions, direct contradictions, and omissions. Do this internally; do not dump a comparison table unless the user asks.
-3. **Adjudicate** — rank support using this order:
+1. **Normalize.** Extract each proposed answer, claim, piece of evidence, assumption, uncertainty, constraint, and recommendation.
+2. **Compare.** Find agreements, additions, contradictions, and omissions. Keep the comparison internal unless the user asks for it.
+3. **Judge.** Rank support in this order:
    - user constraints and directly observed evidence;
-   - authoritative sources and exact code/tool observations;
+   - authoritative sources and exact code or tool observations;
    - sound reasoning from stated premises;
-   - model agreement only as a weak signal.
-4. **Verify** — when a material factual conflict can be resolved with available tools, check it. Never choose by majority vote, confidence, verbosity, or model reputation. Do not spawn a third judge.
-5. **Synthesize** — write a **new** answer that combines compatible strengths, removes duplication, repairs gaps, and rejects unsupported claims. The result must be more useful than either candidate alone, not a stitched transcript.
-6. **Expose uncertainty** — if a material conflict remains unresolved, state the uncertainty at the exact decision point and explain what evidence would resolve it. Never invent consensus.
-7. **Deliver** — answer the original prompt directly in its requested format and level of detail without restoring any redacted credential value. Do not lead with process narration or “Agent A says…”. Mention candidate provenance only when the user asks for it.
+   - model agreement as a weak signal only.
+4. **Verify.** Use available tools to resolve material factual conflicts. Never choose by majority vote, confidence, verbosity, or model reputation. Do not spawn a third judge.
+5. **Draft.** Write a new answer that keeps supported contributions, removes duplication, fills gaps, and rejects unsupported claims. Do not stitch the transcripts together.
+6. **State unresolved conflicts.** Put remaining uncertainty at the exact decision point and name the evidence needed to resolve it. Never invent consensus.
+7. **Deliver.** Answer the original prompt in its requested format and level of detail. Do not restore a redacted credential. Do not narrate the workflow or write "Agent A says." Mention the candidates only when the user asks.
 
-Before presenting the result, check that every material recommendation is supported, every explicit user constraint is satisfied, no contradiction between the candidates was silently ignored, and no credential value appears in the answer.
+Before presenting the answer, check every recommendation against its evidence and every explicit user constraint against the draft. Resolve or state candidate contradictions. Confirm that no credential value appears.
