@@ -1,44 +1,44 @@
-# Design It Twice
+# Design it twice
 
-When the user wants to explore alternative interfaces for a chosen deepening candidate, use this parallel sub-agent pattern. Based on "Design It Twice" (Ousterhout) — your first idea is unlikely to be the best.
+Use this parallel agent pattern when the user wants alternative interfaces for a chosen deepening candidate. Ousterhout's "Design It Twice" assumes the first idea is unlikely to be the best.
 
-Uses the vocabulary in [SKILL.md](SKILL.md) — **module**, **interface**, **seam**, **adapter**, **leverage**.
+Use **module**, **interface**, **seam**, and **adapter** as defined in [SKILL.md](SKILL.md).
 
 ## Process
 
 ### 1. Frame the problem space
 
-Before spawning sub-agents, write a user-facing explanation of the problem space for the chosen candidate:
+Before spawning agents, explain the candidate's problem and constraints:
 
-- The constraints any new interface would need to satisfy
-- The dependencies it would rely on, and which category they fall into (see [DEEPENING.md](DEEPENING.md))
-- A rough illustrative code sketch to ground the constraints — not a proposal, just a way to make the constraints concrete
+- Constraints every design must satisfy
+- Dependencies and their categories from [DEEPENING.md](DEEPENING.md)
+- A rough code sketch that makes the constraints concrete without proposing a design
 
-Show this to the user, then immediately proceed to Step 2. The user reads and thinks while the sub-agents work in parallel.
+Show this to the user, then start Step 2 immediately. The user can read while the agents work.
 
-### 2. Spawn sub-agents
+### 2. Spawn agents
 
-When agent delegation is available, spawn 3+ independent sub-agents in parallel. Otherwise, produce the alternatives sequentially in isolated passes. Each pass must produce a **radically different** interface for the deepened module.
+When delegation is available, spawn at least three independent agents in parallel. Otherwise, produce alternatives in separate sequential passes. Every pass must produce a **radically different** interface.
 
-Prompt each sub-agent with a separate technical brief (file paths, coupling details, dependency category from [DEEPENING.md](DEEPENING.md), what sits behind the seam). The brief is independent of the user-facing problem-space explanation in Step 1. Give each agent a different design constraint:
+Give each agent the same technical brief. Include file paths, coupling details, the dependency category from [DEEPENING.md](DEEPENING.md), and what belongs behind the seam. Then assign a different constraint to each agent:
 
-- Agent 1: "Minimize the interface — aim for 1–3 entry points max. Maximise leverage per entry point."
-- Agent 2: "Maximise flexibility — support many use cases and extension."
-- Agent 3: "Optimise for the most common caller — make the default case trivial."
-- Agent 4 (if applicable): "Design around ports & adapters for cross-seam dependencies."
+- **Agent 1.** "Keep the interface to one to three entry points. Maximize capability per entry point."
+- **Agent 2.** "Support many use cases and extensions."
+- **Agent 3.** "Optimize for the most common caller. Make the default case trivial."
+- **Agent 4, when relevant.** "Use ports and adapters for dependencies across seams."
 
 Include [SKILL.md](SKILL.md) vocabulary and, when available, `CONTEXT.md` vocabulary in the brief so each pass names things consistently with the architecture language and the project's domain language.
 
-Each sub-agent outputs:
+Each agent outputs:
 
-1. Interface (types, methods, params — plus invariants, ordering, error modes)
-2. Usage example showing how callers use it
-3. What the implementation hides behind the seam
-4. Dependency strategy and adapters (see [DEEPENING.md](DEEPENING.md))
-5. Trade-offs — where leverage is high, where it's thin
+1. Interface types, methods, parameters, invariants, ordering rules, and errors
+2. Usage example
+3. Behavior hidden behind the seam
+4. Dependency strategy and adapters from [DEEPENING.md](DEEPENING.md)
+5. Tradeoffs, including how much each caller must learn
 
 ### 3. Present and compare
 
-Present designs sequentially so the user can absorb each one, then compare them in prose. Contrast by **depth** (leverage at the interface), **locality** (where change concentrates), and **seam placement**.
+Present each design separately, then compare them in prose. Contrast depth, locality, and seam placement.
 
-After comparing, give your own recommendation: which design you think is strongest and why. If elements from different designs would combine well, propose a hybrid. Be opinionated — the user wants a strong read, not a menu.
+Recommend the strongest design and explain why. Combine parts only when the result is better than either original. The user wants a strong read, not a menu.

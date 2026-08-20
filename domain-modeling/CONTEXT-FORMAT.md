@@ -1,60 +1,60 @@
-# CONTEXT.md Format
+# CONTEXT.md format
 
 ## Structure
 
 ```md
-# {Context Name}
+# {Context name}
 
-{One or two sentence description of what this context is and why it exists.}
+{One or two sentences describing this context and why it exists.}
 
 ## Language
 
-**Order**:
-{A one or two sentence description of the term}
+**Order.**
+{A one or two sentence definition}
 _Avoid_: Purchase, transaction
 
-**Invoice**:
+**Invoice.**
 A request for payment sent to a customer after delivery.
 _Avoid_: Bill, payment request
 
-**Customer**:
+**Customer.**
 A person or organization that places orders.
 _Avoid_: Client, buyer, account
 ```
 
 ## Rules
 
-- **Be opinionated.** When multiple words exist for the same concept, pick the best one and list the others under `_Avoid_`.
-- **Keep definitions tight.** One or two sentences max. Define what it IS, not what it does.
-- **Only include terms specific to this project's context.** General programming concepts (timeouts, error types, utility patterns) don't belong even if the project uses them extensively. Before adding a term, ask: is this a concept unique to this context, or a general programming concept? Only the former belongs.
-- **Group terms under subheadings** when natural clusters emerge. If all terms belong to a single cohesive area, a flat list is fine.
+- **Pick one term.** When several words name the same concept, choose one and list the others under `_Avoid_`.
+- **Keep definitions tight.** Use at most two sentences. Define what the term is.
+- **Include only domain terms.** Exclude timeouts, error types, utility patterns, and other programming concepts. Before adding a term, ask whether it is specific to this domain.
+- **Group related terms when useful.** Keep a flat list when every term belongs to one area.
 
-## Single vs multi-context repos
+## Single-context and multi-context repositories
 
-**Single context (most repos):** One `CONTEXT.md` at the repo root.
+**Single context.** Put one `CONTEXT.md` at the repository root.
 
-**Multiple contexts:** A `CONTEXT-MAP.md` at the repo root lists the contexts, where they live, and how they relate to each other:
+**Multiple contexts.** Put a `CONTEXT-MAP.md` at the root. List each context, its location, and its relationships:
 
 ```md
-# Context Map
+# Context map
 
 ## Contexts
 
-- [Ordering](./src/ordering/CONTEXT.md) — receives and tracks customer orders
-- [Billing](./src/billing/CONTEXT.md) — generates invoices and processes payments
-- [Fulfillment](./src/fulfillment/CONTEXT.md) — manages warehouse picking and shipping
+- [Ordering](./src/ordering/CONTEXT.md). Receives and tracks customer orders.
+- [Billing](./src/billing/CONTEXT.md). Generates invoices and processes payments.
+- [Fulfillment](./src/fulfillment/CONTEXT.md). Manages warehouse picking and shipping.
 
 ## Relationships
 
-- **Ordering → Fulfillment**: Ordering emits `OrderPlaced` events; Fulfillment consumes them to start picking
-- **Fulfillment → Billing**: Fulfillment emits `ShipmentDispatched` events; Billing consumes them to generate invoices
-- **Ordering ↔ Billing**: Shared types for `CustomerId` and `Money`
+- **Ordering to Fulfillment.** Ordering emits `OrderPlaced` events. Fulfillment consumes them to start picking.
+- **Fulfillment to Billing.** Fulfillment emits `ShipmentDispatched` events. Billing consumes them to generate invoices.
+- **Ordering and Billing.** Share `CustomerId` and `Money`.
 ```
 
-The skill infers which structure applies:
+Infer the structure from the repository:
 
-- If `CONTEXT-MAP.md` exists, read it to find contexts
-- If only a root `CONTEXT.md` exists, single context
-- If neither exists, create a root `CONTEXT.md` lazily when the first term is resolved
+- If `CONTEXT-MAP.md` exists, read it to find the contexts.
+- If only a root `CONTEXT.md` exists, use a single context.
+- If neither exists, create a root `CONTEXT.md` when the first term is resolved.
 
-When multiple contexts exist, infer which one the current topic relates to. If unclear, ask.
+For multiple contexts, infer where the current topic belongs. Ask only when the repository cannot answer.

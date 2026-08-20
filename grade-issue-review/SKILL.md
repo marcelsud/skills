@@ -1,9 +1,9 @@
 ---
 name: grade-issue-review
-description: Review newly created or proposed issues with evidence-backed severity, diagnostic confidence, operational exposure, and duplicate or stale-state checks. Use when Codex must triage an LLM-generated issue batch, filter false positives, duplicates, resolved reports, cosmetic requests, or speculative claims, and retain only actionable or explicitly tracked issues.
+description: Review new or proposed issues using evidence-backed severity, diagnostic confidence, operational exposure, and duplicate or stale-state checks. Use to triage generated issue batches, filter false positives and resolved reports, and keep only actionable or explicitly tracked issues.
 ---
 
-# Grade Issue Review
+# Grade issue review
 
 Investigate broadly, retain narrowly. Filter an issue unless the current repository state supports a falsifiable, decision-relevant problem. Separate defect severity from confidence that it exists and exposure of its preconditions.
 
@@ -60,7 +60,7 @@ resolution: "Binary condition that closes the issue"
 
 The classifier returns summary counts and each issue's disposition. `KEEP_ACTIONABLE` and `KEEP_TRACKED` remain in the tracker. `VERIFY` remains undecided and must not be presented as valid or filtered. Every `FILTER_*` disposition is excluded from the accepted issue set; close an already-created issue only when the user requested side effects and the evidence is recorded.
 
-## Ratchets
+## Quality rules
 
 - Never retain a speculative or cosmetic report as an issue.
 - Never call two reports duplicates based only on similar titles or symptoms.

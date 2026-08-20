@@ -111,11 +111,11 @@ The classifier derives disposition and the final decision. The reviewer remains 
 
 ## 7. Consensus and calibration
 
-Independent reviewers receive the same issue/specification, diff and merge base, CI and ratchet evidence, acceptance evidence, and rubric version. They must not see each other's first pass.
+Independent reviewers receive the same issue or specification, diff and merge base, CI and quality-gate evidence, acceptance evidence, and rubric version. They must not see each other's first pass.
 
 Resolve disagreements by comparing the disputed binary check, exact source evidence, and governing clause. Do not average confidence, vote, or let the lower label win automatically. Escalate for human adjudication only when the disagreement changes the ship decision and factual verification cannot resolve it.
 
-At calibration boundaries, regrade a fixed sample and record:
+During calibration, regrade a fixed sample and record:
 
 - disagreement by FE check and classification axis;
 - candidates omitted as speculative;

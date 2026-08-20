@@ -1,6 +1,6 @@
 ---
 name: make-no-mistakes
-description: Validate or ship code changes through an agent-orchestrated gate. Kernel is intent, independent review, targeted tests, docs, and lint. Default profile also rebases, pushes, opens a PR, and watches CI. Use when the user asks to run make-no-mistakes, gate or ship or validate their changes, push safely, asks you to do a task and then validate it, or invokes /make-no-mistakes.
+description: Validate or ship code changes through an agent-run gate. The fixed rules cover intent, independent review, targeted tests, docs, and lint. The default profile also rebases, pushes, opens a PR, and watches CI. Use when the user asks to gate, ship, validate, or push changes safely, or invokes /make-no-mistakes.
 user-invocable: true
 argument-hint: "[task | profile=<name> | skip=<steps>]"
 ---
@@ -44,20 +44,20 @@ Always on, every profile:
 
 ## Two ways to invoke
 
-Flags are `profile=<name>` and `skip=…` / `skip <phase>` / `--skip=a,b`.
+Flags are `profile=<name>`, `skip=...`, `skip <phase>`, and `--skip=a,b`.
 Remaining text is the task. Bare `/make-no-mistakes` is validate-only.
 
-- **Validate-only** — changes are already the work to gate. Then run the
-  profile.
-- **Task-first** — do the task, then gate it:
-  1. Inspect `git status` before you touch anything. Leave unrelated dirty
+- **Validate-only.** The changes are already the work to gate. Run the
+  selected profile.
+- **Task-first.** Do the task, then gate it:
+  1. Inspect `git status` before touching anything. Leave unrelated dirty
      files alone. Commit only the task's files when the profile requires
      commits.
-  2. Branch creation is profile-owned (see [Profiles](#profiles)).
+  2. Branch creation belongs to the profile. See [Profiles](#profiles).
   3. Do the work.
-  4. Run the profile. The user's task text **is** the intent — keep their
-     requirements, constraints, exclusions, and later decisions verbatim.
-     Add only the decisions and tradeoffs you made while implementing.
+  4. Run the profile. Keep the user's task text as the intent, including
+     requirements, constraints, exclusions, and later decisions. Add only
+     decisions and tradeoffs made during implementation.
 
 ## Profiles
 
@@ -93,7 +93,7 @@ The repo's delivery document is the profile (`AGENTS.md`, a seating doc, or
 the phase specs below. It does not invent a pipeline.
 
 If that document is missing, stop and say so. If it names seats or a host
-the session cannot run, stop — never substitute.
+the session cannot run, stop. Never substitute.
 
 ## Phases
 
@@ -101,9 +101,9 @@ the session cannot run, stop — never substitute.
 
 Write the intent down and keep it in every later prompt.
 
-Intent is **what the user set out to accomplish**, in their terms — not a
-diff summary. Err long: goal, decisions, tradeoffs, constraints, ruled-in
-and ruled-out approaches, anything that would look surprising in the diff.
+Intent captures what the user wants, in their terms. It is not a diff
+summary. Include the goal, decisions, tradeoffs, constraints, rejected
+approaches, and anything in the diff that would otherwise surprise a reviewer.
 
 A thin one-liner makes review invent objections the user already chose.
 
@@ -122,9 +122,9 @@ skip this phase.
    target is a strict ancestor of `HEAD`.
 4. If `HEAD` contains commits from the **local** default branch that are
    not on `<remote>/<default>`, stop and ask. Do not silently bundle them.
-5. On conflict: stop, show the conflicted files, and either resolve (smallest
-   correct merge of both sides, then `git rebase --continue` or
-   `git merge --continue`) or ask. Abort rather than leave a half-integrate.
+5. On conflict, stop and show the files. Resolve only when you can preserve
+   both sides with the smallest correct edit, then continue the rebase or
+   merge. Otherwise ask. Abort instead of leaving a half-finished integration.
 6. If the diff against `<remote>/<default>` is empty after integrate, stop.
    The rest of the pipeline has nothing to gate.
 
@@ -146,18 +146,18 @@ Snapshot is the committed diff against the merge base when
 `review.on: committed`, or the worktree diff when `review.on: worktree`.
 `committed` with uncommitted task work: commit first (`pr-ship`) or stop.
 
-If the repo or config defines review seating (models, pair review,
-publication), follow that document. If a required seat is unavailable, stop
-and report it — never silently substitute. Otherwise one independent
-reviewer is enough.
+If the repo or config defines review seating, models, pair review, or
+publication rules, follow them. If a required seat is unavailable, stop
+and report it. Never substitute. Otherwise one independent reviewer is
+enough.
 
 #### Severity gate
 
 Classify every proposed change before sending it:
 
-- **Blocker** — factually wrong, or misleads the reader. **Must fix.**
-- **Material** — a reader would act differently knowing it. **Fix.**
-- **Cosmetic** — more precise or better-worded, but same reader outcome.
+- **Blocker.** Factually wrong or misleading. **Must fix.**
+- **Material.** A reader would act differently with this information. **Fix.**
+- **Cosmetic.** Better wording with no change in reader action.
   **Drop. Do not send.**
 
 Line-number tweaks, synonym swaps, and "slightly more precise phrasing"
@@ -169,14 +169,14 @@ optional cleanup into Material.
 
 #### Stop conditions (any one ends the exchange)
 
-1. **All-cosmetic round** — only Cosmetic items → stop and ship. A
-   reviewer reduced to line-number nits is the convergence signal.
-2. **Hard cap: 2 rounds per artifact.** Round 1 = substance. Round 2 =
-   verify the Round 1 fixes landed. No Round 3 unless a genuine
-   **Blocker** is found.
-3. **Diminishing returns** — when the remaining changes are all Cosmetic,
-   stop. Edit size never gates severity: a one-line Blocker or Material
-   still ships as a fix.
+1. **All-cosmetic round.** Stop and ship. Line-number nits are the
+   convergence signal.
+2. **Hard cap of two rounds per artifact.** Round 1 addresses substance.
+   Round 2 verifies those fixes. A third round requires a genuine
+   **Blocker**.
+3. **Diminishing returns.** Stop when every remaining change is Cosmetic.
+   Edit size does not affect severity. A one-line Blocker or Material issue
+   still needs a fix.
 
 #### Ship-gate phrasing
 
@@ -192,7 +192,7 @@ If you question a factual claim, check the code or source first. Do not
 assert doubt from memory. If the check proves you wrong, say so and move
 on; a corrected claim is a resolved issue, not a new round.
 
-Ask **"good enough to ship?"** — not **"can it be better?"**
+Ask **"good enough to ship?"**, not **"can it be better?"**
 
 #### What the reviewer checks
 
@@ -210,19 +210,19 @@ speculative redesign. Do not expand scope. Do not flag the absence of a
 push, PR, or CI result this run has not reached yet.
 
 A finding needs a falsifiable claim, a reachable path, a concrete
-consequence, and an exact `path:line`. No path → drop it.
+consequence, and an exact `path:line`. Drop findings without a path.
 
 #### Finding loop
 
-1. Reviewer returns `APPROVED` or Blocker/Material findings only.
-2. You fix every Blocker and Material. Re-run only the focused check that
-   proves that fix. `review.on: committed` → commit the fix on the same
-   branch. `review.on: worktree` → leave the fix in the tree unless this
-   run already committed the work, in which case commit it.
-3. The **same** reviewer runs Round 2: verify those fixes landed. It may
-   not add new scope unless it finds a genuine Blocker.
-4. Product or intent challenges (the finding argues the user chose wrong)
-   are not yours to dismiss. Stop and ask the user. Quote the finding.
+1. Reviewer returns `APPROVED` or Blocker and Material findings only.
+2. Fix every Blocker and Material finding. Re-run only the focused check
+   that proves the fix. For `review.on: committed`, commit the fix on the
+   same branch. For `review.on: worktree`, leave it in the tree unless this
+   run already committed the work.
+3. The **same** reviewer runs Round 2 to verify the fixes. It may add scope
+   only for a genuine Blocker.
+4. A finding that challenges product intent is not yours to dismiss.
+   Quote it and ask the user.
 
 You may dispute **severity** with a stated reason. You may not wave
 through a finding you agree is Blocker or Material.
@@ -250,28 +250,27 @@ token, symbol, or prompt phrase. Execute a public interface and assert
 observable behavior, state, output, or failure. A prompt is not proven
 because its source contains a sentence.
 
-For a claimed regression fix: reproduce first when feasible — fail before,
-pass after.
+For a claimed regression fix, reproduce it first when feasible. Observe
+failure before the fix and success after it.
 
 Repair the root cause, re-run only the focused check, then continue.
-Product-behavior surprises: ask.
+Ask about unexpected product behavior.
 
 Record what you ran (commands, result, evidence paths) for closeout, and
 for the PR body when this profile opens one.
 
 ### Document
 
-Update existing docs or doc comments for gaps the diff creates. One fact,
-one owner. Prefer deleting a stale duplicate or replacing it with a
-pointer over synchronizing two copies. Do not create a new documentation
-surface to close a perceived gap. Do not dump incident notes into
-`AGENTS.md`.
+Update existing docs or doc comments for gaps created by the diff. Give each
+fact one owner. Prefer deleting a stale duplicate or replacing it with a
+link. Do not create another document just to close a perceived gap. Do not
+dump incident notes into `AGENTS.md`.
 
 If `.make-no-mistakes.yaml` `document.instructions` or a repo ownership map
 exists, follow it.
 
-Unresolved doc gaps that need a human call: ask. Otherwise apply the doc
-fix (`committed` profiles: commit it) and continue.
+Ask about unresolved doc gaps that need a human decision. Otherwise apply
+the fix and continue. Commit it when the profile uses committed review.
 
 ### Lint
 
@@ -281,9 +280,9 @@ fix (`committed` profiles: commit it) and continue.
    run the scoped form (changed paths) when the tool supports it.
 3. Apply safe mechanical fixes. Re-run the same command. Commit them when
    the profile commits other work.
-4. Remaining Blocker/Material lint (a rule that would fail CI, or a real
-   correctness/security hit): fix or ask. Style nits that would not
-   change CI or a reader's decision: drop.
+4. Fix or ask about remaining Blocker or Material lint. This includes rules
+   that fail CI and real correctness or security defects. Drop style nits
+   that would not change CI or a reader's decision.
 
 ### Push
 
@@ -296,15 +295,14 @@ lint have passed.
    remains uncommitted that belongs to this run.
 3. `git ls-remote` the push target. Refuse to force-push if the remote
    has commits this branch does not contain.
-4. Push the current branch. Use `--force-with-lease` only after a rebase
-   you just did onto a remote you already fetched. New branches: regular
-   push.
+4. Push the current branch. Use `--force-with-lease` only after rebasing
+   onto a remote you already fetched. Push new branches without force.
 5. Push the exact SHA you validated, not an unexamined later `HEAD`.
 
-`deliver.kind: patch`: write `git format-patch` against the merge base, do
-not push, and stop.
+For `deliver.kind: patch`, write `git format-patch` against the merge base.
+Do not push.
 
-`deliver.kind: none`: skip this phase.
+For `deliver.kind: none`, skip this phase.
 
 ### PR
 
@@ -314,19 +312,20 @@ Create or update a pull request on the host CLI (`deliver.host`, or
 `gh` / `glab` / `az` when `auto`). If the host or CLI is missing, stop
 after push and say so.
 
-Title: conventional commit from the final diff and the intent
-(`feat` / `fix` when user-facing). Fallback: `chore: update pull request`.
+Use a conventional commit title based on the final diff and intent. Use
+`feat` or `fix` for user-facing changes. Otherwise use
+`chore: update pull request`.
 
-Body:
+Use this body:
 
 ```markdown
 ## Intent
 <verbatim intent>
 
-## What Changed
+## What changed
 <final branch delta after local mutating phases>
 
-## Risk Assessment
+## Risk assessment
 <what could break, and why the review called it good enough>
 
 ## Testing
@@ -334,13 +333,13 @@ Body:
 
 ## Pipeline
 - profile: <name>
-- intent: …
-- rebase: …          <!-- omit when the profile skipped it -->
+- intent: ...
+- rebase: ...          <!-- omit when the profile skipped it -->
 - review: APPROVED | findings fixed (round N)
-- test / document / lint / push: …
+- test / document / lint / push: ...
 ```
 
-Only **What Changed** describes full branch scope. Do not wait for merge
+Only **What changed** describes full branch scope. Do not wait for merge
 unless `deliver.merge` says to.
 
 ### CI
@@ -349,22 +348,23 @@ Only when `deliver.kind` is `pr`.
 
 Watch the PR checks on the latest SHA.
 
-- Empty check list is **not** green unless `ci.empty: pass` or the repo
-  explicitly declares it has no CI.
-- On failure: fetch the failed logs, fix the root cause, commit, push
-  with the same lease guard, re-watch.
-- Merge conflict against the default branch: integrate with the profile's
-  strategy, smallest correct resolution, force-with-lease, re-watch.
-- Cancelled checks: rerun the same SHA once if the host can; do not
-  invent a code fix for a run that never tested anything.
-- If the published head is not the SHA you pushed, stop and ask.
+- **Empty check list.** Treat it as not green unless `ci.empty: pass` or the
+  repository declares that it has no CI.
+- **Failure.** Fetch the failed logs, fix the root cause, commit, push with
+  the same lease guard, and watch the checks again.
+- **Merge conflict.** Integrate the default branch with the profile's
+  strategy. Use the smallest correct resolution, push with force-with-lease,
+  and watch the checks again.
+- **Cancelled checks.** Rerun the same SHA once if the host supports it. Do
+  not invent a code fix for a run that tested nothing.
+- Stop and ask if the published head is not the SHA you pushed.
 
 When checks are green (or a declared no-CI repo has none):
 
-- `deliver.merge: never` — **you are done.** Give the user the PR link and
-  ask them to review and merge.
-- `deliver.merge: ask` — ask.
-- `deliver.merge: auto` — merge via the host CLI, then report.
+- **`deliver.merge: never`.** Give the user the PR link and ask them to
+  review and merge.
+- **`deliver.merge: ask`.** Ask before merging.
+- **`deliver.merge: auto`.** Merge through the host CLI, then report.
 
 List every fix the gate applied after the original commits.
 
@@ -387,7 +387,7 @@ stop for intent/product conflicts unless they waived those too.
 
 ## Close the loop
 
-On success, report briefly: profile, branch, PR URL if one exists, what
-was validated, what the reviewer approved, commands you ran, and each
-gate-applied fix. For `local-validate`, say that nothing was published.
+On success, briefly report the profile, branch, PR URL when one exists,
+validated behavior, reviewer decision, commands run, and gate-applied fixes.
+For `local-validate`, say that nothing was published.
 Do not claim CI is green unless you saw the checks on the SHA you pushed.

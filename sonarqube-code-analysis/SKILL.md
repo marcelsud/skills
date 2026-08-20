@@ -1,9 +1,9 @@
 ---
 name: sonarqube-code-analysis
-description: Run local SonarQube analysis. Import coverage and turn scanner signals into evidence-backed findings. Use when the user asks to scan a repository or inspect SonarQube results. Use the skill to explain a quality gate or triage code with SonarQube. Default to local analysis. Do not add CI unless the user asks.
+description: Run local SonarQube analysis, import coverage, and turn scanner output into evidence-backed findings. Use to scan a repository, inspect results, explain a quality gate, or triage code. Default to local analysis. Add CI only when the user asks.
 ---
 
-# SonarQube Code Analysis
+# SonarQube code analysis
 
 Use SonarQube Community Build for evidence. Do not use a SonarQube label for a final code-review decision.
 
@@ -194,11 +194,11 @@ List dismissed signals separately with a short reason. Do not include cosmetic f
 
 ## Troubleshooting
 
-- `401` or `403`: check the token type and expiration. Check project permissions. Do not display the token.
-- Zero coverage: check report generation and the configured path. Check LCOV source paths and coverage exclusions.
-- Upload succeeded but results are stale: wait for the Compute Engine task.
-- Missing blame data: scan a committed checkout with sufficient Git history.
-- Scanner failure: rerun with `-X`. Diagnose the first root error.
-- Wrong scanner: use the scanner made for Maven, Gradle, or .NET.
+- **401 or 403.** Check token type, expiration, and project permissions. Do not display the token.
+- **Zero coverage.** Check report generation, the configured path, LCOV source paths, and coverage exclusions.
+- **Stale results after upload.** Wait for the Compute Engine task.
+- **Missing blame data.** Scan a committed checkout with enough Git history.
+- **Scanner failure.** Rerun with `-X` and diagnose the first root error.
+- **Wrong scanner.** Use the scanner made for Maven, Gradle, or .NET.
 
 Remove `.scannerwork/` after you collect the analysis evidence. Keep server data or coverage output only when the user needs them.
