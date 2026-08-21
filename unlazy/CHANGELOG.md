@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 (2026-08-21)
 
 - The orchestrated driver dispatches every ready leaf, verifies returns
   separately, and dispatches newly unblocked work without waiting for a wave.

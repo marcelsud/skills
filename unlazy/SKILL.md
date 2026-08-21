@@ -4,8 +4,10 @@ description: Completion discipline for substantial tasks. Use when work returns 
 license: MIT
 metadata:
   author: Leonxlnx
-  source: https://github.com/Leonxlnx/unlazy
-  version: 2.0.0
+  maintainer: marcelsud
+  source: https://github.com/marcelsud/skills/tree/main/unlazy
+  upstream: https://github.com/Leonxlnx/unlazy
+  version: 2.1.0
 ---
 
 # Unlazy

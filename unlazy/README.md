@@ -32,27 +32,27 @@ tree 3 build the landing page and do not stop until every gate is checked
 
 ### Install
 
-**Any agent, via the [skills CLI](https://github.com/vercel-labs/skills)** (Claude Code, Codex, Cursor and more; it detects what you have):
+Use the [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
-npx skills add Leonxlnx/unlazy
+npx skills add marcelsud/skills --skill unlazy
 ```
 
-Add `-g` for a user-level install or `--all` for every detected agent, non-interactively.
-
-**Claude Code, manually:**
+Add `-g` for a user-level install. Target one agent when needed:
 
 ```bash
-git clone https://github.com/Leonxlnx/unlazy ~/.claude/skills/unlazy
+npx skills add marcelsud/skills --skill unlazy --agent claude-code
+npx skills add marcelsud/skills --skill unlazy --agent codex
 ```
 
-**OpenAI Codex CLI, manually** (invoke with `$unlazy` or let it trigger on the description):
+The CLI also accepts the skill directory directly:
 
 ```bash
-git clone https://github.com/Leonxlnx/unlazy ~/.codex/skills/unlazy
+npx skills add https://github.com/marcelsud/skills/tree/main/unlazy
 ```
 
-**Everything else:** [SKILL.md](SKILL.md) is a plain markdown file. Paste it as a system prompt, a Cursor rule, or a preamble. Gates and scripts need only Node 16+.
+Without the CLI, copy the `unlazy/` directory into the agent's skills
+directory. Gates and scripts require Node 16 or later.
 
 ### Hard mode (Claude Code, optional)
 
@@ -71,13 +71,13 @@ The hook scans files without a model call. After six blocked stops with no gate-
 Paste this to Claude Code, Codex, Cursor or any agent with shell access:
 
 ```
-Install the "unlazy" skill from https://github.com/Leonxlnx/unlazy so it is
-available to you in future sessions.
+Install the "unlazy" skill from
+https://github.com/marcelsud/skills/tree/main/unlazy so it is available in
+future sessions.
 
-Try `npx skills add Leonxlnx/unlazy -y` first. If that is unavailable, clone
-the repo into your own skills directory instead: ~/.claude/skills/unlazy for
-Claude Code, ~/.codex/skills/unlazy for Codex CLI, or the equivalent path for
-whatever agent you are.
+Try `npx skills add marcelsud/skills --skill unlazy -y` first. If that is
+unavailable, copy the repository's `unlazy/` directory into your skills
+directory.
 
 Then confirm it worked: show me the installed path and the first line of the
 skill's description. Do not tell me it is installed unless you have actually
