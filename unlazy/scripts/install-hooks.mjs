@@ -22,7 +22,7 @@ const global_ = args.includes("--global");
 const shared = args.includes("--shared");
 
 const hookScript = join(dirname(fileURLToPath(import.meta.url)), "stop-hook.mjs");
-const MARKER = "unlazy"; // identifies our entries: command mentions unlazy + stop-hook.mjs
+const entryCommand = `node "${hookScript}"`;
 
 const target = global_
   ? join(homedir(), ".claude", "settings.json")
@@ -40,11 +40,17 @@ if (existsSync(target)) {
 settings.hooks = settings.hooks || {};
 const stopHooks = Array.isArray(settings.hooks.Stop) ? settings.hooks.Stop : [];
 
+// Our entries carry the stop-hook.mjs filename, which is unique to this skill;
+// the absolute path inside the command changes whenever the skill directory moves.
 const isOurs = (entry) =>
   Array.isArray(entry?.hooks) &&
   entry.hooks.some(h => typeof h?.command === "string" &&
-    h.command.includes("stop-hook.mjs") && h.command.toLowerCase().includes(MARKER));
+    h.command.includes("stop-hook.mjs"));
+const isCurrent = (entry) =>
+  Array.isArray(entry?.hooks) &&
+  entry.hooks.some(h => h?.command === entryCommand);
 
+const ours = stopHooks.filter(isOurs);
 const kept = stopHooks.filter(e => !isOurs(e));
 
 if (uninstall) {
@@ -63,12 +69,12 @@ if (uninstall) {
 const entry = {
   hooks: [{
     type: "command",
-    command: `node "${hookScript}"`,
+    command: entryCommand,
     timeout: 20,
   }],
 };
 
-if (stopHooks.some(isOurs)) {
+if (ours.length === 1 && isCurrent(ours[0])) {
   console.log(`Already installed in ${target}. Nothing changed.`);
   process.exit(0);
 }
@@ -77,7 +83,7 @@ settings.hooks.Stop = [...kept, entry];
 mkdirSync(dirname(target), { recursive: true });
 writeFileSync(target, JSON.stringify(settings, null, 2) + "\n");
 
-console.log(`Installed unlazy Stop hook into ${target}
+console.log(`${ours.length ? "Updated" : "Installed"} unlazy Stop hook into ${target}
   command: node "${hookScript}"
   effect:  blocks the turn while GATES.md or gates/*.md has unmet gates
   limit:   releases after 6 unchanged blocks; ABANDON resolves one gate

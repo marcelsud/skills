@@ -29,9 +29,10 @@ Review each issue against the current repository state. A report may describe ba
    - evidence for confidence and exposure;
    - a binary resolution condition;
    - no existing issue or pull request owning the same root cause and resolution.
-6. Classify severity, confidence, and exposure independently using the rubric. Never convert intuition into a percentage.
-7. Run `python3 <skill-directory>/scripts/classify_issues.py <issues.json>` to derive dispositions mechanically. Do not select a disposition first and reverse-engineer its inputs.
-8. Return retained issues first, verification cases second, and filtered issues last. Preserve original issue IDs and state the evidence for every filter action.
+6. Test every admitted issue against the documented project gates and record `hard_gate` in the issue record. A documented security, data-integrity, resource-bound, or compatibility gate is classifier input, not a later override.
+7. Classify severity, confidence, and exposure independently using the rubric. Never convert intuition into a percentage.
+8. Run `python3 <skill-directory>/scripts/classify_issues.py <issues.json>` to derive dispositions mechanically. Do not select a disposition first and reverse-engineer its inputs.
+9. Return retained issues first, verification cases second, and filtered issues last. Preserve original issue IDs and state the evidence for every filter action.
 
 ## Output contract
 
@@ -44,6 +45,7 @@ confidence: confirmed | supported | speculative
 exposure: common | plausible | exceptional | unreachable | unknown
 current: true
 duplicate_of: null
+hard_gate: true
 disposition: KEEP_ACTIONABLE | KEEP_TRACKED | VERIFY | FILTER_DUPLICATE | FILTER_RESOLVED | FILTER_UNREACHABLE | FILTER_UNSUBSTANTIATED
 location: path/to/file.ts:42
 claim: "Falsifiable description of the problem"

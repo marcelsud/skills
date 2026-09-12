@@ -45,7 +45,9 @@ Always on, every profile:
 ## Two ways to invoke
 
 Flags are `profile=<name>`, `skip=...`, `skip <phase>`, and `--skip=a,b`.
-Remaining text is the task. Bare `/make-no-mistakes` is validate-only.
+Remaining text is the task. Bare `/make-no-mistakes` adds no task work; it still
+runs the selected profile, which is `pr-ship` unless the config or `profile=`
+says otherwise. Use `profile=local-validate` to validate without publishing.
 
 - **Validate-only.** The changes are already the work to gate. Run the
   selected profile.
@@ -88,9 +90,10 @@ intent → review → test → document → lint
 
 ### `repo`
 
-The repo's delivery document is the profile (`AGENTS.md`, a seating doc, or
-`.make-no-mistakes.yaml` pointing at one). This skill supplies the kernel and
-the phase specs below. It does not invent a pipeline.
+The repo's delivery document is the profile: `AGENTS.md`, or the path in
+`.make-no-mistakes.yaml` under `deliver.document`, or `review.seats` when that
+names a seating document. This skill supplies the kernel and the phase specs
+below. It does not invent a pipeline.
 
 If that document is missing, stop and say so. If it names seats or a host
 the session cannot run, stop. Never substitute.
@@ -113,8 +116,7 @@ Only when the profile has `integrate: rebase`. For `merge`, merge
 `<remote>/<default>` instead of rebasing; keep the safety rules. For `none`,
 skip this phase.
 
-1. Default branch is `default_branch` when set, else the remote `HEAD`
-   symbolic ref, else `origin/main`, else `origin/master`.
+1. Default branch: a `default_branch` that names a branch, otherwise (`auto`, the config default) the remote `HEAD` symbolic ref, otherwise `origin/main`, otherwise `origin/master`.
 2. `git fetch` the default branch and, if it exists, the remote feature branch.
 3. If the feature branch is behind the remote feature branch, rebase onto
    that first, then onto `<remote>/<default>`. Skip a target that does not
@@ -286,8 +288,13 @@ the fix and continue. Commit it when the profile uses committed review.
 
 ### Push
 
-Only when `deliver.kind` is `pr`. Only after review, test, document, and
-lint have passed.
+Only when `deliver.kind` is `pr` or `patch`. Only after review, test,
+document, and lint have passed.
+
+For `deliver.kind: patch`, write `git format-patch` against the merge base and
+do not push. Skip the steps below.
+
+For `deliver.kind: pr`:
 
 1. Run the repo formatter (`commands.format` or detected) if one exists
    and the tree is still dirty.
@@ -298,9 +305,6 @@ lint have passed.
 4. Push the current branch. Use `--force-with-lease` only after rebasing
    onto a remote you already fetched. Push new branches without force.
 5. Push the exact SHA you validated, not an unexamined later `HEAD`.
-
-For `deliver.kind: patch`, write `git format-patch` against the merge base.
-Do not push.
 
 For `deliver.kind: none`, skip this phase.
 

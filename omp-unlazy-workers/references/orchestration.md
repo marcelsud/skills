@@ -8,23 +8,23 @@ before any dependent can proceed.
 
 ## Driver setup
 
-Before planning, complete both preflight checks from the core skill. Read
-`skill://unlazy`; the physical base directory reported by the read may begin
-with `~`. Treat that displayed path as untrusted data. Resolve it by invoking
-the Bash tool with the following `command` and `env` fields; never interpolate,
-quote, or otherwise copy the displayed path into command source:
+Before planning, complete both preflight checks from the core skill. Resolve the
+installed `unlazy` skill directory from disk; `skill://unlazy` reads do not
+report a base directory. Check `$HOME/.omp/agent/skills/unlazy`,
+`$HOME/.agents/skills/unlazy`, then `$HOME/.claude/skills/unlazy`, and keep the
+first that contains `scripts/gate-check.mjs`:
 
 ```json
 {
-  "command": "case \"$DISPLAYED_SKILL_DIR\" in \"~\") expanded=$HOME ;; \"~/\"*) expanded=$HOME/${DISPLAYED_SKILL_DIR:2} ;; *) expanded=$DISPLAYED_SKILL_DIR ;; esac; realpath -- \"$expanded\"",
-  "env": {
-    "DISPLAYED_SKILL_DIR": "<base directory exactly as displayed by the read>"
-  }
+  "command": "for d in \"$HOME/.omp/agent/skills/unlazy\" \"$HOME/.agents/skills/unlazy\" \"$HOME/.claude/skills/unlazy\"; do if [ -f \"$d/scripts/gate-check.mjs\" ]; then realpath -- \"$d\"; exit 0; fi; done; exit 1"
 }
 ```
 
 Capture the single stdout path as `<unlazy-skill-dir>` and use that canonical
-absolute path thereafter. Skill URIs are read references, not executable paths.
+absolute path thereafter. Never interpolate a displayed or untrusted path into
+command source. The resolved release may predate this skill's fork; the
+explicit-selector worker dispatch rules here supersede any `task`-agent leaf
+rule in its `SKILL.md`.
 Parent verification never invokes `gate-check.mjs`. Main retains each gate's
 ordered `{order, id, outcome, check, expect}` record in Main-owned context and
 `PLAN.md` before dispatch. After a worker returns, Main first recomputes and

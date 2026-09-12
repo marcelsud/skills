@@ -123,6 +123,8 @@ Keep the checks cheap:
 - Use a cheaper model for mechanical leaves when the runtime permits it.
 - Stay solo for work under about half an hour.
 
+Measured costs and the fuller rules: [references/token-economy.md](references/token-economy.md).
+
 ## Hard enforcement (Claude Code, optional)
 
 For Claude Code, the optional Stop hook blocks the turn while `GATES.md` or
