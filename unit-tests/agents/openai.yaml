@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unit Tests"
+  short_description: "Evaluate and write tests for business behavior"
+  default_prompt: "Use $unit-tests to evaluate existing tests and add relevant tests for business use cases and domain invariants, flagging incidental edge cases, then run and verify them."
