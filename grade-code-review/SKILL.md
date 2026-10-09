@@ -29,8 +29,8 @@ Default to diff review. Hold the change responsible only for liabilities it intr
    - a binary resolution condition;
    - introduction or worsening evidence for a diff review.
 5. Classify severity, confidence, and exposure independently using the rubric. Never convert intuition into a percentage.
-6. Run `python3 <skill-directory>/scripts/classify_findings.py <findings.json>` to derive dispositions and the final decision mechanically. Do not select a disposition first and reverse-engineer its inputs.
-7. Apply hard project gates after classification. A documented security, data-integrity, resource-bound, or compatibility gate overrides a lower operational priority.
+6. Test every admitted finding against the documented project gates and record `hard_gate` in the finding record. A documented security, data-integrity, resource-bound, or compatibility gate is classifier input, not a later override.
+7. Run `python3 <skill-directory>/scripts/classify_findings.py <findings.json>` to derive dispositions and the final decision mechanically. Do not select a disposition first and reverse-engineer its inputs.
 8. Return formal findings ordered by disposition, severity, then evidence strength. Omit cosmetic and speculative observations. Keep rejected candidates out of the main review.
 
 ## Output contract
@@ -42,6 +42,7 @@ id: F-1
 severity: blocker | material
 confidence: confirmed | supported
 exposure: common | plausible | exceptional | unknown
+hard_gate: false
 disposition: ACT_NOW | VERIFY_NOW | TRACK
 location: path/to/file.ts:42
 claim: "Falsifiable description of the defect"

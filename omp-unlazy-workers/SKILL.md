@@ -18,22 +18,27 @@ workers, never to the driver.
 Before parsing arguments, creating ledgers, or doing work, check these
 prerequisites independently:
 
-1. Read `skill://unlazy`. Its displayed physical base directory may begin with
-   `~`. Canonicalize it by calling the Bash tool with this fixed recipe:
+1. Resolve the installed `unlazy` skill directory. `skill://unlazy` reads do not
+   report a base directory, so look it up on disk instead. Check the known
+   roots in order and keep the first one that contains `scripts/gate-check.mjs`:
 
    ```text
-   command: expanded="$DISPLAYED_SKILL_DIR"; if [[ "$expanded" == "~" || "$expanded" == "~/"* ]]; then expanded="$HOME${expanded:1}"; fi; realpath -- "$expanded"
-   env:
-     DISPLAYED_SKILL_DIR: <displayed-base>
+   command: for d in "$HOME/.omp/agent/skills/unlazy" "$HOME/.agents/skills/unlazy" "$HOME/.claude/skills/unlazy"; do if [ -f "$d/scripts/gate-check.mjs" ]; then realpath -- "$d"; exit 0; fi; done; exit 1
    ```
 
-   Pass the displayed base only through the tool's `env` field. Store the
-   command's output as `UNLAZY_SKILL_DIR` only if it is an absolute canonical
-   path. Never interpolate the displayed path into command source. If the skill
-   is unavailable, canonicalization fails, or the result is not absolute,
-   stop. For an unavailable skill, tell the user to run
-   `npx skills add marcelsud/skills --skill unlazy -g -y`. Never run that
+   Store the command's stdout as `UNLAZY_SKILL_DIR` only when the command
+   succeeds and the output is one absolute canonical path. If the skill is
+   missing, stop. Tell the user to run
+   `npx skills add marcelsud/skills --skill unlazy -g -y`; never run that
    command without permission.
+
+   The resolved `unlazy` may be a release other than this skill's fork. Read
+   its `SKILL.md` and apply these rules: worker dispatch supersedes any
+   instruction to send leaves to the `task` agent (unlazy 2.1.1 and earlier),
+   and per-unit model selectors replace that version's model tiering rule.
+   Where the installed text and this skill disagree about dispatch, this skill
+   governs. Stop only when the resolved `unlazy` lacks `--verify` support in
+   `scripts/gate-check.mjs`.
 2. Require `bash` in every mode. Main uses Bash to execute its frozen check
    definitions directly, and workers use Bash for their optional ledger
    self-check. If `bash` is unavailable, stop; never skip or substitute checks.
@@ -327,7 +332,9 @@ import json
 
 def prompt_json(value):
     return (
-        json.dumps(value, ensure_ascii=True, separators=(",", ":"))
+        json.dumps(
+            value, ensure_ascii=True, allow_nan=False, sort_keys=True, indent=2,
+        )
         .replace("<", "\\u003c")
         .replace(">", "\\u003e")
         .replace("&", "\\u0026")

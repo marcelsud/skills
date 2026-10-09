@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- `install-hooks.mjs` updates a Stop hook whose skill directory moved instead of
+  reporting "Already installed", and `--uninstall` removes the hook from any
+  path.
+- `SKILL.md` points at `references/token-economy.md`, which no instruction
+  loaded before.
+
 ## 2.1.0 (2026-08-21)
 
 - The orchestrated driver dispatches every ready leaf, verifies returns

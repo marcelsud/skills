@@ -1,6 +1,6 @@
 ---
 name: sonarqube-code-analysis
-description: Run local SonarQube analysis, import coverage, and turn scanner output into evidence-backed findings. Use to scan a repository, inspect results, explain a quality gate, or triage code. Default to local analysis. Add CI only when the user asks.
+description: Run local SonarQube analysis, import coverage, and turn scanner output into evidence-backed findings. Use to scan a repository with SonarQube, inspect SonarQube results, explain a SonarQube quality gate, or triage scanner findings. Default to local analysis. Add CI only when the user asks.
 ---
 
 # SonarQube code analysis
@@ -21,6 +21,25 @@ Default to local analysis. Do not add CI, repository secrets, or hosted integrat
 
 A scan updates the analysis for its project key. Use a separate project key if an existing local baseline must remain unchanged.
 
+## Prerequisites
+
+- A reachable SonarQube Community Build server plus an analysis token in
+  `SONAR_HOST_URL` and `SONAR_TOKEN`. A local server needs Docker or another
+  runtime; the skill never installs one.
+- `sonar-scanner` for CLI scans, or the Maven, Gradle, or .NET scanner for
+  those projects. The CLI needs Java 17 or its embedded JRE.
+
+Start a stopped local server only when the user asks for local analysis:
+
+```bash
+docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+# poll until the API reports UP before scanning
+curl -fsS "${SONAR_HOST_URL:-http://127.0.0.1:9000}/api/system/status"
+```
+
+If no server is reachable and the user has not authorized starting one, stop and
+report the missing prerequisite. Do not scan anyway and do not fall back to CI.
+
 ## Check the local tools
 
 Use `sonar-scanner` for a full repository scan. Do not substitute the separate `sonar` command.
@@ -28,12 +47,14 @@ Use `sonar-scanner` for a full repository scan. Do not substitute the separate `
 Resolve the scanner before you change the repository.
 
 ```bash
-if command -v sonar-scanner >/dev/null 2>&1; then
+if [ -n "${SONAR_SCANNER_BIN:-}" ]; then
+  SCANNER="$SONAR_SCANNER_BIN"
+elif command -v sonar-scanner >/dev/null 2>&1; then
   SCANNER=sonar-scanner
-elif [ -x "$HOME/sonar-experiment/sonar-scanner" ]; then
-  SCANNER="$HOME/sonar-experiment/sonar-scanner"
+elif [ -n "${SONAR_SCANNER_HOME:-}" ] && [ -x "$SONAR_SCANNER_HOME/bin/sonar-scanner" ]; then
+  SCANNER="$SONAR_SCANNER_HOME/bin/sonar-scanner"
 else
-  echo "SonarScanner CLI is not installed" >&2
+  echo "SonarScanner CLI is not installed; set SONAR_SCANNER_BIN or SONAR_SCANNER_HOME" >&2
   exit 1
 fi
 ```

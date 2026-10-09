@@ -9,7 +9,7 @@ Find architectural friction. Propose refactors that hide more behavior behind sm
 
 Use the project's domain model and the shared design vocabulary:
 
-- Use `$codebase-design` for **module**, **interface**, **depth**, **seam**, **adapter**, and **locality**. Apply its deletion test, interface-testing rule, and two-adapter rule. Use these terms instead of "component," "service," "API," or "boundary."
+- Use `$codebase-design` for **module**, **interface**, **depth**, **seam**, **adapter**, and **locality**. Apply its deletion test, its "tests use the interface" rule, and its two-adapter rule; its `DEEPENING.md` defines the dependency categories. Use these terms instead of "component," "service," "API," or "boundary."
 - When present, use `CONTEXT.md` to name domain concepts and read ADRs in `docs/adr/` before reopening a recorded decision.
 
 ## Process
@@ -44,9 +44,10 @@ For each candidate, render a card with:
 - **Files.** Name the files and modules involved.
 - **Problem.** State the concrete friction in one sentence.
 - **Solution.** State what changes in plain English.
-- **Benefits.** Explain how change becomes more local and how tests improve.
+- **Wins.** At most six words per bullet, such as "Tests hit one interface."
 - **Before and after.** Draw the current and proposed structures side by side.
 - **Recommendation strength.** Use `Strong`, `Worth exploring`, or `Speculative`.
+- **Dependency category.** Use `in-process`, `local-substitutable`, `ports & adapters`, or `mock`.
 
 Finish with a **Top recommendation** section. Name the candidate you would tackle first and explain why.
 

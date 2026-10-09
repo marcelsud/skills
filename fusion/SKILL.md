@@ -23,7 +23,7 @@ Example:
 /skill:fusion openai-codex/gpt-5.6-sol grok-4.5 -- Design a migration plan for this API.
 ```
 
-Model selectors are single, non-empty tokens accepted by the task tool. A `:reasoning` suffix is allowed. Treat square brackets in usage documentation as notation, not required literal characters.
+Model selectors are single, non-empty model patterns or role aliases accepted by the `worker` tool, such as `@slow` or `provider/model-id`. A `:reasoning` suffix is allowed. Treat square brackets in usage documentation as notation, not required literal characters.
 
 Parse the skill command's `User:` arguments as follows:
 
@@ -52,33 +52,50 @@ If the task cannot be solved without delegating an actual secret value, stop the
 
 ## Prepare the shared brief
 
-Subagents do not inherit the conversation. Build one neutral shared brief containing:
+Fresh workers do not inherit the conversation. Build one neutral shared brief containing:
 
 - the user's prompt after applying the credential-redaction rules above;
 - only the prior conversation and workspace facts needed to understand references such as "this," "that file," or "the previous plan";
 - explicit user constraints and requested output format;
 - no tentative conclusion from the current model.
 
-Both subagents MUST receive the same sanitized brief and the same task instructions. They MUST NOT receive each other's identity, work, or output.
+Both workers MUST receive the same sanitized brief and the same assignment. Neither may receive the other's identity, work, or output.
 
 This is an analysis workflow. Tell both agents to remain read-only. They may inspect files, sources, and tools needed to ground the answer. They must not edit files, commit, push, open PRs, start persistent services, or create side effects. Proposed code or patches are allowed when the prompt asks for them. Credentials must stay redacted.
 
 ## Run both models in parallel
 
-Use **one** batched `task` call with exactly two items so the analyses run concurrently.
+Dispatch one `worker` call per selector in the same assistant message so both
+analyses run concurrently.
 
-Required item fields:
+Required `worker` fields:
 
 | Field | Value |
 | --- | --- |
-| `name` | `FusionA` / `FusionB` |
-| `agent` | omit (general-purpose task agent) |
-| `model` | exact selector string for that item; never an array / fallback chain |
-| `schemaMode` | `permissive` |
-| `outputSchema` | identical schema below |
-| `task` | identical assignment text for both items |
+| `prompt` | the shared brief below; identical for both calls |
+| `model` | exact selector for that call; never an array, fallback chain, or substitute |
+| `label` | `FusionA` / `FusionB` |
 
-Shared `context` for the batch:
+Preflight: the active tool registry must contain `worker`. If it is absent,
+stop and give `omp plugin install github:marcelsud/omp-extensions`. Run
+`omp plugin list --json` only when you must distinguish a missing entry from a
+disabled one; never install or enable a plugin without permission.
+
+When Python `eval` is available, one `parallel(...)` cell is equivalent and
+also reports each resolved model:
+
+```python
+brief = "<SHARED_BRIEF>"
+results = parallel([
+    lambda model=model, label=label: tool.worker(
+        {"prompt": brief, "model": model, "label": label}
+    )
+    for model, label in [("<MODEL_A>", "FusionA"), ("<MODEL_B>", "FusionB")]
+])
+display(results)
+```
+
+Shared brief, part 1 (identical for both calls):
 
 ```text
 # Goal
@@ -95,7 +112,7 @@ Run two independent read-only analyses of the same user prompt for a fusion judg
 Return only the structured candidate object.
 ```
 
-Identical `outputSchema` for both items:
+The `worker` tool returns text, so this JSON contract travels inside the prompt. Include it verbatim in both calls:
 
 ```json
 {
@@ -112,7 +129,7 @@ Identical `outputSchema` for both items:
 }
 ```
 
-Identical `task` text for both items (substitute the sanitized prompt and any sanitized minimal brief notes):
+Shared brief, part 2 (substitute the sanitized prompt and any sanitized minimal brief notes):
 
 ```text
 # Target
@@ -140,11 +157,11 @@ None. Read-only analysis only.
 
 ### Wait / failure rules
 
-- If background jobs are enabled, wait for **both** results before writing the final answer.
-- Do **not** yield a partial fusion.
-- Use `hub wait` only when there is no other useful grounding work to perform.
+- Both calls must return before you write the final answer. Do not yield a partial fusion.
+- Parse each candidate's `text` as the JSON contract above. If a candidate returns prose instead, use that text and treat the structured fields as unavailable.
 - A transient execution failure MAY be retried once with the **same exact** selector.
 - If a requested selector remains unavailable or either candidate cannot be obtained, report which selector failed and stop. Do not present the surviving candidate as a fusion.
+- Report `details.model` per candidate only when the user asks which concrete models answered.
 
 ## Reconcile the candidates
 

@@ -10,11 +10,12 @@ default_branch: auto      # auto | main | master | <name>
 review:
   when: [pre-publish]     # pre-publish | post-publish
   on: committed           # committed | worktree
-  seats: auto             # auto | path to seating / delivery doc
+  seats: auto             # auto | path to a seating document
 deliver:
   kind: pr                # pr | none | patch
   host: auto              # auto | gh | glab | az | none
   merge: never            # never | ask | auto
+  document: auto          # auto | path to the delivery document
 commands:
   test: ...
   lint: ...
@@ -34,6 +35,7 @@ ci:
 | `review.when` | `[pre-publish]` | `[pre-publish]` | from the document |
 | `review.on` | `committed` | `worktree` if dirty, else `committed` | from the document |
 | `deliver.kind` | `pr` | `none` | from the document |
+| `deliver.document` | n/a | n/a | the path named here, else `AGENTS.md` |
 | `deliver.merge` | `never` | n/a | from the document |
 | `ci.empty` | `fail` | n/a | from the document |
 
