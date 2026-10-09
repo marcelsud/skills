@@ -110,7 +110,8 @@ or failure case is eligible only when it directly protects an evidenced
 business rule or domain invariant, or the user explicitly requests it. State
 that justification; reaching a defensive branch is insufficient. For example,
 an order exceeding stock protects the no-overselling invariant, whereas an
-unsupported input shape rejected upstream adds no checkout-domain coverage.
+unsupported input shape rejected by request parsing adds no checkout-domain
+coverage.
 
 Report findings with the test name and file location, classification, the
 rule or evidence, the defect its assertions detect or miss, and the proposed
@@ -238,10 +239,3 @@ observed test results, and any failures or remaining meaningful gaps. Claim
 coverage percentages only when measured; do not present them as proof of test
 quality. Claim passing tests only when execution confirms them. Review and
 planning output need no generated files or execution claim.
-
-## Source
-
-Adapted and combined from `generate-test-cases` and `generate-tests` in
-[mavka-ai/unit-tests-skills](https://github.com/mavka-ai/unit-tests-skills/tree/66d5aa34b51f3db39431dac2b7515c7d761e773c).
-This version replaces Java-specific templates and tools with project detection
-and language-neutral rules. Upstream copyright and MIT terms: [LICENSE](LICENSE).

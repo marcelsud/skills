@@ -19,7 +19,7 @@ directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
 | `omp-unlazy-workers` | Drive unlazy completion gates with model-selected worker sessions. |
 | `omp-worker` | Delegate to fresh OMP sessions with explicit model selectors. |
 | `sonarqube-code-analysis` | Local SonarQube scans turned into evidence-backed findings. |
-| `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. Adapted from `mavka-ai/unit-tests-skills`. |
+| `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
 | `unlazy` | Completion gates and the Depth Tree for long tasks. Fork of `Leonxlnx/unlazy`. |
 
 ## Install
