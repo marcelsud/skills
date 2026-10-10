@@ -1,4 +1,4 @@
-# `.make-no-mistakes.yaml`
+# `.warden.yaml`
 
 Optional repo file at the project root. Missing file → profile `pr-ship`.
 Unknown keys are ignored. Invocation `profile=` overrides `profile:` here.

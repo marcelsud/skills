@@ -3,9 +3,9 @@
 Task: <objective>
 Depth: tree <N>
 Mode: orchestrated-workers
-Worker self-checker base data (`UNLAZY_SKILL_DIR`): `<canonical-absolute-unlazy-skill-dir>`
+Worker self-checker base data (`GATEKEEPER_SKILL_DIR`): `<canonical-absolute-gatekeeper-skill-dir>`
 
-Resolve the installed `unlazy` skill directory from disk; a `skill://unlazy` read does not report a base directory. Check `$HOME/.omp/agent/skills/unlazy`, `$HOME/.agents/skills/unlazy`, then `$HOME/.claude/skills/unlazy`, and keep the first that contains `scripts/gate-check.mjs`: `for d in "$HOME/.omp/agent/skills/unlazy" "$HOME/.agents/skills/unlazy" "$HOME/.claude/skills/unlazy"; do if [ -f "$d/scripts/gate-check.mjs" ]; then realpath -- "$d"; exit 0; fi; done; exit 1`. Store stdout as the canonical absolute `UNLAZY_SKILL_DIR`; never interpolate an unvalidated path into shell source.
+Resolve the installed `gatekeeper` skill directory from disk; a `skill://gatekeeper` read does not report a base directory. Check `$HOME/.omp/agent/skills/gatekeeper`, `$HOME/.agents/skills/gatekeeper`, then `$HOME/.claude/skills/gatekeeper`, and keep the first that contains `scripts/gate-check.mjs`: `for d in "$HOME/.omp/agent/skills/gatekeeper" "$HOME/.agents/skills/gatekeeper" "$HOME/.claude/skills/gatekeeper"; do if [ -f "$d/scripts/gate-check.mjs" ]; then realpath -- "$d"; exit 0; fi; done; exit 1`. Store stdout as the canonical absolute `GATEKEEPER_SKILL_DIR`; never interpolate an unvalidated path into shell source.
 
 `gate-check.mjs` is an optional worker-only self-check and its result is never parent proof. Main never runs it on a worker-writable ledger; parent verification uses only Main's frozen gate records and the direct frozen-CHECK procedure below.
 

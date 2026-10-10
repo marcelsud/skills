@@ -1,13 +1,13 @@
 ---
-name: make-no-mistakes
-description: Validate or ship code changes through an agent-run gate. The fixed rules cover intent, independent review, targeted tests, docs, and lint. The default profile also rebases, pushes, opens a PR, and watches CI. Use when the user asks to gate, ship, validate, or push changes safely, or invokes /make-no-mistakes.
+name: warden
+description: Validate or ship code changes through an agent-run gate. The fixed rules cover intent, independent review, targeted tests, docs, and lint. The default profile also rebases, pushes, opens a PR, and watches CI. Use when the user asks to gate, ship, validate, or push changes safely, or invokes /warden.
 user-invocable: true
 argument-hint: "[task | profile=<name> | skip=<steps>]"
 ---
 
-# make-no-mistakes
+# warden
 
-Agent-owned gate. You run every phase yourself. There is no `no-mistakes` CLI,
+Agent-owned gate. You run every phase yourself. There is no `warden` CLI,
 daemon, AXI loop, disposable worktree, or skill script. Do not install, call,
 or wait on that binary.
 
@@ -15,7 +15,7 @@ Resolve the **profile**, then run only its phases. Config schema:
 [config.md](config.md).
 
 ```
-profile=  →  .make-no-mistakes.yaml  →  pr-ship
+profile=  →  .warden.yaml  →  pr-ship
 ```
 
 `profile=` on the invocation wins. Unknown yaml keys are ignored. Missing file
@@ -45,7 +45,7 @@ Always on, every profile:
 ## Two ways to invoke
 
 Flags are `profile=<name>`, `skip=...`, `skip <phase>`, and `--skip=a,b`.
-Remaining text is the task. Bare `/make-no-mistakes` adds no task work; it still
+Remaining text is the task. Bare `/warden` adds no task work; it still
 runs the selected profile, which is `pr-ship` unless the config or `profile=`
 says otherwise. Use `profile=local-validate` to validate without publishing.
 
@@ -91,7 +91,7 @@ intent → review → test → document → lint
 ### `repo`
 
 The repo's delivery document is the profile: `AGENTS.md`, or the path in
-`.make-no-mistakes.yaml` under `deliver.document`, or `review.seats` when that
+`.warden.yaml` under `deliver.document`, or `review.seats` when that
 names a seating document. This skill supplies the kernel and the phase specs
 below. It does not invent a pipeline.
 
@@ -235,7 +235,7 @@ Targeted local validation of the change and the intent. Not a substitute
 for remote CI when the profile delivers.
 
 1. If the repo documents a **targeted** test command (Makefile, package
-   script, `AGENTS.md`, `.make-no-mistakes.yaml` `commands.test`), run that
+   script, `AGENTS.md`, `.warden.yaml` `commands.test`), run that
    first. Non-zero is a failure.
 2. Then run the **smallest** additional checks that can prove the intent.
    Do not run the full suite here. Remote CI owns broad regression when
@@ -268,7 +268,7 @@ fact one owner. Prefer deleting a stale duplicate or replacing it with a
 link. Do not create another document just to close a perceived gap. Do not
 dump incident notes into `AGENTS.md`.
 
-If `.make-no-mistakes.yaml` `document.instructions` or a repo ownership map
+If `.warden.yaml` `document.instructions` or a repo ownership map
 exists, follow it.
 
 Ask about unresolved doc gaps that need a human decision. Otherwise apply
@@ -276,7 +276,7 @@ the fix and continue. Commit it when the profile uses committed review.
 
 ### Lint
 
-1. If `.make-no-mistakes.yaml` `commands.lint` / `commands.format` or the
+1. If `.warden.yaml` `commands.lint` / `commands.format` or the
    repo documents a lint/format command, run it.
 2. Otherwise detect the project's linter/formatter from its config and
    run the scoped form (changed paths) when the tool supports it.

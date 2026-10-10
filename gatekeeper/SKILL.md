@@ -1,16 +1,16 @@
 ---
-name: unlazy
-description: Completion discipline for substantial tasks. Use when work returns half done, an agent reports completion too early, the output must be exhaustive, or a long run keeps stalling near the end. Also use for /unlazy, "tree N", "gates", or "do not stop until it is done". v2 records acceptance criteria in gate files and checks them with commands. Its Depth Tree splits work into independently verified leaves.
+name: gatekeeper
+description: Completion discipline for substantial tasks. Use when work returns half done, an agent reports completion too early, the output must be exhaustive, or a long run keeps stalling near the end. Also use for /gatekeeper, "tree N", "gates", or "do not stop until it is done". v2 records acceptance criteria in gate files and checks them with commands. Its Depth Tree splits work into independently verified leaves.
 license: MIT
 metadata:
   author: Leonxlnx
   maintainer: marcelsud
-  source: https://github.com/marcelsud/skills/tree/main/unlazy
+  source: https://github.com/marcelsud/skills/tree/main/gatekeeper
   upstream: https://github.com/Leonxlnx/unlazy
   version: 2.1.0
 ---
 
-# Unlazy
+# Gatekeeper
 
 Use this skill to prevent incomplete delivery, narrowed scope, and inaccurate
 final reports during substantial work.

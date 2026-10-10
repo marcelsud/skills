@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sheriff"
+  short_description: "Review code and triage issues by evidence and risk"
+  default_prompt: "Use $sheriff to review these code changes or triage these issue reports, suppress speculation, and return evidence-backed decisions."

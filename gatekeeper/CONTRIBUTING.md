@@ -1,6 +1,6 @@
 # Contributing
 
-Unlazy is deliberately small: one skill file, reference documents, templates,
+Gatekeeper is deliberately small: one skill file, reference documents, templates,
 and three zero-dependency scripts.
 
 ## Accepted changes

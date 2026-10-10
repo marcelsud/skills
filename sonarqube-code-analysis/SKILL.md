@@ -172,7 +172,7 @@ A SonarQube issue is a candidate. Verify the candidate before you report or fix 
 - Determine whether the code path is reachable or intentional.
 - State the concrete consequence and trigger.
 
-Use `$grade-code-review` when the user needs a review decision. Apply its evidence and severity rules.
+Use `$sheriff` in code-review mode when the user needs a review decision. Apply its evidence and severity rules.
 
 Apply these interpretation rules:
 
