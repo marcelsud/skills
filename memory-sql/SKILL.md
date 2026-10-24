@@ -1,9 +1,9 @@
 ---
-name: context-sql
-description: Persist and selectively recall AI working context through a pure SQLite interface. Use when the user asks to remember, recall, inspect, supersede, or forget project facts, decisions, constraints, findings, tasks, or evidence across sessions, or invokes /context-sql.
+name: memory-sql
+description: Persist and selectively recall AI working context through a pure SQLite interface. Use when the user asks to remember, recall, inspect, supersede, or forget project facts, decisions, constraints, findings, tasks, or evidence across sessions, or invokes /memory-sql.
 ---
 
-# Context SQL
+# Memory SQL
 
 Use SQLite as external working memory. This skill cannot inspect or control the
 model provider's hidden context window. It stores durable project context and
