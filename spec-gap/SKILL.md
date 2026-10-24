@@ -32,9 +32,9 @@ Use existing tests when useful to resolve uncertainty. Keep the review read-only
 
 ## Score coverage
 
-Give Matched 1 point, Partial 0.5, and Missing 0. Calculate:
-
-`coverage = 100 × points / assessed requirements`
+Give Matched one point, Partial half a point, and Missing zero. Divide the
+total points by the number of assessed requirements and multiply by 100 to
+obtain the coverage percentage.
 
 Show the numerator and denominator alongside the percentage. Exclude Unverified rows from this calculation and report their count. When any remain, label the result **coverage of assessed requirements**, not overall coverage. If no requirements can be assessed, report no score.
 
@@ -50,7 +50,8 @@ Keep the report proportional to the change:
 
 - Lead with the score, verification limits, and the most important gap.
 - State the documentation and code scope, including exclusions.
-- Include a table: **Requirement | Source | Status | Evidence / gap**.
+- Show each requirement, its source, assessment status, and supporting
+  evidence or concrete gap in a presentation appropriate to the task.
 - List extras separately, or state that none were found.
 - End with concrete fixes and decisions needed to reach the requirements.
 

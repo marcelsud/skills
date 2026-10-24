@@ -150,18 +150,13 @@ or redirect destination. Keep validation, unauthenticated, and forbidden
 cases separate when the contract distinguishes them. Assert the relevant
 constraint or error detail when a generic rejection could hide another cause.
 
-Return each missing case with:
-
-```text
-Target: <file and callable interface>
-Case: <behavior under a specific condition and its expected outcome>
-Protects: <business use case or invariant and its evidence>
-Given: <concrete inputs and relevant collaborator state>
-When: <action through the selected interface>
-Then: <observable result, error, state, or interaction>
-Detects: <concrete defect the assertions would catch>
-Level: <unit, or framework/integration if needed>
-```
+For each missing case, identify the target file and callable interface, the
+behavior and expected outcome, and the business use case or invariant it
+protects with supporting evidence. Describe the inputs and collaborator state,
+the action through the interface, the observable result, and the defect the
+assertions would catch. Distinguish unit cases from cases requiring framework
+or integration coverage. Use a presentation appropriate to the task rather
+than a fixed output format.
 
 Use the project's idiomatic names or descriptive test titles; do not impose
 one identifier style across languages. Summarize existing coverage separately

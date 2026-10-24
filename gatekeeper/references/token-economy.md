@@ -1,35 +1,22 @@
-# Token use
+# Keep context and verification focused
 
-The six-run v2 test measured output costs 1.6 to 3.9 times the baseline.
-Long single-context runs also consumed large cached inputs. These rules keep
-gate enforcement small and isolate leaf context.
+Use repeatable checks to replace repeated speculative review. Record only
+the evidence that decides an acceptance criterion, while retaining enough
+context to reproduce or inspect it.
 
-## Keep enforcement small
+Give each participant a narrow brief with the shared contract, their own
+scope, acceptance criteria, and relevant source context. Avoid copying entire
+conversations or unrelated deliverables into every brief.
 
-- **Use command checks.** A CHECK command replaces repeated model review with
-  a repeatable subprocess.
-- **Keep the stop hook local.** It scans gate files without a model call.
-- **Limit evidence.** Record only the lines that decide the gate. Keep each
-  gates file short enough to review directly.
+Maintain a concise progress record so later sessions can recover verified
+state without reconstructing the whole task. Load supporting references only
+when their guidance is relevant.
 
-## Limit leaf context
+Keep small tasks with one participant. Add coordination only when the work
+benefits from independent ownership or verification. If model selection is
+available, match capability and cost to the deliverable without replacing a
+model explicitly required by the user or project.
 
-- **Send narrow briefs.** Give a leaf the contract and its gates file. Do not
-  send the driver's transcript, sibling output, or all of PLAN.md.
-- **Append status.** Keep the PLAN.md status log append-only. Avoid rewriting
-  stable content that the runtime may cache.
-- **Load details when needed.** Keep the main skill short and read reference
-  files only for the active mode.
-
-## Control orchestration cost
-
-- **Match models to work.** Use a cheaper model for mechanical leaves. Use
-  the strongest available model for design, integration, the driver, and
-  parent verification.
-- **Keep small tasks solo.** Subagent setup costs more than it saves for work
-  under about half an hour.
-- **Choose depth from deliverables.** Do not use depth as a request for more
-  effort. Choose leaves by the rule in method.md, then let their gates define
-  completion.
-- **Keep verification.** Reduce narration, recap, and copied logs before
-  removing a check.
+Reduce narration, duplicate summaries, and copied logs before removing checks
+that establish required behavior. Choose depth from deliverables rather than
+using it as a request for extra effort.

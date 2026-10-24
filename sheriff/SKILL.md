@@ -1,36 +1,50 @@
 ---
 name: sheriff
-description: Review code changes or triage issue reports using evidence-backed severity, diagnostic confidence, operational exposure, and project gates. Use for diffs, pull requests, patches, release candidates, or issue and bug-report batches. Check duplicates and current state during triage; return review decisions or issue-retention dispositions.
+description: Review code changes or triage issue reports using evidence-backed severity, diagnostic confidence, operational exposure, and project gates. Use for diffs, pull requests, patches, release candidates, or issue batches; check duplicates and current state during triage.
 ---
 
 # Sheriff
 
-Find broadly, report narrowly. Separate the consequence of a defect from confidence that it exists and likelihood that its preconditions occur.
+Find broadly, report narrowly. Separate the consequence of a defect from
+confidence that it exists and exposure of its preconditions.
 
 ## Select the mode
 
-| Request | Mode and instructions |
-| --- | --- |
-| Review a diff, pull request, patch, implementation, or release candidate | [Code review](references/code-review.md) |
-| Review existing or proposed issues, triage reports, or check duplicates and stale reports | [Issue triage](references/issue-triage.md) |
+Use [code review](references/code-review.md) for a diff, pull request, patch,
+implementation, or release candidate. Use [issue triage](references/issue-triage.md)
+for existing or proposed reports, including duplicate and stale-report checks.
 
-A list of suspected bugs about a specific change follows code review. A list of existing or proposed issue reports follows issue triage. A ticket supplied as context for a diff does not change the mode.
+A list of suspected bugs about a change follows code review. A list of issue
+reports follows triage. A ticket supplied as context for a diff does not change
+the mode. If the target is ambiguous, ask which assessment is needed. When both
+are requested, assess their respective scopes separately.
 
-If the target is ambiguous, ask whether the user wants a change reviewed or reports triaged. If both are requested, run both modes against their respective scopes and keep their outputs separate.
+Read the [shared rubric](references/rubric.md) and the selected mode's guidance.
+Apply repository policy when it is stricter or explicitly authoritative and
+identify the governing version.
 
-Read [references/rubric.md](references/rubric.md) completely, then read only the selected mode's instructions. Apply a repository-provided policy when it is stricter or explicitly authoritative; record its version.
+## Establish evidence before deciding
 
-## Shared rules
+Freeze the inputs and repository revision. Mark unsupported facts unknown.
+Try to disprove each candidate by tracing reachable paths, preconditions,
+guards, and consequences before classifying it.
 
-- Freeze the selected mode's inputs and repository revision. Do not invent missing context; mark unsupported facts unknown.
-- Falsify candidates by tracing reachable paths, preconditions, guards, and consequences before classifying them.
-- Grade severity, diagnostic confidence, and operational exposure independently. Never invent numeric likelihoods.
-- Treat tool signals as evidence. A signal affects a decision only through a documented threshold or an evidence-backed classification.
-- Record documented project gates as `hard_gate`. Run the selected mode's classifier to derive dispositions; do not choose the outcome first.
-- Never weaken tests, assertions, types, or CI gates to obtain approval or make an issue disappear.
-- Report the shared rubric version and whether the result is a single-review assessment or independent consensus.
+Grade severity, diagnostic confidence, and operational exposure separately.
+Never invent numeric likelihoods. Treat automated signals as evidence only
+through a documented threshold or a supported defect classification.
 
-## Results
+Identify documented mandatory project gates, then apply the selected mode's
+decision rules in order. Do not choose the outcome first and reverse-engineer
+the classifications. Never weaken tests, assertions, types, or project gates
+to obtain approval or make a report disappear.
 
-- **Code review:** `classify_findings.py` returns `REWORK`, `NEEDS_EVIDENCE`, or `APPROVED`.
-- **Issue triage:** `classify_issues.py` returns issue-retention dispositions and keep, verify, and filter counts. Tracker changes require explicit user authorization.
+## Return the assessment
+
+For code review, report whether the change requires rework, needs more evidence,
+or is approved, with substantive findings and their evidence. For issue triage,
+report actionable, tracked, verification, and filtered cases with their reasons
+and counts. Tracker mutations require explicit user authorization.
+
+State the rubric version and whether the result is a single-review assessment
+or independent consensus. Use an available review process without requiring a
+particular tool, output schema, or execution interface.

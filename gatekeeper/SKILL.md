@@ -1,148 +1,90 @@
 ---
 name: gatekeeper
-description: Completion discipline for substantial tasks. Use when work returns half done, an agent reports completion too early, the output must be exhaustive, or a long run keeps stalling near the end. Also use for /gatekeeper, "tree N", "gates", or "do not stop until it is done". v2 records acceptance criteria in gate files and checks them with commands. Its Depth Tree splits work into independently verified leaves.
+description: Keep substantial tasks tied to explicit acceptance criteria and verified evidence. Use when work returns half done, reports completion too early, needs exhaustive coverage, or benefits from a depth tree of independently verifiable deliverables.
 license: MIT
 metadata:
   author: Leonxlnx
   maintainer: marcelsud
   source: https://github.com/marcelsud/skills/tree/main/gatekeeper
   upstream: https://github.com/Leonxlnx/unlazy
-  version: 2.1.0
 ---
 
 # Gatekeeper
 
-Use this skill to prevent incomplete delivery, narrowed scope, and inaccurate
-final reports during substantial work.
+Prevent incomplete delivery, narrowed scope, and inaccurate final reports by
+tracking required outcomes and checking their evidence before declaring success.
+Use normal effort for conversation, factual questions, and trivial edits.
 
-Tests of v1 found that instructions increased effort but did not prevent
-wrong report counts or early completion. v2 records acceptance criteria in
-files and checks them with commands. Completion comes from the ledger, not
-the agent's confidence.
+## Establish completion criteria
 
-## Rule zero: gates before work
+Before substantial work, translate the user's intent into observable outcomes.
+For each outcome, record how it will be checked, what success means, its current
+status, and the evidence observed. Use an existing task record, a conversation
+checklist, or a project document appropriate to the task. No particular filename
+or record format is required.
 
-Before real work, write the acceptance gates to `GATES.md` in the working
-directory. Use [templates/gates-leaf.md](templates/gates-leaf.md). Add one
-checkbox per required outcome. Add `CHECK:` and `EXPECT:` lines whenever a
-command can verify the outcome.
+Preserve the original scope and acceptance criteria through later sessions.
+A completed status without decisive evidence remains an unmet criterion.
+Read [gates.md](references/gates.md) when defining or assessing criteria.
 
-The file preserves the original acceptance criteria through long sessions.
+## Choose the smallest useful decomposition
 
-Run the checker. Completion requires every box to have evidence.
+Work alone for a focused task. For a larger task, split it at natural boundaries
+until each leaf has one substantial deliverable and a clear completion check.
+Parent branches own integration checks across their children. Use depth to
+separate deliverables, not as a multiplier for effort.
 
-```
-node <this-skill-dir>/scripts/gate-check.mjs GATES.md
-```
+When a depth is requested, treat the root as the first layer and preserve that
+structure where it remains useful. Read [method.md](references/method.md) for
+the Depth Tree approach created by Leonxlnx.
 
-Check manual gates by replacing `EVIDENCE: pending` with a measurement,
-deciding output, or an exact `file:line`. A checked box with pending evidence
-is still unmet.
+## Coordinate work when useful
 
-If a gate becomes impossible, keep it in the file and add
-`ABANDON: <gate id> <reason>`. Include every abandoned gate in the final
-report.
+Identify shared interfaces, dependencies, and ownership before work begins.
+Work independent leaves concurrently only when authorized and supported.
+Otherwise process them sequentially in dependency order.
 
-## Pick a mode
+Give each participant the shared contract, their own deliverable, and its
+acceptance criteria. Verify each returned result before allowing dependent
+work to rely on it. If no separate participant is available, perform and check
+the work directly without claiming independent verification.
 
-**Solo** (default). Use one `GATES.md` for work under about half an hour or tree depth 3 or less. Finish every gate, then include the ledger in the report.
+Read [orchestration.md](references/orchestration.md) when coordinating multiple
+deliverables or participants. No specific delegation interface is required.
 
-**Orchestrated**. Use this for tree depth 4 or more, or any build that will
-outlast one sitting. Decompose it with
-[references/method.md](references/method.md). Write `PLAN.md`, including the
-dependency graph, plus one gates file per leaf under `gates/`. The driver
-launches every ready leaf in one fan-out. When a leaf returns, the driver
-uses `gate-check.mjs --verify` to rerun every CHECK and inspects manual
-evidence. Only a verified leaf unblocks dependents, which dispatch even while
-other leaves remain in flight. Read
-[references/orchestration.md](references/orchestration.md) before dispatch.
+## Complete each deliverable
 
-## The Depth Tree, v2
+Implement the whole deliverable, review it against the agreed requirements,
+and check reachable defects, edge cases, and affected related behavior. Resolve
+blocker and material findings before marking the deliverable complete.
 
-Leonxlnx created the Depth Tree. v2 uses it only for decomposition.
+Run the smallest meaningful checks that establish the required outcomes.
+Inspect direct evidence when execution cannot establish them. A failed check
+reopens the corresponding criterion. Recheck integration after related
+deliverables change.
 
-1. **Split at natural joints.** Layer 1 is the task. Leaves contain the work.
-2. **Keep leaves substantial.** Each leaf should contain at least ten minutes
-   of focused work and one deliverable. Merge leaves that are smaller.
-3. **Fix contracts before dispatch.** Record shared interfaces, ownership,
-   and naming in `PLAN.md`.
-4. **Verify branches.** Give each internal node integration gates for merged
-   children, interfaces, and end-to-end checks.
-5. **Finish from evidence.** A leaf is done after its gates pass and a full
-   review finds no further change.
+Stop refinement when the required outcomes are evidenced and remaining
+observations are cosmetic. Do not let optional improvements expand the task.
 
-Use tree 2 or 3 for a feature, bug hunt, or document in solo mode. Use tree 4
-or 5 for a subsystem or serious refactor. Use tree 6 or 7 for a whole
-project, with disjoint leaves and eager dispatch of every ready unit.
+## Handle limits explicitly
 
-## Work each leaf in passes
+When an external limit prevents an outcome, keep that outcome visible with
+the blocker, evidence, and decision needed to continue. A blocked or waived
+criterion is not a passed criterion. Do not drop requirements or waive them
+on the user's behalf to obtain a completed status.
 
-1. **Implement the whole deliverable.** Leave no placeholders or unfinished
-   paths.
-2. **Review it as a domain expert.** Replace shortcuts that weaken the
-   required outcome.
-3. **Find and fix defects.** Check edge cases, correctness, and performance.
-4. **Apply cheap refinements.** Improve details that need no new scope.
+Before changing approaches, identify what remains and why the new approach
+better serves the same intent. Preserve useful work and unrelated changes.
 
-Stop only after a complete pass finds no improvement and every gate has
-evidence.
+## Audit the report
 
-## Report audit
+Check every required outcome against its evidence before reporting completion.
+Re-measure every reported number or mark it unverified. For exhaustive tasks,
+compare the expected inventory with the inspected inventory and disclose any
+sampling or omissions.
 
-The controlled runs most often failed in the final report. The work was
-correct, but counts stated from memory were wrong.
+Report verified outcomes, remaining blockers or explicit user waivers, and
+the actual scope checked. Do not claim the task is complete while a required
+outcome remains unmet.
 
-Re-measure every number before reporting it, or mark it unverified. Include
-the ledger and its checked count.
-
-## Behavioral rules
-
-Keep these rules from v1:
-
-- **Do not report with open gates.** Open the gates file and work the next
-  unmet gate.
-- **Check before concluding.** Run gate-check, then try to disprove the
-  evidence for one passed gate.
-- **Finish the current approach.** Before switching, state what remains and
-  why the new approach is better.
-- **Run cheap, reversible actions.** Observe the result instead of predicting
-  it.
-- **Record limits.** If an external limit blocks completion, list the
-  remaining gates and add an ABANDON reason to each blocked gate.
-- **Count complete sweeps.** If the task names 80 files, open all 80 and
-  report the measured count. Declare any sampling.
-
-## Token economy
-
-Keep the checks cheap:
-
-- Run shell commands instead of re-reading completed work.
-- Record only the output that decides the gate.
-- Give a leaf only the contract and its gates file.
-- Append to the `PLAN.md` status log.
-- Use a cheaper model for mechanical leaves when the runtime permits it.
-- Stay solo for work under about half an hour.
-
-Measured costs and the fuller rules: [references/token-economy.md](references/token-economy.md).
-
-## Hard enforcement (Claude Code, optional)
-
-For Claude Code, the optional Stop hook blocks the turn while `GATES.md` or
-`gates/*.md` has unchecked boxes or pending evidence. An ABANDON line
-releases the corresponding gate.
-
-The hook changes runtime behavior. Never install it without asking. Offer it
-once when the task needs hard enforcement:
-
-```
-node <this-skill-dir>/scripts/install-hooks.mjs
-```
-
-Tell the user what the hook does and how to remove it with `--uninstall`.
-The rest of the skill works in any runtime that reads markdown.
-
-## What this skill does not cover
-
-Use normal effort for conversation, factual questions, and trivial edits. A
-one-line fix does not need a gates file. Use the tree only when the task
-benefits from explicit decomposition and verification.
+Keep evidence and context concise using [token-economy.md](references/token-economy.md).

@@ -27,7 +27,7 @@ Be candid and collaborative. Acknowledge uncertainty, explain tradeoffs, and avo
 
 ## Check the actual change
 
-Read applicable repository instructions and inspect the diff against the intended base. Use CodeGraph first when the repository is indexed and the tool is available; otherwise use the available repository search tools.
+Read applicable repository instructions and inspect the diff against the intended base. Search the repository to trace the affected behavior and its dependencies.
 
 - Confirm that the implementation satisfies the agreed scope.
 - For refactors, verify preservation of defaults, serialization, errors, and side effects.

@@ -23,7 +23,7 @@ Challenge the approach while preserving the user's underlying goal. When the evi
 
 ## Gather context first
 
-Read the request, applicable repository instructions, and relevant implementation and tests. Use CodeGraph first when the repository is indexed and the tool is available; otherwise use the available repository search tools.
+Read the request, applicable repository instructions, and relevant implementation and tests. Search the repository to identify the affected behavior and its dependencies.
 
 Identify existing capabilities, conventions, callers, and constraints before proposing new structures. Do not ask the user questions the available evidence already answers.
 
@@ -47,7 +47,7 @@ Select from these topics according to the change:
 
 Explain the consequence of each question. Avoid generic questionnaires and asking the user to choose routine implementation details.
 
-Use the available question tool when appropriate; otherwise ask in conversation. Continue independent research while waiting, but do not implement behavior that depends on an unanswered required question. Silence is not an answer.
+Ask questions in the conversation. Continue independent research while waiting, but do not implement behavior that depends on an unanswered required question. Silence is not an answer.
 
 ## Resolve routine design choices
 

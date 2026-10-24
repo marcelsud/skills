@@ -1,3 +1,0 @@
-interface:
-  display_name: "Prepare PR"
-  short_description: "Check implementation and prepare a review handoff"

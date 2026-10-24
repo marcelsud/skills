@@ -1,44 +1,51 @@
 # skills
 
 Agent skills maintained by [@marcelsud](https://github.com/marcelsud). Each
-directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
-`scripts/`, and `agents/` files.
+directory contains a SKILL.md entrypoint and any supporting prose references.
+The workflows are independent of agent harnesses: they describe outcomes,
+decisions, and verification without requiring a particular tool API, command
+syntax, installation path, or runtime configuration.
 
 ## Skills
 
 | Skill | Purpose |
 | --- | --- |
 | `fusion` | Run two user-selected models on one prompt and reconcile the answers. |
-| `gatekeeper` | Completion gates and the Depth Tree for long tasks. Fork of `Leonxlnx/unlazy`. |
+| `gatekeeper` | Acceptance criteria, evidence, and the Depth Tree for substantial tasks. Fork of `Leonxlnx/unlazy`. |
 | `memory-sql` | Persist and selectively recall project facts, decisions, tasks, and evidence through SQLite. |
 | `prep-dev` | Examine the premise and clarify implementation through a short interview. |
 | `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
 | `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
-| `warden` | Gate changes: intent, review, test, document, lint, then ship. |
+| `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
 
-## Install
+## Use
 
-```bash
-npx skills add marcelsud/skills --skill <name> -g -y
-```
+Load the chosen skill through your environment's supported skill mechanism,
+or provide its entrypoint directly. Keep linked reference documents available
+and read them when the workflow calls for them. The directory name identifies
+the skill.
 
-Install one skill at a time. The published repository is the source; the
-package name is the directory name.
+Standard frontmatter supplies the skill's name and description, with license
+and attribution where applicable. The remaining content describes the workflow
+in prose. There are no bundled scripts, database schemas, hooks, or
+harness-specific metadata files.
+
+Use the execution capabilities available in the current environment. Some
+tasks still need capabilities inherent to their purpose: memory-sql uses
+SQLite, fusion needs analyses from the two selected models, and a required
+independent review needs a separate reviewer. Report unavailable capabilities
+without claiming the corresponding work or verification passed.
 
 ## Working in this repository
 
-Nothing here is loaded automatically. Agents resolve skills by name from their
-own roots, and an installed copy of the same name can win over this checkout, so
-a local edit stays invisible until the installed copy is replaced. To run from
-the checkout directly, link the skill directory instead of copying it:
+Before testing an edit, confirm which copy of the skill the environment
+actually loads. A separately installed copy can hide changes made in this
+checkout. Use the environment's supported way to load or refresh local
+instructions and avoid divergent copies of the same skill.
 
-```bash
-ln -sfn "$PWD/<name>" "$HOME/.agents/skills/<name>"
-```
-
-Before debugging an instruction that appears not to work, confirm which copy an
-agent resolves (in OMP, a read of `skill://<name>` shows the loaded text and its
-frontmatter). Keep one copy per skill name: two installed copies diverge
-silently, and the shadowed one keeps looking current here.
+Preserve each workflow's intent, evidence requirements, and authorization
+boundaries when editing it. Describe capability requirements in ordinary
+language and leave their implementation to the environment. Keep references
+current and retain applicable license attribution.

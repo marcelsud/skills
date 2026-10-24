@@ -1,68 +1,42 @@
-# Gate file format
+# Acceptance criteria and evidence
 
-`gate-check.mjs` and `stop-hook.mjs` parse the format below. Keep the field
-names and indentation exact.
+A gate is an observable outcome required by the task. Describe the outcome,
+the check that can establish it, the expected result, its current status, and
+the evidence observed. Use a format appropriate to the project's existing
+task records; no parser, template, or fixed filename is required.
 
-## Format
+## Define meaningful outcomes
 
-```markdown
-# Gates: <scope name>
+State what must be true for the user, rather than an activity such as working
+on a component. Separate outcomes that can pass or fail independently. Keep
+each set small enough to review without losing requirements.
 
-Scope: <one line>
+Prefer repeatable checks through public interfaces when they can observe
+the outcome. A success marker must distinguish success from partial execution
+or failure. For outcomes requiring judgment, cite direct observations and
+the requirement they establish.
 
-- [ ] G1: <outcome>
-  CHECK: <shell command>
-  EXPECT: <substring or /regex/>
-  EVIDENCE: pending
+## Assess status
 
-- [ ] G2: <manual outcome>
-  EVIDENCE: pending
+A criterion passes only when the check succeeds and its evidence supports
+the full outcome. Pending, missing, stale, or contradictory evidence leaves
+it unmet even if its status was previously marked complete.
 
-ABANDON: G2 <reason, only if a gate had to be surrendered>
-```
+Record concise evidence: the relevant result, source location, measurement,
+or artifact. Preserve enough context to identify what was checked and against
+which revision or state. Rerun relevant checks when that state changes.
 
-## Parsing rules
+A failed verification reopens the criterion. A blocker should identify the
+missing prerequisite and the decision or external change needed to proceed.
+A user-approved waiver is recorded separately from successful validation;
+it must remain visible in the final report.
 
-- A gate starts at a line matching `- [ ]` or `- [x]` (case-insensitive x).
-- Indented `CHECK:`, `EXPECT:`, `EVIDENCE:` lines up to the next gate belong
-  to the gate above them.
-- `EXPECT:` matches a plain substring in combined stdout and stderr. Text
-  wrapped in slashes is a JavaScript regular expression, for example
-  `/8\/8 passed/`.
-- `ABANDON: G<n> <reason>` marks that gate resolved without passing it. The
-  final report must list the gate and reason.
-- A present gate file must contain at least one valid gate. An empty gate
-  file or malformed checkbox is a parse error. The checker exits 2, and the
-  Stop hook blocks.
+## Verify integration and reporting
 
-## Checker modes
+Parent criteria establish that child deliverables work together, their
+interfaces match the agreed contract, and affected related behavior still
+works. A child's completion claim alone does not establish integration.
 
-- No mode flag runs unchecked gates and checked gates with pending evidence.
-- `--status` reports state without running CHECK commands.
-- `--verify` reruns every CHECK. A failed rerun unchecks the gate and records
-  the failed verification as evidence.
-
-## When a gate is unmet
-
-A gate is unmet when:
-
-1. Its box is unchecked and no ABANDON line names it.
-2. Its box is checked but `EVIDENCE:` still reads `pending`.
-
-## Writing good gates
-
-- **State outcomes.** "All 8 planets are clickable" is checkable. "Work on
-  planet interaction" is not.
-- **Use commands when possible.** A CHECK command gives the same result when
-  the parent reruns it. If no command can observe the outcome, make the gate
-  more specific or record manual evidence.
-- **Match decisive output.** Use a line that appears only on success, such as
-  `8/8 passed`, rather than a generic line such as `done`.
-- **Keep evidence short.** Record the deciding output or cite `file:line`.
-- **Use five to twelve gates per leaf.** Fewer may omit requirements. More
-  usually means the leaf contains multiple deliverables.
-
-## Numbers rule
-
-Give every reported number a CHECK command that measures it. The v1 tests
-found incorrect final counts stated from memory.
+Measure every count or percentage reported to the user. For an exhaustive
+task, compare the required inventory with what was actually checked and
+report omissions explicitly.
