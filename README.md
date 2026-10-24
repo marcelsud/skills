@@ -20,6 +20,7 @@ directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
 | `prepare-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `sonarqube-code-analysis` | Local SonarQube scans turned into evidence-backed findings. |
+| `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
 | `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
 | `warden` | Gate changes: intent, review, test, document, lint, then ship. |
 
