@@ -18,6 +18,7 @@ directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
 | `omp-worker` | Delegate to fresh OMP sessions with explicit model selectors. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `sonarqube-code-analysis` | Local SonarQube scans turned into evidence-backed findings. |
+| `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
 | `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
 | `warden` | Gate changes: intent, review, test, document, lint, then ship. |
 
