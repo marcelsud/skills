@@ -1,5 +1,5 @@
 ---
-name: prepare-development
+name: prep-dev
 description: Prepare substantive implementation work through repository research and a short interview about behavior, contracts, scope, and validation. Use before coding when consequential decisions remain unclear, or when explicitly asked to interview or plan implementation.
 ---
 

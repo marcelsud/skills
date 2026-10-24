@@ -1,5 +1,5 @@
 ---
-name: prepare-pr
+name: prep-pr
 description: Check an implemented change for pull request readiness, including scope, contracts, maintainability, validation, and review handoff. Use when preparing a PR, performing an author self-review, or assessing readiness for review.
 ---
 
