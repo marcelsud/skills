@@ -1,6 +1,6 @@
 <div align="center">
 
-# unlazy
+# gatekeeper
 
 **Completion gates for long AI-agent tasks.**
 
@@ -21,7 +21,7 @@ agents that read `SKILL.md`. The optional Stop hook works only in Claude Code.
 Install the skill, then invoke it in plain language. It can also trigger from its description.
 
 ```
-/unlazy tree 5 refactor the payment module
+/gatekeeper tree 5 refactor the payment module
 ```
 
 ```
@@ -35,23 +35,23 @@ tree 3 build the landing page and do not stop until every gate is checked
 Use the [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
-npx skills add marcelsud/skills --skill unlazy
+npx skills add marcelsud/skills --skill gatekeeper
 ```
 
 Add `-g` for a user-level install. Target one agent when needed:
 
 ```bash
-npx skills add marcelsud/skills --skill unlazy --agent claude-code
-npx skills add marcelsud/skills --skill unlazy --agent codex
+npx skills add marcelsud/skills --skill gatekeeper --agent claude-code
+npx skills add marcelsud/skills --skill gatekeeper --agent codex
 ```
 
 The CLI also accepts the skill directory directly:
 
 ```bash
-npx skills add https://github.com/marcelsud/skills/tree/main/unlazy
+npx skills add https://github.com/marcelsud/skills/tree/main/gatekeeper
 ```
 
-Without the CLI, copy the `unlazy/` directory into the agent's skills
+Without the CLI, copy the `gatekeeper/` directory into the agent's skills
 directory. Gates and scripts require Node 16 or later.
 
 ### Hard mode (Claude Code, optional)
@@ -64,19 +64,19 @@ node <path-to-skill>/scripts/install-hooks.mjs --global   # every project
 node <path-to-skill>/scripts/install-hooks.mjs --uninstall
 ```
 
-The hook scans files without a model call. After six blocked stops with no gate-file change, it releases the turn with a warning. An `ABANDON: <gate> <reason>` line also releases that gate. Add `.unlazy-hook-state.json` to `.gitignore`.
+The hook scans files without a model call. After six blocked stops with no gate-file change, it releases the turn with a warning. An `ABANDON: <gate> <reason>` line also releases that gate. Add `.gatekeeper-hook-state.json` to `.gitignore`.
 
 ### Or let your agent install it
 
 Paste this to Claude Code, Codex, Cursor or any agent with shell access:
 
 ```
-Install the "unlazy" skill from
-https://github.com/marcelsud/skills/tree/main/unlazy so it is available in
+Install the "gatekeeper" skill from
+https://github.com/marcelsud/skills/tree/main/gatekeeper so it is available in
 future sessions.
 
-Try `npx skills add marcelsud/skills --skill unlazy -y` first. If that is
-unavailable, copy the repository's `unlazy/` directory into your skills
+Try `npx skills add marcelsud/skills --skill gatekeeper -y` first. If that is
+unavailable, copy the repository's `gatekeeper/` directory into your skills
 directory.
 
 Then confirm it worked: show me the installed path and the first line of the

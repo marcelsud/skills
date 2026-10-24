@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Claude Code Stop hook for Unlazy.
+// Claude Code Stop hook for Gatekeeper.
 //
 // Blocks the turn while GATES.md or gates/*.md has unmet gates. This file
 // scan uses no model call.
@@ -13,7 +13,7 @@
 //
 // Claude Code also releases after 8 consecutive blocks.
 // Progress means the combined gate-file content changed after the last block.
-// State is stored in .unlazy-hook-state.json beside the gates.
+// State is stored in .gatekeeper-hook-state.json beside the gates.
 //
 // Hook contract: code.claude.com/docs/en/hooks
 //   stdin  JSON with { cwd, stop_hook_active, ... }
@@ -105,7 +105,7 @@ const issues = [...parseErrors, ...unmet];
 if (!issues.length) process.exit(0); // All gates met or abandoned.
 
 // Release the hook after repeated blocks with no gate-file change.
-const statePath = join(cwd, ".unlazy-hook-state.json");
+const statePath = join(cwd, ".gatekeeper-hook-state.json");
 const hash = createHash("sha256").update(combined).digest("hex").slice(0, 16);
 let state = { hash: "", blocks: 0 };
 try { state = JSON.parse(readFileSync(statePath, "utf8")); } catch { /* fresh */ }
@@ -116,15 +116,15 @@ try { writeFileSync(statePath, JSON.stringify(state)); } catch { /* non-fatal */
 if (state.blocks > MAX_BLOCKS) {
   // Release after MAX_BLOCKS unchanged stops.
   console.log(JSON.stringify({
-    systemMessage: `unlazy: releasing after ${MAX_BLOCKS} blocks without gate progress; ${issues.length} issue(s) remain (${issues.slice(0, 4).join(", ")}).`,
+    systemMessage: `gatekeeper: releasing after ${MAX_BLOCKS} blocks without gate progress; ${issues.length} issue(s) remain (${issues.slice(0, 4).join(", ")}).`,
   }));
   process.exit(0);
 }
 
 const list = issues.slice(0, 5).join(", ") + (issues.length > 5 ? `, +${issues.length - 5} more` : "");
 const reason = parseErrors.length > 0
-  ? `unlazy: invalid gate file(s): ${list}. Fix the gate syntax before stopping.`
-  : `unlazy: ${unmet.length} gate(s) unmet: ${list}. Run gate-check.mjs, then work the next unmet gate. If an external blocker makes a gate impossible, add "ABANDON: <id> <reason>". Finish only when every remaining gate has evidence.`;
+  ? `gatekeeper: invalid gate file(s): ${list}. Fix the gate syntax before stopping.`
+  : `gatekeeper: ${unmet.length} gate(s) unmet: ${list}. Run gate-check.mjs, then work the next unmet gate. If an external blocker makes a gate impossible, add "ABANDON: <id> <reason>". Finish only when every remaining gate has evidence.`;
 console.log(JSON.stringify({
   decision: "block",
   reason,

@@ -12,15 +12,14 @@ directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
 | `codebase-design` | Shared vocabulary for deep modules: interface, depth, seam, adapter, locality. |
 | `domain-modeling` | Maintain `CONTEXT.md` and `docs/adr/`; pin down the project's language. |
 | `fusion` | Run two user-selected models on one prompt and reconcile the answers. |
-| `grade-code-review` | Grade code review findings by severity, confidence, and exposure. |
-| `grade-issue-review` | Triage issue batches: duplicates, resolved reports, unsupported claims. |
+| `gatekeeper` | Completion gates and the Depth Tree for long tasks. Fork of `Leonxlnx/unlazy`. |
 | `improve-codebase-architecture` | Find deepening candidates and present the HTML report. |
-| `make-no-mistakes` | Gate changes: intent, review, test, document, lint, then ship. |
-| `omp-unlazy-workers` | Drive unlazy completion gates with model-selected worker sessions. |
+| `omp-unlazy-workers` | Drive gatekeeper completion gates with model-selected worker sessions. |
 | `omp-worker` | Delegate to fresh OMP sessions with explicit model selectors. |
+| `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `sonarqube-code-analysis` | Local SonarQube scans turned into evidence-backed findings. |
 | `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
-| `unlazy` | Completion gates and the Depth Tree for long tasks. Fork of `Leonxlnx/unlazy`. |
+| `warden` | Gate changes: intent, review, test, document, lint, then ship. |
 
 ## Install
 

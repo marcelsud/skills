@@ -9,18 +9,18 @@ before any dependent can proceed.
 ## Driver setup
 
 Before planning, complete both preflight checks from the core skill. Resolve the
-installed `unlazy` skill directory from disk; `skill://unlazy` reads do not
-report a base directory. Check `$HOME/.omp/agent/skills/unlazy`,
-`$HOME/.agents/skills/unlazy`, then `$HOME/.claude/skills/unlazy`, and keep the
+installed `gatekeeper` skill directory from disk; `skill://gatekeeper` reads do not
+report a base directory. Check `$HOME/.omp/agent/skills/gatekeeper`,
+`$HOME/.agents/skills/gatekeeper`, then `$HOME/.claude/skills/gatekeeper`, and keep the
 first that contains `scripts/gate-check.mjs`:
 
 ```json
 {
-  "command": "for d in \"$HOME/.omp/agent/skills/unlazy\" \"$HOME/.agents/skills/unlazy\" \"$HOME/.claude/skills/unlazy\"; do if [ -f \"$d/scripts/gate-check.mjs\" ]; then realpath -- \"$d\"; exit 0; fi; done; exit 1"
+  "command": "for d in \"$HOME/.omp/agent/skills/gatekeeper\" \"$HOME/.agents/skills/gatekeeper\" \"$HOME/.claude/skills/gatekeeper\"; do if [ -f \"$d/scripts/gate-check.mjs\" ]; then realpath -- \"$d\"; exit 0; fi; done; exit 1"
 }
 ```
 
-Capture the single stdout path as `<unlazy-skill-dir>` and use that canonical
+Capture the single stdout path as `<gatekeeper-skill-dir>` and use that canonical
 absolute path thereafter. Never interpolate a displayed or untrusted path into
 command source. The resolved release may predate this skill's fork; the
 explicit-selector worker dispatch rules here supersede any `task`-agent leaf
@@ -35,7 +35,7 @@ snapshot. Main then invokes each frozen non-null `check` directly through
 the Bash tool and compares its output with the frozen `expect`; it never
 executes `CHECK` text obtained from the ledger. Record frozen-check outputs and
 validated, secret-redacted manual evidence in the append-only ledger. A worker
-may invoke the fixed unlazy checker as a self-check only; its result is
+may invoke the fixed gatekeeper checker as a self-check only; its result is
 untrusted and is never parent proof.
 
 Use this Python-stdlib helper for every ownership check, writable-target union,
@@ -625,8 +625,8 @@ The driver must:
    ownership on the completed graph, not historical owners or only root
    `Owns`. Review attempts have no implementation-file write ownership.
 4. Create a fresh implementation gates ledger from
-   `skill://unlazy/templates/gates-leaf.md` or
-   `skill://unlazy/templates/gates-node.md`, as appropriate, and fresh review
+   `skill://gatekeeper/templates/gates-leaf.md` or
+   `skill://gatekeeper/templates/gates-node.md`, as appropriate, and fresh review
    report/gates files for every review dispatch. Before dispatch,
    Main freezes each gate's ordered position, ID, outcome text, `CHECK`, and
    `EXPECT` as structured Brief data and retains it in Main-owned context and
@@ -721,7 +721,7 @@ cell, then wait for a tagged record from every worker. Replace the example
 values and `ready_wave` with the complete ready units recorded in `PLAN.md`;
 the two sample objects show the schemas but only the implementation is placed
 in the example wave because its review cannot be ready yet. Do not generate a
-worker prompt from the whole plan. `unlazy_skill_dir` must be the canonical
+worker prompt from the whole plan. `gatekeeper_skill_dir` must be the canonical
 absolute path obtained only by the safe preflight Bash invocation above, not a
 `skill://` URI or a path expanded inside Python.
 Every value originating outside the static prompt text crosses the provider
@@ -737,7 +737,7 @@ render it only inside the marked JSON data block.
 import json
 
 
-unlazy_skill_dir = "<canonical absolute directory after leading-tilde expansion and realpath>"
+gatekeeper_skill_dir = "<canonical absolute directory after leading-tilde expansion and realpath>"
 workspace_root = "<canonical absolute workspace root>"
 shared_contract = """<shared interfaces, naming, error behavior, and acceptance contract>"""
 implementation_job_example = {
@@ -826,11 +826,11 @@ def prompt_json(value):
 def checker_recipe(gates):
     return {
         "command": (
-            'node "$UNLAZY_SKILL_DIR/scripts/gate-check.mjs" '
+            'node "$GATEKEEPER_SKILL_DIR/scripts/gate-check.mjs" '
             '--verify "$GATES_FILE"'
         ),
         "env": {
-            "UNLAZY_SKILL_DIR": unlazy_skill_dir,
+            "GATEKEEPER_SKILL_DIR": gatekeeper_skill_dir,
             "GATES_FILE": gates,
         },
     }
@@ -1037,7 +1037,7 @@ the content.
 ## Barrier and parent verification
 
 `parallel(...)` returns only after the whole wave settles. This differs from
-unlazy's eager replenishment only in scheduling latency: gate meaning,
+gatekeeper's eager replenishment only in scheduling latency: gate meaning,
 verification hierarchy, and readiness do not change. Do not claim eager or
 per-completion verification.
 

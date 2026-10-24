@@ -1,13 +1,8 @@
----
-name: grade-issue-review
-description: Review new or proposed issues using evidence-backed severity, diagnostic confidence, operational exposure, and duplicate or stale-state checks. Use to triage generated issue batches, filter false positives and resolved reports, and keep only actionable or explicitly tracked issues.
----
-
-# Grade issue review
+# Issue triage
 
 Investigate broadly, retain narrowly. Filter an issue unless the current repository state supports a falsifiable, decision-relevant problem. Separate defect severity from confidence that it exists and exposure of its preconditions.
 
-Read [references/rubric.md](references/rubric.md) completely before grading. Apply a repository-provided issue policy when it is stricter or explicitly authoritative; record its version.
+Read [rubric.md](rubric.md) completely before grading. Apply a repository-provided issue policy when it is stricter or explicitly authoritative; record its version.
 
 ## Gather frozen inputs
 
@@ -85,3 +80,94 @@ For a high-impact cleanup or automated closure batch, run two reviewers in separ
 - file length, raw churn, coverage, duplication, or complexity alone;
 - an unsupported feature request presented as a defect;
 - manually chosen letter grades or numeric likelihood estimates.
+
+## Issue eligibility
+
+A retained issue must answer `yes` to every applicable check:
+
+| ID | Check |
+| --- | --- |
+| IE-1 | Is there an exact source, test, trace, log, or external evidence location? |
+| IE-2 | Is the problem claim falsifiable? |
+| IE-3 | Is the relevant call, data, or lifecycle path reachable? |
+| IE-4 | Are the required preconditions explicit? |
+| IE-5 | Does the consequence map to a canonical category? |
+| IE-6 | Is the confidence classification supported by cited evidence? |
+| IE-7 | Is exposure supported by defaults, usage, telemetry, or explicit reasoning? |
+| IE-8 | Is the resolution condition binary and observable? |
+| IE-9 | Is the problem current at the frozen repository revision? |
+| IE-10 | Is there no existing issue or pull request owning the same root cause and resolution? |
+
+Failure of IE-1 through IE-8 makes the report unsubstantiated. Failure of IE-9 makes it resolved or stale. Failure of IE-10 makes it a duplicate. An unknown fact is not a `no`. Use `VERIFY` when one targeted check can decide it.
+
+## Duplicate and current-state checks
+
+A report is a duplicate only when an existing issue or pull request owns both the same root cause and substantially the same resolution. Shared symptoms, files, labels, or keywords are insufficient. Set `duplicate_of` to the owning issue or pull request identifier.
+
+A report is not current only when evidence at the frozen revision proves that its claim is resolved. A merged fix or demonstrated invariant can establish this. An open pull request, planned work, failed reproduction without controlled preconditions, or old line numbers cannot.
+
+`current` and `duplicate_of` describe tracker state, not severity. Check them before prioritizing a valid issue.
+
+## Disposition matrix
+
+Apply rules from top to bottom:
+
+1. Non-null `duplicate_of` -> `FILTER_DUPLICATE`.
+2. `current: false` -> `FILTER_RESOLVED`.
+3. Exposure `unreachable` -> `FILTER_UNREACHABLE`.
+4. Confidence `speculative` or severity `cosmetic` -> `FILTER_UNSUBSTANTIATED`.
+5. A documented hard project gate -> `KEEP_ACTIONABLE`.
+6. Severity `blocker` -> `KEEP_ACTIONABLE`.
+7. Material with exposure `common` or `plausible` -> `KEEP_ACTIONABLE`.
+8. Material with exposure `unknown` -> `VERIFY`.
+9. Material with exposure `exceptional` -> `KEEP_TRACKED`.
+
+Disposition meanings:
+
+- `KEEP_ACTIONABLE`: retain with ordinary or urgent ownership according to project policy.
+- `KEEP_TRACKED`: retain, but do not escalate solely on this report; exceptional exposure is not invalidity.
+- `VERIFY`: gather the named missing evidence before retaining or filtering.
+- `FILTER_DUPLICATE`: exclude in favor of the named owner.
+- `FILTER_RESOLVED`: exclude because the frozen revision already resolves the claim.
+- `FILTER_UNREACHABLE`: exclude because evidence disproves the required path.
+- `FILTER_UNSUBSTANTIATED`: exclude because the report is speculative or cosmetic.
+
+A project hard gate can make an exceptional scenario actionable, especially when it violates an explicit security, data-integrity, compatibility, or resource-bound guarantee.
+
+## Structured evidence
+
+Use this classifier input:
+
+```json
+{
+  "issues": [
+    {
+      "id": "I-1",
+      "severity": "material",
+      "confidence": "supported",
+      "exposure": "plausible",
+      "current": true,
+      "duplicate_of": null,
+      "hard_gate": false
+    }
+  ]
+}
+```
+
+The classifier derives dispositions and summary counts. The reviewer remains responsible for IE-1 through IE-10 and the complete issue record required by `SKILL.md`.
+
+## Consensus and calibration
+
+Independent reviewers receive the same issue set, repository revision, specification, CI and runtime evidence, existing issue and pull-request set, and rubric version. They must not see each other's first pass.
+
+Resolve disagreements by comparing the disputed binary check, exact evidence, and governing clause. Do not average confidence or vote. Escalate for human adjudication only when factual verification cannot resolve a disposition that would suppress or close an issue.
+
+During calibration, regrade a fixed sample and record:
+
+- disagreement by IE check and classification axis;
+- reports filtered as speculative, cosmetic, duplicate, resolved, or unreachable;
+- valid reports incorrectly filtered;
+- invalid reports incorrectly retained;
+- hard-gate overrides and their decisive evidence.
+
+Change thresholds only after repeated evidence of ambiguity or misclassification. Freeze the rubric version during substantive review.

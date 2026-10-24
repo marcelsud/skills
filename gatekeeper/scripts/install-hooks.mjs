@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Add or remove the Unlazy Stop hook in Claude Code settings.
+// Add or remove the Gatekeeper Stop hook in Claude Code settings.
 //
 // Default target: <cwd>/.claude/settings.local.json.
 // This personal project file is normally untracked.
@@ -55,14 +55,14 @@ const kept = stopHooks.filter(e => !isOurs(e));
 
 if (uninstall) {
   if (kept.length === stopHooks.length) {
-    console.log(`Nothing to remove: no unlazy Stop hook found in ${target}`);
+    console.log(`Nothing to remove: no gatekeeper Stop hook found in ${target}`);
     process.exit(0);
   }
   settings.hooks.Stop = kept;
   if (!settings.hooks.Stop.length) delete settings.hooks.Stop;
   if (!Object.keys(settings.hooks).length) delete settings.hooks;
   writeFileSync(target, JSON.stringify(settings, null, 2) + "\n");
-  console.log(`Removed unlazy Stop hook from ${target}`);
+  console.log(`Removed gatekeeper Stop hook from ${target}`);
   process.exit(0);
 }
 
@@ -83,9 +83,9 @@ settings.hooks.Stop = [...kept, entry];
 mkdirSync(dirname(target), { recursive: true });
 writeFileSync(target, JSON.stringify(settings, null, 2) + "\n");
 
-console.log(`${ours.length ? "Updated" : "Installed"} unlazy Stop hook into ${target}
+console.log(`${ours.length ? "Updated" : "Installed"} gatekeeper Stop hook into ${target}
   command: node "${hookScript}"
   effect:  blocks the turn while GATES.md or gates/*.md has unmet gates
   limit:   releases after 6 unchanged blocks; ABANDON resolves one gate
   remove:  node "${fileURLToPath(import.meta.url)}"${global_ ? " --global" : shared ? " --shared" : ""} --uninstall
-  note:    add .unlazy-hook-state.json to your .gitignore`);
+  note:    add .gatekeeper-hook-state.json to your .gitignore`);

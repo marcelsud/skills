@@ -1,10 +1,10 @@
 ---
 name: omp-unlazy-workers
 description: >
-  Compose unlazy completion gates with fresh OMP worker sessions selected by
+  Compose gatekeeper completion gates with fresh OMP worker sessions selected by
   exact model selectors. Use for /skill:omp-unlazy-workers, "unlazy workers",
   explicit-model gated delegation, or model-aware Depth Tree execution. Requires
-  the unlazy skill and the active worker tool from @marcelsud/omp-extensions.
+  the gatekeeper skill and the active worker tool from @marcelsud/omp-extensions.
 argument-hint: '[tree <N>] <model-selector> [<model-selector> ...] -- <objective>'
 ---
 
@@ -18,26 +18,26 @@ workers, never to the driver.
 Before parsing arguments, creating ledgers, or doing work, check these
 prerequisites independently:
 
-1. Resolve the installed `unlazy` skill directory. `skill://unlazy` reads do not
+1. Resolve the installed `gatekeeper` skill directory. `skill://gatekeeper` reads do not
    report a base directory, so look it up on disk instead. Check the known
    roots in order and keep the first one that contains `scripts/gate-check.mjs`:
 
    ```text
-   command: for d in "$HOME/.omp/agent/skills/unlazy" "$HOME/.agents/skills/unlazy" "$HOME/.claude/skills/unlazy"; do if [ -f "$d/scripts/gate-check.mjs" ]; then realpath -- "$d"; exit 0; fi; done; exit 1
+   command: for d in "$HOME/.omp/agent/skills/gatekeeper" "$HOME/.agents/skills/gatekeeper" "$HOME/.claude/skills/gatekeeper"; do if [ -f "$d/scripts/gate-check.mjs" ]; then realpath -- "$d"; exit 0; fi; done; exit 1
    ```
 
-   Store the command's stdout as `UNLAZY_SKILL_DIR` only when the command
+   Store the command's stdout as `GATEKEEPER_SKILL_DIR` only when the command
    succeeds and the output is one absolute canonical path. If the skill is
    missing, stop. Tell the user to run
-   `npx skills add marcelsud/skills --skill unlazy -g -y`; never run that
+   `npx skills add marcelsud/skills --skill gatekeeper -g -y`; never run that
    command without permission.
 
-   The resolved `unlazy` may be a release other than this skill's fork. Read
+   The resolved `gatekeeper` may be a release other than this skill's fork. Read
    its `SKILL.md` and apply these rules: worker dispatch supersedes any
    instruction to send leaves to the `task` agent (unlazy 2.1.1 and earlier),
    and per-unit model selectors replace that version's model tiering rule.
    Where the installed text and this skill disagree about dispatch, this skill
-   governs. Stop only when the resolved `unlazy` lacks `--verify` support in
+   governs. Stop only when the resolved `gatekeeper` lacks `--verify` support in
    `scripts/gate-check.mjs`.
 2. Require `bash` in every mode. Main uses Bash to execute its frozen check
    definitions directly, and workers use Bash for their optional ledger
@@ -60,14 +60,14 @@ Every mode requires Python `eval`, and every worker call must occur inside it.
 If Python `eval` is unavailable, stop. In orchestrated mode, never serialize
 as a fallback.
 
-Use `skill://unlazy/...` for reads only. Shell commands do not resolve skill
+Use `skill://gatekeeper/...` for reads only. Shell commands do not resolve skill
 URIs. A worker may self-check its own ledger through the Bash tool with this
 exact command and separately passed environment values:
 
 ```text
-command: node "$UNLAZY_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
+command: node "$GATEKEEPER_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
 env:
-  UNLAZY_SKILL_DIR: <canonical-unlazy-skill-dir>
+  GATEKEEPER_SKILL_DIR: <canonical-gatekeeper-skill-dir>
   GATES_FILE: <gates-file-path>
 ```
 
@@ -295,7 +295,7 @@ implementation change.
 
 ## Solo worker pair, tree 3 or less
 
-The driver reads `skill://unlazy/templates/gates-leaf.md` and freezes 5 to 12
+The driver reads `skill://gatekeeper/templates/gates-leaf.md` and freezes 5 to 12
 outcome gates with `CHECK:`, `EXPECT:`, and concrete evidence where commands
 can decide the result. Pending evidence is an open gate. For each implementation
 attempt, Main securely initializes
@@ -362,8 +362,8 @@ DUTIES:
 
 SELF-CHECK:
 You may self-check gatesPath through Bash only with the exact command
-node "$UNLAZY_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
-and selfCheckEnv values passed separately as UNLAZY_SKILL_DIR and GATES_FILE.
+node "$GATEKEEPER_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
+and selfCheckEnv values passed separately as GATEKEEPER_SKILL_DIR and GATES_FILE.
 This checker is only a worker self-check and never parent proof.
 
 SECURITY AND RETURN:
@@ -398,8 +398,8 @@ DUTIES:
 
 SELF-CHECK:
 You may self-check gatesPath through Bash only with the exact command
-node "$UNLAZY_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
-and selfCheckEnv values passed separately as UNLAZY_SKILL_DIR and GATES_FILE.
+node "$GATEKEEPER_SKILL_DIR/scripts/gate-check.mjs" --verify "$GATES_FILE"
+and selfCheckEnv values passed separately as GATEKEEPER_SKILL_DIR and GATES_FILE.
 This checker is only a worker self-check and never parent proof.
 
 SECURITY AND RETURN:
@@ -601,8 +601,8 @@ freshness follows the current owner.
 For every implementation attempt, Main securely initializes a fresh gates file
 under `gates/`, writes the frozen definition through the verified descriptor,
 freezes its identity, and records that current path in the row's `Gates`
-column. Read `skill://unlazy/templates/gates-leaf.md` for leaves and
-`skill://unlazy/templates/gates-node.md` for branches and the root. Every
+column. Read `skill://gatekeeper/templates/gates-leaf.md` for leaves and
+`skill://gatekeeper/templates/gates-node.md` for branches and the root. Every
 worker ledger self-check uses the exact literal command and separate Bash-tool
 `env` fields shown above, with only the current attempt's gates path in
 `GATES_FILE`; it is never parent proof. Main instead executes its frozen
@@ -657,7 +657,7 @@ parent-verify every successful unit and update its state. Recompute the
 complete ready set only after that barrier. An unrelated branch made ready by
 a verified review success may proceed even if another unit failed. A failed
 unit rejoins only after an actionable correction changes its state to
-`RETRY_READY`. This differs from unlazy's eager replenishment only in
+`RETRY_READY`. This differs from gatekeeper's eager replenishment only in
 scheduling latency, not gate semantics. Never call it eager verification.
 
 Every Python orchestration cell must display its final value. Preserve these
