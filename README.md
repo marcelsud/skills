@@ -16,6 +16,8 @@ directory is one skill: `SKILL.md` plus optional `references/`, `templates/`,
 | `improve-codebase-architecture` | Find deepening candidates and present the HTML report. |
 | `omp-unlazy-workers` | Drive gatekeeper completion gates with model-selected worker sessions. |
 | `omp-worker` | Delegate to fresh OMP sessions with explicit model selectors. |
+| `prepare-development` | Examine the premise and clarify implementation through a short interview. |
+| `prepare-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `sonarqube-code-analysis` | Local SonarQube scans turned into evidence-backed findings. |
 | `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
