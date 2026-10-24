@@ -8,17 +8,41 @@ syntax, installation path, or runtime configuration.
 
 ## Skills
 
+Grouped by their role in the software development lifecycle.
+
+### Plan
+
 | Skill | Purpose |
 | --- | --- |
+| `prep-dev` | Examine the premise and clarify implementation through a short interview. |
 | `fusion` | Run two user-selected models on one prompt and reconcile the answers. |
+
+### Test
+
+| Skill | Purpose |
+| --- | --- |
+| `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
+
+### Review
+
+| Skill | Purpose |
+| --- | --- |
+| `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
+| `sheriff` | Review code changes and triage issues by evidence and risk. |
+| `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
+
+### Ship
+
+| Skill | Purpose |
+| --- | --- |
+| `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
+
+### General
+
+| Skill | Purpose |
+| --- | --- |
 | `gatekeeper` | Acceptance criteria, evidence, and the Depth Tree for substantial tasks. Fork of `Leonxlnx/unlazy`. |
 | `memory-sql` | Persist and selectively recall project facts, decisions, tasks, and evidence through SQLite. |
-| `prep-dev` | Examine the premise and clarify implementation through a short interview. |
-| `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
-| `sheriff` | Review code changes and triage issues by evidence and risk. |
-| `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
-| `unit-tests` | Evaluate test relevance and protect business use cases and domain invariants in any language. |
-| `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
 
 ## Use
 
