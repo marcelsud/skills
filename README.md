@@ -29,6 +29,7 @@ Grouped by their role in the software development lifecycle.
 | --- | --- |
 | `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
+| `simplify-code` | Simplify working code for clarity while preserving its exact behavior. |
 | `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 
 ### Ship
