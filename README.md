@@ -35,13 +35,13 @@ Grouped by their role in the software development lifecycle.
 
 | Skill | Purpose |
 | --- | --- |
-| `docs-writer` | Write and improve open source documentation with runnable examples, progressive explanations, and precise references. |
 | `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
 
 ### General
 
 | Skill | Purpose |
 | --- | --- |
+| `docs-writer` | Write and improve open source documentation with runnable examples, progressive explanations, and precise references. |
 | `gatekeeper` | Acceptance criteria, evidence, and the Depth Tree for substantial tasks. Fork of `Leonxlnx/unlazy`. |
 | `memory-sql` | Persist and selectively recall project facts, decisions, tasks, and evidence through SQLite. |
 

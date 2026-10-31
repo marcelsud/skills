@@ -4,6 +4,21 @@ Use the pattern that matches the reader's purpose. These are editorial choices,
 not mandatory heading templates. Preserve established project conventions and
 omit sections that do not help the task.
 
+## Language and SDK variants
+
+Use tabs when variants share the same goal, prerequisites, step order, and
+explanation, with differences confined to short snippets or commands. Use
+separate, cross-linked pages when installation, architecture, lifecycle, or the
+number of steps differs materially. A reader should be able to follow one
+variant from setup to success without stitching together incompatible tabs.
+Keep shared conceptual explanations in one canonical place when practical.
+
+Keep equivalent examples aligned on the same scenario, identifiers, and success
+criteria. When behavior or an example changes, locate and review the affected
+language and SDK variants together, including their version markers and outputs.
+Verify each changed variant where possible; report untested variants and label
+real support differences instead of forcing false parity.
+
 ## README or overview
 
 Answer what the project does, who it serves, and when to choose it. Give a small
@@ -24,6 +39,8 @@ then take the reader through install, create or configure, run, use, and verify
 as the product requires. Keep required steps on one route. Offer another
 language or runtime as an explicit variant rather than interleaving several
 unrelated command sequences.
+
+Choose tabs or separate pages using the language and SDK criteria above.
 
 Show the files the reader edits and identify generated files. Explain whether a
 command creates a project, starts a server, publishes code, or performs several
@@ -52,6 +69,10 @@ then relevant variations and their selection criteria. For a feature chapter,
 a useful progression is purpose, basic use, actual behavior, customization,
 constraints, and links to exact reference entries. Use only the parts needed.
 
+Place introduction, behavior-change, deprecation, and removal versions beside
+the affected feature or option when relevant; link deprecated usage to the
+supported replacement or migration guidance.
+
 Explain prerequisites hidden in framework defaults: middleware, registration,
 environment settings, generated bindings, or lifecycle hooks. Describe how
 errors surface and how the result can be inspected. Include a second example
@@ -78,12 +99,18 @@ the supported version and relevant platform or provider scope.
 
 Choose the fields that define the interface:
 
-| Reference | Useful fields |
-| --- | --- |
-| Function or method | Signature, inputs and types, requiredness, defaults, return value, async behavior, errors, side effects, minimal example |
-| HTTP endpoint | Method and path, authentication, path/query/body fields, request and response examples, status codes, pagination or limits |
-| CLI command | Purpose, invocation, arguments, flags and aliases, defaults, working context, output and exit behavior, examples |
-| Configuration | Key and nesting, type, allowed values, default or absence behavior, requiredness, scope, precedence, interactions, example |
+| Reference | Useful fields | Availability when relevant |
+| --- | --- | --- |
+| Function or method | Signature, inputs and types, requiredness, defaults, return value, async behavior, errors, side effects, minimal example | Introduction, deprecation, removal versions; replacement |
+| HTTP endpoint | Method and path, authentication, path/query/body fields, request and response examples, status codes, pagination or limits | Introduction, deprecation, removal versions; replacement |
+| CLI command | Purpose, invocation, arguments, flags and aliases, defaults, working context, output and exit behavior, examples | Introduction, deprecation, removal versions; replacement |
+| Configuration | Key and nesting, type, allowed values, default or absence behavior, requiredness, scope, precedence, interactions, example | Introduction, deprecation, removal versions; replacement |
+
+Apply availability markers at the affected member, flag, or option as well as
+the parent entry when their histories differ. Link a deprecation to the
+supported replacement or migration instructions. Use release evidence for
+version claims; if history or a replacement is unknown, report that gap rather
+than inventing a version or implying that no alternative exists.
 
 Include units for durations and sizes, and distinguish missing values from
 empty values or explicit nulls when behavior differs. State precedence across

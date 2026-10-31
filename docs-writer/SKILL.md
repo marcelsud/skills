@@ -44,7 +44,8 @@ Choose a primary purpose before outlining. Use
 | Complete a specific task in an existing project | How-to guide |
 | Understand a mechanism or design tradeoff | Concept explanation |
 | Look up exact syntax and behavior | API, CLI, or configuration reference |
-| Diagnose a failure or move between versions | Troubleshooting or upgrade guide |
+| Diagnose and resolve a failure | Troubleshooting |
+| Move between supported versions | Upgrade or migration guide |
 
 A feature chapter can offer both a guided example and a reference if the
 transition is explicit and headings make either easy to find. Keep exhaustive
@@ -53,9 +54,12 @@ option lists out of the first-run path; link to their canonical home.
 For a documentation set, organize around reader tasks and concepts rather than
 mirroring source directories. Provide a clear entry route, recognizable topic
 names, and links from first use to deeper guides and reference material. Add
-only the pages and navigation changes justified by the requested scope. Keep
-existing anchors stable where practical; handle redirects or incoming links
-when a requested restructure moves a page.
+only the pages and navigation changes justified by the requested scope. When
+adding or moving a page, update the project's sidebar or navigation config,
+landing-page indexes, and agent-facing indexes such as `llms.txt` where these
+exist. Update generator inputs and regenerate derived indexes through the
+project's normal process. Keep existing anchors stable where practical; update
+redirect rules and incoming links when routes change.
 
 ## Build the explanation around a working example
 
@@ -75,6 +79,12 @@ or command, and state the expected result. Explain automatic behavior that
 would otherwise look like missing work: generated files, loaded configuration,
 persisted state, redirects, background processes, or client synchronization.
 Put failure behavior and relevant limits beside the feature they constrain.
+
+Mark relevant introduction, behavior-change, deprecation, and removal versions
+beside affected features or options using the project's conventions. Link a
+deprecation to its supported replacement or migration route; state when no
+replacement exists only if the project confirms that. Never infer availability
+from the version selector alone.
 
 Examples should survive copying into the stated environment:
 
@@ -131,9 +141,11 @@ schemas, command help, and existing tests, and report the remaining uncertainty.
 Do not execute a deployment or destructive example merely to validate prose.
 
 Use the project's documentation build, link checks, and other relevant checks
-when available. Check changed links and anchors, snippet syntax, navigation,
-and rendering of tabs, callouts, tables, and diagrams. A spelling pass alone
-does not verify instructions; a successful site build does not prove examples.
+when available. Check changed links and anchors, snippet syntax, sidebar and
+agent-index discovery, redirects, version markers, and rendering of tabs,
+callouts, tables, and diagrams. Check affected language and SDK variants together
+as described in the page patterns. A spelling pass alone does not verify
+instructions; a successful site build does not prove examples.
 
 When behavior changes, find and update affected onboarding examples and
 canonical references within scope, keeping release-specific guidance explicit.

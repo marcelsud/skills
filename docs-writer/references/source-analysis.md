@@ -13,8 +13,11 @@ Descriptions are paraphrased, and no source documentation or code is bundled.
 
 The [documentation entry point](https://laravel.com/framework/docs) groups
 getting started, architecture, basics, deeper topics, and specialist areas.
-The installation page moves from tool requirements to creating and serving an
-application, then offers initial configuration and next steps.
+The installation page opens with an introduction and "Why Laravel?" positioning
+before tool requirements, application creation, serving, and configuration.
+Later sections cover Herd and Boost before next steps. Its blend of practical
+setup and ecosystem promotion is a concrete reason to separate the teaching
+technique from marketing language when adapting it.
 
 [Routing](https://laravel.com/framework/docs/routing) begins with a small route,
 names its file location and automatic loading behavior, then develops named
@@ -44,10 +47,15 @@ alternative configuration formats, image descriptions, second-person address,
 and words that belittle difficulty. They also prescribe Symfony-specific
 reStructuredText and language conventions.
 
+The [format guide](https://symfony.com/doc/current/contributing/documentation/format.html)
+prescribes version markers for new features, behavior changes, and deprecations,
+with a short description of the change.
+
 **Adaptation:** Make setup assumptions and snippet context explicit. Respect
-the reader without assuming a task is easy. Use the destination project's
-format and style; Symfony's markup, shell prompts, heading case, and wrapping
-are local conventions rather than universal rules.
+the reader without assuming a task is easy. Mark availability at the affected
+feature or option and provide a supported route away from deprecated usage.
+Use the destination project's format and style; Symfony's markup, shell prompts,
+heading case, and wrapping are local conventions rather than universal rules.
 
 ## Rivet: a primitive becomes an end-to-end example
 
@@ -58,6 +66,9 @@ actions, registration, and a typed client. The
 [backend quickstart](https://rivet.dev/actors/docs/quickstart/backend/) names
 its outcome, links a runnable project, demonstrates server and client code,
 gives the local address, and then presents deployment choices.
+It includes runtime and client variants on one page while its navigation offers
+separate SDK quickstarts. Rivet's [agent index](https://rivet.dev/llms.txt) lists
+documentation URLs alongside the site's human-facing navigation.
 
 The [production checklist](https://rivet.dev/actors/docs/production-checklist/)
 links concrete constraints to deeper explanations and distinguishes application
@@ -77,6 +88,9 @@ then offers language-specific routes. The
 lists prerequisites, explains a scaffolding command's effects, shows the
 project tree, identifies generated bindings, and demonstrates calls, queries,
 and logs with expected results.
+Its navigation gives language-specific quickstarts separate routes. The
+[agent index](https://spacetimedb.com/llms.txt) provides documentation links,
+agent setup resources, and a link to the full documentation text.
 
 [What is SpacetimeDB?](https://spacetimedb.com/docs/intro/what-is-spacetimedb/)
 uses architecture and workflow explanations to connect server-side logic,
@@ -117,6 +131,13 @@ These samples suggest a reusable sequence: orient the reader, establish the
 starting state, produce an observable result, explain its behavior, then offer
 deeper routes and exact lookup material. The sites mix purposes differently;
 there is no evidence that all follow one mandatory page taxonomy or template.
+
+The Rivet and SpacetimeDB examples also show why page layout and discovery need
+explicit decisions. Short variants can share a page; distinct learning routes
+can have their own pages. Their agent indexes are additional entry points to
+maintain when documentation changes. The skill recommends reviewing equivalent
+variants together and updating generated indexes through their source; the
+sampled layouts alone do not prove how the projects enforce synchronization.
 
 The skill therefore provides flexible page patterns and requires technical
 grounding in the project being documented. It also adds a verification workflow:
