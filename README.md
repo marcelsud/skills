@@ -35,6 +35,7 @@ Grouped by their role in the software development lifecycle.
 
 | Skill | Purpose |
 | --- | --- |
+| `docs-writer` | Write and improve open source documentation with runnable examples, progressive explanations, and precise references. |
 | `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
 
 ### General
