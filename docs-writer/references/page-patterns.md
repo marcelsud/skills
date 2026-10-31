@@ -99,18 +99,19 @@ the supported version and relevant platform or provider scope.
 
 Choose the fields that define the interface:
 
-| Reference | Useful fields | Availability when relevant |
-| --- | --- | --- |
-| Function or method | Signature, inputs and types, requiredness, defaults, return value, async behavior, errors, side effects, minimal example | Introduction, deprecation, removal versions; replacement |
-| HTTP endpoint | Method and path, authentication, path/query/body fields, request and response examples, status codes, pagination or limits | Introduction, deprecation, removal versions; replacement |
-| CLI command | Purpose, invocation, arguments, flags and aliases, defaults, working context, output and exit behavior, examples | Introduction, deprecation, removal versions; replacement |
-| Configuration | Key and nesting, type, allowed values, default or absence behavior, requiredness, scope, precedence, interactions, example | Introduction, deprecation, removal versions; replacement |
+| Reference | Useful fields |
+| --- | --- |
+| Function or method | Signature, inputs and types, requiredness, defaults, return value, async behavior, errors, side effects, minimal example |
+| HTTP endpoint | Method and path, authentication, path/query/body fields, request and response examples, status codes, pagination or limits |
+| CLI command | Purpose, invocation, arguments, flags and aliases, defaults, working context, output and exit behavior, examples |
+| Configuration | Key and nesting, type, allowed values, default or absence behavior, requiredness, scope, precedence, interactions, example |
 
-Apply availability markers at the affected member, flag, or option as well as
-the parent entry when their histories differ. Link a deprecation to the
-supported replacement or migration instructions. Use release evidence for
-version claims; if history or a replacement is unknown, report that gap rather
-than inventing a version or implying that no alternative exists.
+For every reference type, include relevant introduction, deprecation, and
+removal versions, plus a link to the supported replacement or migration
+instructions. Apply availability markers at the affected member, flag, or option
+as well as the parent entry when their histories differ. Use release evidence
+for version claims; if history or a replacement is unknown, report that gap
+rather than inventing a version or implying that no alternative exists.
 
 Include units for durations and sizes, and distinguish missing values from
 empty values or explicit nulls when behavior differs. State precedence across
