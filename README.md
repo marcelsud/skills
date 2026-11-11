@@ -29,6 +29,7 @@ Grouped by their role in the software development lifecycle.
 | --- | --- |
 | `spec-gap` | Compare code with product requirements; score coverage and identify gaps and extras. |
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
+| `pr-risk` | Classify merge risk and report a review that determines who may merge. |
 | `simplify-code` | Simplify working code for clarity while preserving its exact behavior. |
 | `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 
@@ -37,6 +38,8 @@ Grouped by their role in the software development lifecycle.
 | Skill | Purpose |
 | --- | --- |
 | `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
+| `workflow-hardening` | Harden GitHub Actions workflows that build and deploy. |
+| `npm-publish` | Publish an npm package from a shared or headless machine, including a first publish. |
 
 ### General
 
