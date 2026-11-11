@@ -45,6 +45,7 @@ Grouped by their role in the software development lifecycle.
 | `docs-writer` | Write and improve open source documentation with runnable examples, progressive explanations, and precise references. |
 | `gatekeeper` | Acceptance criteria, evidence, and the Depth Tree for substantial tasks. Fork of `Leonxlnx/unlazy`. |
 | `memory-sql` | Persist and selectively recall project facts, decisions, tasks, and evidence through SQLite. |
+| `archive` | Store private files and restore them after a memory reset through catalog search. |
 
 ## Use
 
@@ -60,9 +61,10 @@ harness-specific metadata files.
 
 Use the execution capabilities available in the current environment. Some
 tasks still need capabilities inherent to their purpose: memory-sql uses
-SQLite, fusion needs analyses from the two selected models, and a required
-independent review needs a separate reviewer. Report unavailable capabilities
-without claiming the corresponding work or verification passed.
+SQLite, archive uses the archive CLI, fusion needs analyses from the two
+selected models, and a required independent review needs a separate
+reviewer. Report unavailable capabilities without claiming the
+corresponding work or verification passed.
 
 ## Working in this repository
 
