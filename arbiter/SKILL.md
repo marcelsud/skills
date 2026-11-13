@@ -3,8 +3,8 @@ name: arbiter
 description: Grade issues, pull requests, reviewer consensus, and release quality using evidence-backed binary checks from marcelsud's grading methodology. Use for eligibility and value grading, execution grading, slop and ratchet assessment, or project-health and delivery-portfolio grades. Ordinary code review without a grading request belongs to the project's review workflow.
 metadata:
   author: marcelsud
-  rubric-version: "1.1.0"
-  source: https://github.com/marcelsud/specs/blob/9b9adf51e1687b950c42f6a6a7e14b5b53b10e7e/grading-methodology.md
+  rubric-version: "1.1.1"
+  source: https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md
 ---
 
 # Arbiter
@@ -13,9 +13,14 @@ Derive grades from independently answered binary checks and cited facts. Keep
 issue value, implementation quality, and project health separate. Choose the
 letter only after evaluating the evidence.
 
-This skill implements the [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/9b9adf51e1687b950c42f6a6a7e14b5b53b10e7e/grading-methodology.md),
-draft rubric `1.1.0`. Its linked references preserve the applicable source
+This skill implements the [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md),
+draft rubric `1.1.1`. Its linked references preserve the applicable source
 sections verbatim. Read the reference for the requested mode before grading.
+
+This revision was prepared from the correction proposed in [specs PR #6](https://github.com/marcelsud/specs/pull/6).
+Verify that PR's integration status and the target project's adopted version.
+Integrate the normative correction before this skill update. A proposed source
+revision does not establish adoption or replace a project's frozen rubric.
 
 ## Establish the grading context
 
@@ -30,7 +35,7 @@ Record `rubric_version` in every grading record. Freeze the rubric when
 substantive PR review starts. If a project adopts another version, obtain
 that version before issuing its grades; do not silently apply this snapshot.
 When no adoption or configuration exists, offer an explicitly provisional
-assessment under `1.1.0` and identify what prevents an authoritative grade.
+assessment under `1.1.1` and identify what prevents an authoritative grade.
 
 Missing required evidence means `UNGRADED`, not a lower letter or an assumed
 pass. Preserve known failures and name the evidence needed to resolve unknowns.

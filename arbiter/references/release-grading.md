@@ -1,18 +1,10 @@
 # Project and release grading
 
-Source: [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/9b9adf51e1687b950c42f6a6a7e14b5b53b10e7e/grading-methodology.md), draft rubric `1.1.0`.
+Source: [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md), draft rubric `1.1.1`.
+Prepared from the correction proposed in [specs PR #6](https://github.com/marcelsud/specs/pull/6);
+check integration and project adoption before treating this revision as policy.
 The sections below are preserved verbatim from that revision. Section numbers
 and check IDs belong to the source specification.
-
-## Interpretation warning
-
-Section 12.1 says to use the first matching rule but puts B before A, while A
-requires all B conditions. Literal evaluation therefore stops at B even when
-the additional A conditions hold. Also, B requires neutral S2 debt while A
-allows reduced S2 debt. Preserve these source clauses, expose the conflicting
-outcomes, and obtain recorded clarification before an authoritative affected
-health grade. Do not silently change the rule order or meaning. Portfolio
-grading in section 12.2 is independent of this ambiguity.
 
 ## 12. Project and release grading
 
@@ -24,6 +16,20 @@ Issue and overall PR grades are reported separately as the delivery-value
 portfolio.
 
 ### 12.1 Project health grade
+
+For this assessment, compare outstanding S2 debt at the release candidate
+with the recorded release baseline (section 4.5). Neutral means the same
+number of S2 entries; reduced means fewer; net added means more. Compare
+each tier separately, without canceling higher-tier debt with lower-tier
+removals.
+
+The common conditions for A and B are:
+
+- no D or C condition below holds;
+- all required ratchets pass;
+- no Blocker or S3 debt exists;
+- S2 debt is neutral or reduced relative to the release baseline;
+- included execution grades are A or B.
 
 Apply the first matching rule:
 
@@ -37,18 +43,19 @@ Apply the first matching rule:
    - a ratchet exception is active;
    - an S1 or S2 follow-up has expired;
    - a C execution PR is included.
-3. **B** when no D or C condition holds and:
-   - all required ratchets pass;
-   - no Blocker or S3 debt exists;
-   - S2 debt is neutral;
-   - included execution grades are A or B.
-4. **A** when all B conditions hold and:
+3. **A** when all common conditions hold and:
    - the release reduces S2 debt, or the baseline contains no S2 debt;
-   - no S1 introduced by the release remains present at the release baseline;
+   - no S1 introduced by the release remains present at the release candidate;
    - no required check depends on a known weak or false-positive assertion;
    - all included execution grades are A.
+4. **B** when all common conditions hold but at least one additional A
+   condition does not hold.
 
 One high-grade PR cannot numerically hide a Blocker or S3 condition.
+If the evidence does not establish a rule's conditions, do not infer a
+passing health grade. Missing required evidence remains `UNGRADED`;
+known failed gates remain failures and block release under their applicable
+rules, rather than becoming an automatic B.
 
 ### 12.2 Delivery-value portfolio grade
 

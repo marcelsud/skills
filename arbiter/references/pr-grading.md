@@ -1,6 +1,8 @@
 # Pull request grading and consensus
 
-Source: [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/9b9adf51e1687b950c42f6a6a7e14b5b53b10e7e/grading-methodology.md), draft rubric `1.1.0`.
+Source: [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md), draft rubric `1.1.1`.
+Prepared from the correction proposed in [specs PR #6](https://github.com/marcelsud/specs/pull/6);
+check integration and project adoption before treating this revision as policy.
 The sections below are preserved verbatim from that revision. Section numbers
 and check IDs belong to the source specification.
 
@@ -270,7 +272,7 @@ the other review.
 ### 11.2 Required reviewer output
 
 ```yaml
-rubric_version: 1.1.0
+rubric_version: 1.1.1
 reviewer: reviewer-id
 issue_grade: A
 ship_gate:
