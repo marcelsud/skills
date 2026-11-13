@@ -21,7 +21,7 @@ record in the conversation and do not claim it was persisted.
 | `judge_scores` | The five rubric scores, or `unset` when the judge did not run. |
 | `rubric_version` | Judge rubric version used for those scores. |
 | `verdict` | `improved`, `copied`, `regressed`, `mixed`, or `inconclusive`. |
-| `action_taken` | The process change that followed, such as a skill update, a spec-template update, or an environment-setup fix. Use `none` when no process change was made. |
+| `action_taken` | The process change that followed, such as a skill update, a spec-template update, an environment prepared for the next iteration, or a learnings-log lesson the spec writer will reuse. Use `none` when no process change was made. |
 | `recurrence` | `true`, `false`, or `unknown`. |
 | `rediscovered` | Frictions from this task's dry run that appeared again during delivery, or `none`. |
 
@@ -61,7 +61,7 @@ problems_found: EXAMPLE. The stories assumed a setting the environment did not d
 root_cause: env/config
 signature: assumed-setting-absent
 judge_scores: unset
-rubric_version: 0.1.0
+rubric_version: 0.2.0
 verdict: inconclusive
 action_taken: none
 recurrence: false

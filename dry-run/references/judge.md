@@ -1,6 +1,12 @@
 # Judge rubric
 
-Version: `0.1.0`
+Version: `0.2.0`
+
+Compare the delivery with the accepted specification: the stories plus the
+spec changes the spec writer accepted. Additional context the spec writer
+did not promote is not a requirement. Environment preparation is part of
+the comparison only as evidence of whether the next iteration was made
+runnable.
 
 The judge compares the dry run with the delivery implementation. The judge
 does not edit either workspace, does not polish the trial, and does not
@@ -11,9 +17,11 @@ replace the spec author's review.
 This brief is the prompt the judge receives. Give the judge one brief
 containing:
 
-- The stories the trial used, spec v2, and what changed between them, with
-  the friction that motivated each change.
+- The stories the trial used, the suggestions, and the spec writer's
+  decision on each one. Include the accepted specification and the
+  additional context that was attached.
 - The friction report, including the spec-author judgment on each item.
+- Which environment preparation was completed, and which remains pending.
 - What the trial ran, the observed results, and any friction that appeared
   again during delivery.
 - The delivery revision, the checks that ran, and their observed results.
@@ -49,24 +57,28 @@ and do not treat them as a property of a model or a model family.
 
 The dimensions are:
 
-- **Spec adherence.** Score the delivery against spec v2. Extra behavior
-  does not fill a missing requirement.
-- **Deviation control.** A 4 means every material departure from spec v2 is
-  an explicit, evidenced decision. A 0 means the delivery substitutes
-  different behavior. When spec v2 leaves no other faithful option, record
-  a remaining spec gap. That is not an implementer deviation.
+- **Spec adherence.** Score the delivery against the accepted
+  specification. Extra behavior does not fill a missing requirement.
+  Additional context is not a requirement.
+- **Deviation control.** A 4 means every material departure from the
+  accepted specification is an explicit, evidenced decision. A 0 means the
+  delivery substitutes different behavior. When the accepted specification
+  leaves no other faithful option, record a remaining spec gap. That is
+  not an implementer deviation.
 - **Test solidity.** Tests fail when the protected behavior breaks, and
   those tests were run. A suite that restates the implementation, or tests
   that were not run, scores no higher than 1. Do not invent a coverage
   percentage.
-- **Rework clarity.** Evident rework is described and traces to spec v2 or
-  to a demonstrated defect. Hidden churn, or rework that only reprints the
+- **Rework clarity.** Evident rework is described and traces to the
+  accepted specification, to completed environment preparation, or to a
+  demonstrated defect. Hidden churn, or rework that only reprints the
   trial, scores low. A delivery with no rework scores 4 only when it also
   shows the trial was not reused without examination.
-- **Real improvement.** The delivery closes frictions from the trial and
-  does not copy the trial's mistakes. Copying a sound approach can score
-  high when spec v2 requires it. Copying a mistake, a choice spec v2
-  rejected, or the trial as a whole caps this score at 1.
+- **Real improvement.** The delivery closes the accepted changes and does
+  not copy the trial's mistakes. Copying a sound approach can score high
+  when the accepted specification requires it. Copying a mistake, a choice
+  the spec writer rejected, or the trial as a whole caps this score at 1.
+  Moving inferable detail into the specification is not an improvement.
 
 ## Verdict
 
@@ -75,17 +87,22 @@ Apply these rules in order. The first match is the verdict.
 1. `inconclusive`. A material input is missing, or the trial and the
    delivery cannot be compared. Leave missing scores unset.
 2. `copied`. Real improvement is 0 or 1 because the delivery repeats the
-   trial's mistakes or transplants the trial instead of following spec v2.
-3. `regressed`. The delivery is materially weaker against spec v2 than the
-   friction report shows the trial was against the stories it used.
+   trial's mistakes or transplants the trial instead of following the
+   accepted specification.
+3. `regressed`. The delivery is materially weaker against the accepted
+   specification than the friction report shows the trial was against the
+   stories it used.
 4. `improved`. Spec adherence, deviation control, test solidity, and real
    improvement are each at least 3.
 5. `mixed`. None of the above. Name the dimension that holds the verdict
    down.
 
 Rediscovery does not by itself select the verdict. Record each friction
-from this task's dry run that appeared again during delivery. If spec v2
-still omitted that friction, real improvement cannot be 4.
+from this task's dry run that appeared again during delivery. If the
+accepted specification still omitted a fact that was hard to infer and
+depends on the environment, real improvement cannot be 4. An environment
+friction whose preparation is still pending is a limit of the next
+iteration, not a missed product requirement.
 
 ## What the judge returns
 

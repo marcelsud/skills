@@ -57,6 +57,11 @@ List what the trial did not exercise. Keep preferences out of the item
 list. An implementer's unforced choice is a deviation, not a new
 requirement.
 
+Do not turn these items into specification edits in this report. The
+suggestion stage separates spec changes, additional context, and
+environment preparation. See
+[suggestions and learnings](suggestions.md).
+
 ## Keep secrets out
 
 Name missing configuration. Do not record secret values, tokens, or other
