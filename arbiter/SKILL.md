@@ -1,136 +1,119 @@
 ---
 name: arbiter
-description: Grade issue value, implementation quality, or project and release health from evidence and concrete consequences. Use when an explicit grade or grading consensus is requested; ordinary code review belongs to the project's review workflow.
+description: Grade the value of proposed work, the quality of an implementation, or the health of a project or release. Use when the user asks for a grade or grading consensus. Use the project's review workflow for ordinary code review.
 ---
 
 # Arbiter
 
-Explain how valuable an outcome is or how well an artifact achieves its
-purpose. Derive the grade from the evidence, then state what would change it.
-This file contains the complete grading method.
+Base each grade on the intended outcome and the evidence. Explain which facts
+determine the grade and what would change it.
 
-## Start with the outcome
+## Define the assessment
 
-Identify what is being assessed, its revision, the intended outcome, and any
-comparison baseline. Use the user's requirements and the project's actual
-contracts and constraints. A formal issue, objective registry, or grading
-configuration is unnecessary. If the intended outcome is unclear enough to
-change the assessment, clarify it before assigning a grade.
+State what you are grading, its revision, its intended outcome, and any
+comparison baseline. Use the user's requirements and the project's contracts
+and constraints. You do not need a formal issue, objective registry, or grading
+configuration. Ask for clarification if the intended outcome is unclear enough
+to change the grade.
 
-Keep three questions separate:
+Grade value and quality separately. Value measures the benefit of solving the
+problem. Quality measures how well the implementation meets its requirements.
+Do not combine them into one letter. For implementations and releases, also
+report readiness under the project's delivery rules.
 
-- **Value:** How much does solving this problem matter?
-- **Quality:** How well does the implementation achieve its purpose?
-- **Readiness:** Is the change sufficiently proven for delivery under the
-  project's requirements?
+## Check the evidence
 
-A small improvement can be implemented excellently. An important problem can
-have a poor solution. Report those facts separately instead of forcing them
-into one overall letter.
+Read the relevant requirements, source, diff, reproductions, tests, measurements,
+or observed behavior. Choose checks that match the change and its risks. Inspect
+whether test assertions prove the intended behavior and relevant failure paths.
+Green CI or a coverage number alone does not prove either.
 
-## Establish the facts
+Separate facts, inferences, and unknowns. Use `UNGRADED` when missing evidence
+could change the grade. Say what evidence is needed and report known failures.
+A missing optional check need not prevent grading if other evidence proves
+the outcome.
 
-Inspect the relevant artifact and evidence: requirements, source, diff,
-reproductions, tests, measurements, or observed behavior. Match verification
-to the change and its risks. Check whether assertions prove the intended
-behavior and relevant failure paths; green CI or a coverage number alone
-does not establish that.
+A weakness needs a concrete consequence for correctness, safety, reliability,
+usability, operations, or maintenance. Cite its location or source, explain
+the consequence, and state how to verify a fix.
 
-Separate demonstrated facts, inferences, and unknowns. Missing evidence that
-could materially change a grade means `UNGRADED` for that dimension. Name
-what is needed and retain any known failures; uncertainty must not hide a
-proven defect. An unavailable optional check does not automatically prevent
-grading when other evidence establishes the outcome.
+| Severity | Meaning |
+| --- | --- |
+| Blocker | A defect or exposure makes delivery unsafe or defeats an essential requirement. |
+| Material | The consequence changes a reasonable product, design, maintenance, or delivery decision. |
+| Cosmetic | A preference or equivalent formulation has no demonstrated consequence. Exclude it from grade penalties. |
 
-Count a weakness only when it has a concrete consequence for correctness,
-safety, reliability, usability, operations, or maintenance. Cite a location
-or source, explain the consequence, and give an observable resolution
-condition. Distinguish:
+For a change, show what it introduces or worsens compared with the baseline.
+Report existing debt separately. It can still affect project health or release
+readiness. Size, effort, naming, abstraction count, and style do not determine
+a grade without evidence of a consequence.
 
-- **Blocker:** A defect or exposure that makes delivery unsafe or defeats
-  an essential requirement.
-- **Material:** A consequence that changes a reasonable product, design,
-  maintenance, or delivery decision.
-- **Cosmetic:** A preference or equivalent formulation with no demonstrated
-  consequence. Exclude it from grade penalties.
+## Grade value
 
-When assessing a change, establish what it introduces or worsens relative
-to the baseline. Keep pre-existing debt separate; it can still affect current
-project health or release readiness. Size, effort, naming, abstraction count,
-and stylistic preference do not independently determine a grade.
+For an issue or proposed work, assess the benefit of solving the problem.
+Check that the problem still exists and that existing work has not addressed it.
 
-## Grade the requested dimension
-
-### Issue or proposed work: value
-
-Assess the demonstrated benefit of resolving the problem, independently of
-implementation quality. Check whether the problem is still present and
-whether existing work already addresses it.
-
-| Grade | Demonstrated value |
+| Grade | Value |
 | --- | --- |
 | A | Protects an essential guarantee, removes a critical risk, or enables a major outcome for the project or its users. |
-| B | Produces a meaningful, localized improvement in behavior, capability, or operation. |
+| B | Makes a meaningful, localized improvement to behavior, capability, or operation. |
 | C | Removes bounded maintenance or test debt with a concrete benefit. |
-| D | Provides cosmetic, administrative, or preference value with no demonstrated material outcome. |
+| D | Provides cosmetic, administrative, or preference value without a demonstrated material outcome. |
 
-Use the highest level whose impact is supported. D does not mean the work
-is forbidden, and severity alone does not describe every kind of value.
+Choose the highest grade the impact supports. A D value grade does not forbid
+the work. Record severity separately from value.
 
-### Implementation or pull request: quality
+## Grade quality
 
-Assess whether the artifact meets its intended behavior, preserves relevant
-contracts, handles material failure paths, and has proportionate proof.
-Consider unnecessary complexity, dependencies, hidden effects, and ownership
-cost only where they have a demonstrated consequence.
+For an implementation or pull request, check that it meets its requirements,
+preserves relevant contracts, handles material failure paths, and has enough
+evidence to prove those claims. Assess complexity, dependencies, hidden effects,
+and ownership cost by their consequences.
 
-| Grade | Demonstrated quality |
+| Grade | Quality |
 | --- | --- |
-| A | Meets the intended outcome with convincing evidence and no consequential implementation weakness found in the assessed scope. |
+| A | Meets the intended outcome with convincing evidence. No consequential implementation weakness was found in the assessed scope. |
 | B | Meets the outcome with bounded local compromises whose consequences are understood. |
-| C | Has a material implementation weakness or ongoing cost, while the essential behavior is established. |
+| C | Has a material implementation weakness or ongoing cost, while evidence establishes the essential behavior. |
 | D | Has a proven failure of essential behavior, a Blocker, or unsafe exposure. |
 
-Apply the worst demonstrated condition. Do not average a serious defect away
-with strengths elsewhere. A permitted exception records an accepted weakness;
-it does not improve the quality grade. Use `UNGRADED` when the evidence cannot
-distinguish the applicable levels, while reporting any established grade
-ceiling and findings.
+Apply the worst condition shown by the evidence. Strengths elsewhere
+cannot cancel a serious defect. An exception records acceptance of a weakness;
+it does not improve the grade. If evidence cannot distinguish the applicable
+grades, use `UNGRADED` and report any known limit on the grade.
 
-### Project or release: health
+## Grade project or release health
 
-Apply the quality scale to the current assessed scope using direct evidence
-of working behavior, reliability, test trust, and outstanding debt. Compare
-with the previous release or another stated baseline when judging change.
-Do not infer whole-project health from a few reviewed PRs or from issue-value
-grades. State limits on coverage: narrow positive evidence cannot establish
-good whole-project health, while a demonstrated release-relevant Blocker
-establishes D even when the remaining scope is unassessed. An empty set of
-changes proves no health grade by itself.
+Apply the quality scale to the current scope. Use evidence of working behavior,
+reliability, test trust, and outstanding debt. To assess a change in health,
+compare with the previous release or another stated baseline.
 
-## Report the decision
+Report the limits of what you inspected. A few good pull requests, issue value
+grades, or an empty set of changes cannot establish good health for the whole
+project. A proven release blocker establishes D even if the rest of the project
+has not been assessed.
 
-Give the scope and revision, the grade for each requested dimension, a short
-rationale tied to decisive evidence, consequential findings, and unresolved
-questions. Explain what improvement or evidence would change the result.
-Use a compact narrative or table; no special record format is required.
+## Report the result
 
-For implementation or release assessments, report readiness separately:
+Give the scope and revision, each requested grade, and the evidence that
+determined it. Include findings and unanswered questions. State what change
+or evidence would improve the result. Use prose or a table.
 
-- **READY:** Relevant requirements are established, applicable required
-  checks pass, and no unresolved finding requires action before delivery
-  under the project's rules. Disclose any accepted compromises.
-- **REWORK:** A known defect, unmet requirement, or applicable policy failure
-  requires correction. A D-quality artifact is always REWORK.
-- **NEEDS EVIDENCE:** A consequential unknown prevents deciding readiness.
+For an implementation or release, report readiness separately:
 
-Report known reasons for REWORK even when other evidence is missing. A grade
-or READY assessment does not grant permission to merge, release, change
-policy, or publish findings; existing user and repository approvals apply.
+| Status | Meaning |
+| --- | --- |
+| READY | Evidence establishes the relevant requirements, required checks pass, and no finding requires action before delivery under the project's rules. Disclose accepted compromises. |
+| REWORK | A known defect, unmet requirement, or policy failure needs correction. A D quality grade always means REWORK. |
+| NEEDS EVIDENCE | A material unknown prevents a readiness decision. |
 
-When consensus is requested, compare independently produced assessments of
-the same scope, revision, criteria, and evidence. Resolve factual differences
-against the artifacts and explain remaining disagreement. Matching letters
-alone do not establish consensus, and rereading one's own work is not an
-independent review. If another reviewer is unavailable, return the available
-assessment and state that consensus has not been established.
+Report known reasons for REWORK even if other evidence is missing. A grade or
+READY status does not authorize a merge, release, policy change, or publication
+of findings. Follow the user's and repository's approval rules.
+
+When the user requests consensus, compare independent assessments of the same
+scope, revision, criteria, and evidence. Check disputed facts against the
+source and explain unresolved disagreement. Matching letters alone do not
+establish consensus. Rereading your own work is not an independent review.
+If no other reviewer is available, return your assessment and state that
+consensus has not been established.
