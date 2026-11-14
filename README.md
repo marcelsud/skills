@@ -31,6 +31,7 @@ Grouped by their role in the software development lifecycle.
 | `sheriff` | Review code changes and triage issues by evidence and risk. |
 | `pr-risk` | Classify merge risk and report evidence for a merge decision under existing approval rules. |
 | `arbiter` | Grade issue value, implementation quality, and release health with a standalone, evidence-based method. |
+| `covenant` | Resolve findings in agentic reviews and stop when the work meets its acceptance criteria. |
 | `simplify-code` | Simplify working code for clarity while preserving its exact behavior. |
 | `prep-pr` | Assess implemented changes and prepare an evidence-backed review handoff. |
 
