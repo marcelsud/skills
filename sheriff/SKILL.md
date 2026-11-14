@@ -19,7 +19,8 @@ reports follows triage. A ticket supplied as context for a diff does not change
 the mode. If the target is ambiguous, ask which assessment is needed. When both
 are requested, assess their respective scopes separately.
 
-Read the [shared rubric](references/rubric.md) and the selected mode's guidance.
+Read [Arbiter](../arbiter/SKILL.md) for shared evidence and severity principles,
+then the [review and triage rubric](references/rubric.md) and the selected mode's guidance.
 Apply repository policy when it is stricter or explicitly authoritative and
 identify the governing version.
 

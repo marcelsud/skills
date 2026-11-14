@@ -2,7 +2,7 @@
 
 Version: `0.2.0`
 
-Adapted from the [Cascade grading methodology](https://raw.githubusercontent.com/marcelsud/specs/refs/heads/main/grading-methodology.md). This reference defines the classifications shared by code review and issue triage. A repository's explicit policy remains authoritative.
+Use [Arbiter](../../arbiter/SKILL.md) for shared evidence and severity principles. This reference adds the confidence and exposure classifications used by Sheriff's code review and issue triage. A repository's explicit policy remains authoritative.
 
 The selected mode defines eligibility, dispositions, output records, and consensus requirements. Do not apply code review's introduced-or-worsened requirement to issue triage, or issue triage's tracker-state dispositions to a code-review decision.
 
