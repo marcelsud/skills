@@ -38,6 +38,7 @@ Grouped by their role in the software development lifecycle.
 | Skill | Purpose |
 | --- | --- |
 | `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
+| `workflow-hardening` | Harden GitHub Actions workflows that build and deploy. |
 
 ### General
 
