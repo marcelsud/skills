@@ -17,6 +17,9 @@ Record:
   revision. Quote the clauses that later items rely on.
 - The isolation used: a disposable branch or git worktree, and confirmation
   that it is not the delivery branch.
+- Who actually wrote the stories and implemented the trial. Preserve any
+  explicit participant or model assignments; identifying those actors does
+  not require choosing models dynamically.
 - The environment the trial exercised, including settings that were present
   and settings the stories assumed.
 - The checks that ran and their observed results. State which claimed

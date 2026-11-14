@@ -19,8 +19,9 @@ reviews the delivery, keep that verdict so the process itself can improve.
 When the user asks only for the trial, stop after the friction report, the
 spec-author review, the suggestions, and the learnings entries. When the
 user asks for the full technique, continue through the spec writer's
-decisions, environment preparation, delivery, and history. Include the
-judge when an independent reviewer is available.
+decisions, environment preparation, and delivery. Include judging only when
+the user requests it, and judge history only after that review actually runs.
+An available reviewer does not by itself opt the user into judging.
 
 The trial may change only its disposable workspace. Delivery edits follow
 the user's authorization and the project's conventions. Do not merge,
@@ -30,17 +31,25 @@ as the implementation.
 ## Keep the roles distinct
 
 The spec author writes the stories and reviews the trial. The implementer
-builds the trial and the delivery. The same participant may do both. Do
-not ask the environment to switch models; some harnesses cannot.
+builds the trial and the delivery. Use the participants and capabilities
+available in the environment; the same participant may do both. The basic
+workflow does not require choosing, switching, or launching models.
+
+Preserve any model or participant the user explicitly assigns. If that
+assignment cannot be run, report the affected role pending and the missing
+capability. Do not silently substitute another actor or claim the assigned
+one ran. Record actual participants and known assignments without inventing
+model identities or asking for choices the user did not request.
 
 The spec author does not accept their own suggestions. The spec writer
 decides.
 
-A judge is optional. Use an independent reviewer when the user supplies
-one. Do not require the harness to choose or launch a model for that
-review. When no independent judge is available, skip the comparison. Do
-not present the spec author's or the implementer's review as a judge
-verdict.
+A judge is opt-in. When requested, use an available independent reviewer
+within the user's authorization. The judge must not have authored the
+stories or implemented either the trial or delivery. Self-review cannot
+fill this role, even under another label. No dynamic model selection is
+required. If a requested judge is unavailable or not independent, leave
+judging pending and explain why. When judging was not requested, omit it.
 
 ## Write the stories and run the trial
 
@@ -136,8 +145,8 @@ the delivery change. Claim a check only after it has been run.
 
 ## Judge the delivery
 
-Judging is optional. When the user supplies an independent reviewer, have
-them compare the trial with the delivery. Read the [judge
+When the user requests judging and an independent reviewer can perform it,
+have that reviewer compare the trial with the delivery. Read the [judge
 rubric](references/judge.md) and brief the reviewer with the material it
 names. The reviewer is read-only.
 
@@ -149,15 +158,21 @@ specification calls for it and the trial's mistakes stay behind. A comment
 the spec writer did not promote is not a missed requirement.
 
 Record scores only with the evidence the reviewer cites. Do not invent
-scores or benchmark results. When no independent judge is available, skip
-this stage, leave the scores unset, and record the verdict as skipped.
+scores or benchmark results. If judging was not requested, report that it
+was not requested; create no judge brief, comparison, scores, verdict, or
+judge-history record. If it was requested but cannot run, report judging
+pending with the reason; do not fabricate a verdict to close the stage.
+An actual judge may return `inconclusive` when its evidence is insufficient.
 
 ## Record the verdict and improve the process
 
-Append a record to the persistent history described in
-[history](references/history.md), including a skipped judge and a verdict
-of inconclusive. Record who filled each role as `same-session`,
-`independent`, or `skipped`. Do not record a model name.
+After an actual judge review, append its outcome to the persistent
+[history](references/history.md), including an `inconclusive` verdict when
+that is what the judge returned. Identify the actual participants and the
+evidence for the judge's independence. Preserve explicit user assignments;
+model names are optional known context, not capabilities every harness
+must select or expose. Without judging, keep the friction observations and
+spec-writer decisions in the learnings log; do not create a judge record.
 
 Before appending, compare the new root-cause category and signature with
 earlier records. When the same pair recurs after a process fix was
@@ -168,5 +183,6 @@ of the current task does not clear that recurrence.
 
 Report the stage reached, where the friction report, suggestions, and
 learnings log live, which suggestions are still pending, the environment
-preparation still unfinished, the verdict or that judging was skipped,
-whether history was updated, and any recurrence.
+preparation still unfinished, the actual verdict or whether judging was
+not requested or remains pending, whether history was updated, and any
+recurrence.

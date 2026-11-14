@@ -93,6 +93,8 @@ Append one entry per suggestion. Update it when the spec writer decides.
 | --- | --- |
 | `date` | Date the suggestion was recorded. |
 | `task_id` | Task or story identifier. |
+| `spec_revision` | Stories revision the suggestion addresses. |
+| `evidence` | Friction report item and the artifact or observation supporting it. |
 | `signature` | Friction signature this entry answers. |
 | `response` | `spec-change`, `additional-context`, or `environment`. |
 | `suggestion` | The proposed requirement, comment, or environment preparation. |
@@ -114,6 +116,8 @@ they were findings.
 ```text
 date: EXAMPLE
 task_id: EXAMPLE-STORY
+spec_revision: EXAMPLE stories S1
+evidence: EXAMPLE friction report item F1, trial T1
 signature: assumed-setting-absent
 response: environment
 suggestion: EXAMPLE. Document the tax-mode setting the stories already assumed, without placing the tax procedure into the spec.
@@ -124,6 +128,8 @@ lesson: EXAMPLE. Check documented setup before treating a missing setting as a s
 
 date: EXAMPLE
 task_id: EXAMPLE-STORY
+spec_revision: EXAMPLE stories S1
+evidence: EXAMPLE friction report item F1, trial T1
 signature: assumed-setting-absent
 response: spec-change
 suggestion: EXAMPLE. State which tax mode this environment uses, because the repository does not record that deployment choice.

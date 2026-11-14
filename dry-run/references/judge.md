@@ -1,5 +1,13 @@
 # Judge rubric
 
+Use this rubric only for judging the user requested. The reviewer must be
+independent of the story author and every trial or delivery implementer.
+Use an available participant; dynamic model selection is not required.
+Respect any explicit assignment. If the requested reviewer is unavailable
+or not independent, leave judging pending and explain the limitation.
+Do not substitute self-review or generate a judge record. When judging was
+not requested, omit this stage and its artifacts entirely.
+
 Compare the delivery with the accepted specification: the stories plus the
 spec changes the spec writer accepted. Additional context the spec writer
 did not promote is not a requirement. Environment preparation is part of
@@ -23,6 +31,9 @@ containing:
 - What the trial ran, the observed results, and any friction that appeared
   again during delivery.
 - The delivery revision, the checks that ran, and their observed results.
+- The actual participants in authorship, trial, delivery, and judging, and
+  why the judge is independent. Include user-assigned models when known;
+  do not invent identities or require the environment to select a model.
 
 Ask the judge to apply the scores and verdict below, to cite evidence for
 every score, and to leave a score unset when the evidence is missing.
@@ -31,9 +42,9 @@ Omit the preferred verdict, credentials, and secret values. A summary of
 the trial may cite files. The brief must not tell the judge to transplant
 the trial.
 
-Use this brief only when the user supplied an independent reviewer. When
-that reviewer is the spec author or the implementer, skip the comparison.
-Do not relabel their review as a judge verdict.
+Send this brief only to the requested, available independent reviewer.
+An actual review with insufficient evidence may return `inconclusive`;
+no review at all has no judge verdict.
 
 ## Scores
 

@@ -16,7 +16,7 @@ Grouped by their role in the software development lifecycle.
 | --- | --- |
 | `prep-dev` | Examine the premise and clarify implementation through a short interview. |
 | `fusion` | Run two user-selected models on one prompt and reconcile the answers. |
-| `dry-run` | Trial a specification in isolation, suggest the spec changes and context the frictions justify, and prepare the environment for the next iteration. |
+| `dry-run` | Trial a specification in isolation, suggest evidence-backed changes, prepare the environment, and optionally judge delivery when requested. |
 
 ### Test
 
