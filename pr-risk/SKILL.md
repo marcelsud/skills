@@ -54,12 +54,9 @@ in correctness, data integrity, reliability, security, privacy, operations,
 test trust, and maintainability. Report a finding only with a precise
 location, a falsifiable claim, a reachable path, and a concrete consequence.
 
-A focused review needs a focus prompt. Some review-against-base commands
-do not accept a focus prompt; this was observed with `codex review --base`
-as of Codex 0.167.1. In that case, use a read-only execution that does
-accept a focus prompt, for example `codex exec --sandbox read-only`.
-Do not require a particular review tool when another available read-only
-path can apply the same focus.
+For a focused review, state the scope and apply it through an available
+read-only review method. Choose a method that supports the requested
+focus without requiring a particular tool or execution environment.
 
 ## Report the review
 
