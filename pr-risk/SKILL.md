@@ -1,6 +1,6 @@
 ---
 name: pr-risk
-description: Classify a pull request's merge risk and report a review that determines who may merge. Use when reviewing a PR for merge authorization, especially when the change may depend on secrets or publish a package.
+description: Classify a pull request's merge risk and report a review that determines who may merge. Use when reviewing a PR for merge authorization, especially when the change involves secrets, package publishing, dependency management, infrastructure updates, or database migrations.
 ---
 
 # Risk-based PR review
@@ -11,15 +11,25 @@ authorize merge of a high-risk change.
 
 ## Classify merge risk
 
-Inspect the diff, workflow files, release or publish configuration, and any
-documented delivery steps.
+Inspect the diff, workflow files, release or publish configuration,
+dependency manifests and lockfiles, infrastructure configuration, database
+migrations, and any documented delivery steps.
 
-Assign **high** risk when the change depends on secrets or publishes a
-package. Examples include introducing or rotating credentials, reading
-secrets in CI, changing how secrets are injected, adding or altering a
-publish job, or releasing a new or existing package. High-risk changes
-require approval from the repository owner (a human) before merge.
-Coordinator or maintainer merge authority is not sufficient.
+Assign **high** risk when the change involves any of the following:
+
+- **Secrets:** depending on secrets, including introducing or rotating
+  credentials, reading secrets in CI, or changing how secrets are injected.
+- **Package publishing:** adding or altering a publish job, or releasing
+  a new or existing package.
+- **Dependency management:** adding, removing, or updating dependencies;
+  changing versions, sources, resolution rules, manifests, or lockfiles.
+- **Infrastructure updates:** changing infrastructure as code, deployed
+  resources, networking, or infrastructure configuration.
+- **Database migrations:** changing database schemas or migrating data,
+  including migration and rollback scripts.
+
+High-risk changes require approval from the repository owner (a human)
+before merge. Coordinator or maintainer merge authority is not sufficient.
 
 Assign **normal** risk to every other change. Some projects label this
 level as "the rest" (`demais`) and high as `alto`; use the project's
