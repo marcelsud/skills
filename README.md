@@ -16,6 +16,7 @@ Grouped by their role in the software development lifecycle.
 | --- | --- |
 | `prep-dev` | Examine the premise and clarify implementation through a short interview. |
 | `fusion` | Run two user-selected models on one prompt and reconcile the answers. |
+| `dry-run` | Trial a specification in isolation, suggest evidence-backed changes, prepare the environment, and optionally judge delivery when requested. |
 
 ### Test
 
@@ -63,9 +64,10 @@ harness-specific metadata files.
 
 Use the execution capabilities available in the current environment. Some
 tasks still need capabilities inherent to their purpose: memory-sql uses
-SQLite, fusion needs analyses from the two selected models, and a required
-independent review needs a separate reviewer. Report unavailable capabilities
-without claiming the corresponding work or verification passed.
+SQLite, fusion needs analyses from the two selected models, dry-run needs
+an isolated disposable workspace, and a required independent review needs
+a separate reviewer. Report unavailable capabilities without claiming the
+corresponding work or verification passed.
 
 ## Working in this repository
 
