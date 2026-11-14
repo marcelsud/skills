@@ -38,6 +38,7 @@ Grouped by their role in the software development lifecycle.
 | Skill | Purpose |
 | --- | --- |
 | `warden` | Validate intent, review, tests, documentation, and lint; then deliver within the authorized scope. |
+| `npm-publish` | Publish an npm package from a shared or headless machine, including a first publish. |
 
 ### General
 
