@@ -1,13 +1,13 @@
 ---
 name: pr-risk
-description: Classify a pull request's merge risk and report a review that determines who may merge. Use when reviewing a PR for merge authorization, especially when the change involves secrets, package publishing, dependency management, infrastructure updates, or database migrations.
+description: Classify a pull request's merge risk and report evidence for a merge decision under existing approval rules. Use when reviewing a PR for merge authorization, especially when the change involves secrets, package publishing, dependency management, infrastructure updates, or database migrations.
 ---
 
 # Risk-based PR review
 
-Decide whether a change is safe to merge and who must approve that merge.
-A thorough review of correctness is necessary, but it does not by itself
-authorize merge of a high-risk change.
+Assess whether a change is ready to merge and which approvals are needed.
+Risk classification and review approval do not grant permission to merge.
+Existing user instructions and repository approval rules still apply.
 
 ## Classify merge risk
 
@@ -34,6 +34,8 @@ before merge. Coordinator or maintainer merge authority is not sufficient.
 Assign **normal** risk to every other change. Some projects label this
 level as "the rest" (`demais`) and high as `alto`; use the project's
 labels when they are established, and keep the same two-level meaning.
+Normal risk does not grant merge permission or waive any existing user
+or repository approval requirement.
 
 Record the assigned level with a short justification citing the evidence
 (files, jobs, or release steps) that led to it. Do not raise or lower the
@@ -91,7 +93,9 @@ The reviewer does not merge. After the review:
   approval from the repository owner (a human). Do not merge on reviewer
   or maintainer authority alone.
 - If the verdict is approval and the risk is normal, a coordinator or
-  maintainer may merge.
+  maintainer may merge only when already authorized to do so and all
+  applicable user and repository approval requirements are satisfied.
+  Normal risk and an approval verdict do not create that authorization.
 
 A later revision of a high-risk change remains high risk and still needs
 owner approval. Do not treat a previous owner approval as covering a
