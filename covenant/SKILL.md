@@ -1,88 +1,80 @@
 ---
 name: covenant
-description: Bring an author and reviewer to a bounded, evidence-backed review decision on code, plans, summaries, or responses. Use for multi-agent review exchanges or repeated review-and-revision loops that need clear severity and stopping rules.
+description: Guide agentic reviews of code, plans, summaries, and responses with evidence, severity criteria, and a limit on review rounds. Use when an author and reviewer need to resolve findings and reach a decision without repeated cosmetic revisions.
 ---
 
 # Covenant
 
-Resolve consequential problems and end the exchange when the artifact meets
-its acceptance criteria. Review for readiness, rather than open-ended
-improvement.
+Fix problems that affect the result. End the review when the work meets its
+acceptance criteria and the required checks pass.
 
 ## Establish the review
 
-Identify the artifact and revision, the author's task, acceptance criteria,
-and any required checks. Use the review participants and capabilities already
-authorized for the task. If a separate reviewer is required but unavailable,
-report that limitation; a self-check is not independent review.
+Identify the work and revision under review, the author's task, the acceptance
+criteria, and the required checks. Use the participants and tools authorized
+for the task. If a required reviewer is unavailable, report it. Reviewing your
+own work does not count as independent review.
 
-## Filter findings by consequence
+## Classify findings
 
-Classify each proposed finding before sending it:
+Classify each finding before sending it:
 
-- **Blocker:** factually wrong or misleading in a way that compromises the
-  artifact's purpose, including unsafe behavior, security exposure, or data
-  loss. Must fix.
-- **Material:** changes a reasonable reader's action or an implementation,
-  design, merge, or operational decision. Fix.
-- **Cosmetic:** changes wording, precision, or style without changing the
-  outcome. Omit it unless cosmetic feedback was explicitly requested.
+- Blocker. An error or misleading claim compromises the work's purpose, or
+  the behavior risks safety, security, or data loss. The author must fix it.
+- Material. The finding changes a reasonable reader's action or a decision
+  about implementation, design, merge, or operation. The author must fix it.
+- Cosmetic. The change affects wording, precision, or style without changing
+  the result. Include it only when the requester asks for cosmetic feedback.
 
-For each Blocker or Material finding, give the evidence, concrete consequence,
-and an observable resolution condition. If you cannot identify the wrong
-decision or behavior it causes, treat it as Cosmetic. Synonym swaps,
-line-number adjustments, and slightly more precise phrasing are Cosmetic by
-default; a broken reference that changes a decision can still be Material.
+For each Blocker or Material finding, state the evidence, the wrong decision
+or behavior it causes, and how to verify the fix. If you cannot name a wrong
+decision or behavior, treat the finding as Cosmetic. Synonym changes, line
+numbers, and more precise phrasing are usually Cosmetic. A broken reference
+that changes a decision can be Material.
 
-Cosmetic feedback is opt-in. The author may ask a reviewer for cosmetic
-opinions when the task requester has asked for that feedback. Do not solicit
-or volunteer cosmetic opinions otherwise. When requested, present them
-separately as optional suggestions; they do not block approval, require fixes,
-or justify another substantive review round. A request for cosmetic opinions
-alone calls for those opinions, not an unrequested readiness assessment.
+Ask for or offer cosmetic opinions only when the task requester asks for that
+feedback. List them separately as optional suggestions. They do not block
+approval, require fixes, or justify another review round. If the requester
+asks only for cosmetic opinions, give those opinions without adding a
+readiness assessment.
 
-Verify disputed factual claims against the code or authoritative source
-before challenging them. If the evidence disproves your objection, withdraw
-it plainly and close it. If the source is unavailable, state what remains
-unverified rather than asserting an error. A withdrawn objection does not
-start another round.
+Check the code or authoritative source before disputing a factual claim.
+Withdraw an objection when the evidence disproves it. If the source is
+unavailable, state what you could not verify. Do not assert an error without
+evidence. Withdrawing an objection does not start another round.
 
-## Run a bounded exchange
+## Limit review rounds
 
-1. **Round 1: substance.** Review the identified revision against its purpose
-   and acceptance criteria. Send Blocker or Material findings, plus separately
-   identified optional cosmetic feedback if explicitly requested. The author
-   addresses consequential findings within the authorized scope.
-2. **Round 2: verification.** Inspect the corrections and affected checks.
-   Confirm that the findings are resolved and the fixes introduce no
-   consequential regression. Do not reopen the exchange for cosmetic polish.
+1. In round 1, review the revision against its purpose and acceptance criteria.
+   Report Blocker and Material findings. Add optional cosmetic suggestions
+   separately if requested. The author fixes the reported problems within
+   the task's authorized scope.
+2. In round 2, verify the fixes and affected checks. Check that the fixes
+   resolve the findings and introduce no Blocker or Material regression.
 
-Stop early when no Blocker or Material issue remains and the required evidence
-is available. A round containing only cosmetic suggestions ends the
-substantive exchange; include those suggestions only if requested, without
-turning them into approval conditions.
+Stop as soon as no Blocker or Material finding remains and the required checks
+are verified. If only cosmetic suggestions remain, end the review. Include
+them only if requested and keep them separate from the approval decision.
 
-The normal limit is two rounds per artifact. A third round requires a genuine
-Blocker and stays focused on that Blocker and its fix. If Material findings
-remain at the limit, return REWORK with their evidence and resolution
-conditions, and hand the decision to the task owner rather than cycling or
-approving them. Do not reset the count for each small revision or withdrawn
-objection. Further Blocker-driven work needs an explicit bounded next step
-from the task owner, rather than an automatic fourth round.
+Allow two rounds per artifact. A third round requires a Blocker and covers
+that Blocker and its fix. If Material findings remain at the limit, return
+REWORK with the evidence and conditions for resolving them. Leave the next
+step to the task owner. Do not reset the count after small revisions or
+withdrawn objections. After round 3, the task owner must define and bound any
+further review.
 
-Judge severity by consequence, never by edit size. A one-line defect remains
-consequential. A round limit bounds the exchange; it does not waive an
-unresolved finding or a required check.
+Judge severity by consequence, not edit size. A one-line defect can require a
+fix. Reaching the round limit does not waive findings or required checks.
 
-## Close with a decision
+## Return a decision
 
-Ask the reviewer: **"Any Blocker or Material issue? If none remain and required
-checks are verified, answer APPROVED."**
+Ask the reviewer, "Does any Blocker or Material issue remain? If none remain
+and the required checks are verified, answer APPROVED."
 
-Return APPROVED with a brief basis when the criteria are met, REWORK with
-actionable findings when they are not, or NEEDS EVIDENCE with the missing
-verification when a decision cannot yet be supported. Distinguish known
-failures from unknowns; do not conceal a known failure behind missing evidence.
+- Return APPROVED with a brief reason when the work meets the criteria.
+- Return REWORK with findings the author can act on when problems remain.
+- Return NEEDS EVIDENCE and name the missing verification when you cannot
+  support a decision. Report known failures even when evidence is also missing.
 
-APPROVED ends this review exchange. It does not grant permission to commit,
-merge, publish, or release; delivery follows the task's existing authorization.
+APPROVED ends the review. Commit, merge, publication, and release still require
+the authorization that applies to the task.
