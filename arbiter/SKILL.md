@@ -1,125 +1,136 @@
 ---
 name: arbiter
-description: Grade issues, pull requests, reviewer consensus, and release quality using evidence-backed binary checks from marcelsud's grading methodology. Use for eligibility and value grading, execution grading, slop and ratchet assessment, or project-health and delivery-portfolio grades. Ordinary code review without a grading request belongs to the project's review workflow.
-metadata:
-  author: marcelsud
-  rubric-version: "1.1.1"
-  source: https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md
+description: Grade issue value, implementation quality, or project and release health from evidence and concrete consequences. Use when an explicit grade or grading consensus is requested; ordinary code review belongs to the project's review workflow.
 ---
 
 # Arbiter
 
-Derive grades from independently answered binary checks and cited facts. Keep
-issue value, implementation quality, and project health separate. Choose the
-letter only after evaluating the evidence.
+Explain how valuable an outcome is or how well an artifact achieves its
+purpose. Derive the grade from the evidence, then state what would change it.
+This file contains the complete grading method.
 
-This skill implements the [Grading Methodology Specification](https://github.com/marcelsud/specs/blob/0a3a07de87651622098e0183c9fcf4a15ea64ed8/grading-methodology.md),
-draft rubric `1.1.1`. Its linked references preserve the applicable source
-sections verbatim. Read the reference for the requested mode before grading.
+## Start with the outcome
 
-This revision was prepared from the correction proposed in [specs PR #6](https://github.com/marcelsud/specs/pull/6).
-Verify that PR's integration status and the target project's adopted version.
-Integrate the normative correction before this skill update. A proposed source
-revision does not establish adoption or replace a project's frozen rubric.
+Identify what is being assessed, its revision, the intended outcome, and any
+comparison baseline. Use the user's requirements and the project's actual
+contracts and constraints. A formal issue, objective registry, or grading
+configuration is unnecessary. If the intended outcome is unclear enough to
+change the assessment, clarify it before assigning a grade.
 
-## Establish the grading context
+Keep three questions separate:
 
-Identify the artifact and revision being assessed, the requested mode, and
-the project's adopted rubric version. Read its versioned configuration for
-the objective registry, ratchet commands, thresholds, exclusions, and approved
-exceptions. Each objective must have a stable ID and a stated guarantee; an
-identifier absent from the registry does not satisfy IE-7. Do not invent an
-objective, threshold, exemption, or approval to fill a gap.
+- **Value:** How much does solving this problem matter?
+- **Quality:** How well does the implementation achieve its purpose?
+- **Readiness:** Is the change sufficiently proven for delivery under the
+  project's requirements?
 
-Record `rubric_version` in every grading record. Freeze the rubric when
-substantive PR review starts. If a project adopts another version, obtain
-that version before issuing its grades; do not silently apply this snapshot.
-When no adoption or configuration exists, offer an explicitly provisional
-assessment under `1.1.1` and identify what prevents an authoritative grade.
+A small improvement can be implemented excellently. An important problem can
+have a poor solution. Report those facts separately instead of forcing them
+into one overall letter.
 
-Missing required evidence means `UNGRADED`, not a lower letter or an assumed
-pass. Preserve known failures and name the evidence needed to resolve unknowns.
-Use `REWORK` for failed PR gates. Keep an assessment of ship readiness separate
-from permission to merge or release. Assessing an artifact does not authorize
-editing it, posting findings, changing labels, or publishing it.
+## Establish the facts
 
-## Classify consequences
+Inspect the relevant artifact and evidence: requirements, source, diff,
+reproductions, tests, measurements, or observed behavior. Match verification
+to the change and its risks. Check whether assertions prove the intended
+behavior and relevant failure paths; green CI or a coverage number alone
+does not establish that.
 
-Use the source definitions: Blocker means factually wrong behavior, security
-exposure, data-loss risk, or another condition that makes merge or release
-unsafe. Material means information that changes a reasonable merge, design,
-or operational decision. Cosmetic means a preference that does not change
-such a decision. Exclude cosmetic findings from grading and consensus.
+Separate demonstrated facts, inferences, and unknowns. Missing evidence that
+could materially change a grade means `UNGRADED` for that dimension. Name
+what is needed and retain any known failures; uncertainty must not hide a
+proven defect. An unavailable optional check does not automatically prevent
+grading when other evidence establishes the outcome.
 
-Every consequential finding must map to correctness or data integrity,
-reliability, security or privacy, operability or observability, testing or test
-trust, or maintenance or ownership cost. Include severity, the violated check
-or acceptance criterion, `file:line` or external evidence, the concrete
-consequence, and a binary resolution condition.
+Count a weakness only when it has a concrete consequence for correctness,
+safety, reliability, usability, operations, or maintenance. Cite a location
+or source, explain the consequence, and give an observable resolution
+condition. Distinguish:
 
-For PR slop, prove that the liability is introduced or measurably worsened
-relative to the baseline. Existing debt is not automatically a PR finding;
-touched hotspots must not worsen without an approved exception. Comment
-wording, naming, file length, line count, and equivalent implementations do
-not independently count. A one-caller abstraction may protect a real boundary.
-Do not apply the PR introduction test to the value of an issue about old debt.
+- **Blocker:** A defect or exposure that makes delivery unsafe or defeats
+  an essential requirement.
+- **Material:** A consequence that changes a reasonable product, design,
+  maintenance, or delivery decision.
+- **Cosmetic:** A preference or equivalent formulation with no demonstrated
+  consequence. Exclude it from grade penalties.
 
-## Grade the requested artifact
+When assessing a change, establish what it introduces or worsens relative
+to the baseline. Keep pre-existing debt separate; it can still affect current
+project health or release readiness. Size, effort, naming, abstraction count,
+and stylistic preference do not independently determine a grade.
 
-- **Issue:** Read [issue-grading.md](references/issue-grading.md). Answer IE-1
-  through IE-9 with evidence before applying the value decision tree in its
-  stated order: D, C, A, B. Record severity independently. A cosmetic request
-  can follow the documented D path with `consequence: none`; never fabricate
-  impact to make it eligible. Include the required two-to-three-sentence
-  rationale and evidence-backed eligibility record.
-- **Pull request:** Read [pr-grading.md](references/pr-grading.md), and use
-  [issue-grading.md](references/issue-grading.md) to verify the primary issue's
-  authoritative record. Check linkage or a valid labeled exemption, then
-  SG-1 through SG-10. A failed gate means `REWORK` with no execution grade.
-  Only after the gates pass, evaluate EX-1 through EX-9 and derive the execution
-  grade. Every EX `no` needs a qualifying S1 or S2 entry; an unclassified `no`
-  means `REWORK`. S3 blocks ordinary merge and cannot be waived. Never trade
-  removed low-tier debt against added high-tier debt. For ordinary PRs,
-  compute `overall_pr_grade = worse(issue_grade, execution_grade)`.
-- **Reviewer consensus:** Read the PR reference's section 11. Obtain two
-  genuinely independent first-pass reviews of the same frozen issue, diff,
-  merge base, check output, acceptance evidence, and rubric. Do not expose
-  either review to the other before both are complete. Compare every SG
-  answer, decision, issue grade, execution grade, and slop entry, not letters
-  alone. Verify factual disagreements and discard cosmetic ones. Use the
-  second round to verify corrections; unresolved hard-gate disagreement needs
-  bounded human adjudication. A third round requires a genuine Blocker.
-  Without a second reviewer, report only the available assessment and pending
-  consensus. Re-reading one's own work is not independent review.
-- **Project or release:** Read [release-grading.md](references/release-grading.md).
-  Identify the previous release or recorded baseline and the complete included
-  PR set. Derive project health from execution grades, ratchets, material debt,
-  test trust, and slop changes. Report the worst non-exempt overall PR grade
-  separately as the delivery portfolio. `current_project_grade` equals project
-  health. A D-value issue with sound execution does not itself lower health.
-  Apply the explicit health-regression exception and recovery requirements.
+## Grade the requested dimension
 
-## Preserve the evidence
+### Issue or proposed work: value
 
-Use the structured records in the relevant reference. Include artifact and
-baseline revisions, all required answers with citations, the slop ledger,
-exceptions with their owners and approvals, derived grades, and unresolved
-requirements. The order is `A > B > C > D`; `worse()` with no grades is A.
-`UNGRADED` must stop a calculation, never enter it as a grade. Do not invent
-an issue-value grade for an exempt PR or include it in the release portfolio.
+Assess the demonstrated benefit of resolving the problem, independently of
+implementation quality. Check whether the problem is still present and
+whether existing work already addresses it.
 
-Inspect what tests prove, including material failure paths. Green CI,
-coverage percentages, and labels alone do not prove the contract. Use actual
-machine output for configured ratchets; disclose unavailable checks. Never
-weaken a test, threshold, exclusion, or baseline to manufacture a pass.
+| Grade | Demonstrated value |
+| --- | --- |
+| A | Protects an essential guarantee, removes a critical risk, or enables a major outcome for the project or its users. |
+| B | Produces a meaningful, localized improvement in behavior, capability, or operation. |
+| C | Removes bounded maintenance or test debt with a concrete benefit. |
+| D | Provides cosmetic, administrative, or preference value with no demonstrated material outcome. |
 
-Retain enough evidence to reconstruct each decision. Author-proposed grades
-are provisional; authoritative PR grading requires the source's reviewer
-consensus and automated calculation. If that capability is unavailable,
-report the derived proposal and the missing requirement without claiming
-final approval. Keep policy changes separate from the artifact being graded.
-If source clauses conflict, cite the clauses, show their effect on the result,
-and request recorded clarification before presenting an authoritative affected
-grade. Do not silently reorder a decision tree or revise a frozen rubric.
-For methodology adoption or integration requests, consult source sections
-13, 15, and 16; grading a project does not itself authorize installing gates.
+Use the highest level whose impact is supported. D does not mean the work
+is forbidden, and severity alone does not describe every kind of value.
+
+### Implementation or pull request: quality
+
+Assess whether the artifact meets its intended behavior, preserves relevant
+contracts, handles material failure paths, and has proportionate proof.
+Consider unnecessary complexity, dependencies, hidden effects, and ownership
+cost only where they have a demonstrated consequence.
+
+| Grade | Demonstrated quality |
+| --- | --- |
+| A | Meets the intended outcome with convincing evidence and no consequential implementation weakness found in the assessed scope. |
+| B | Meets the outcome with bounded local compromises whose consequences are understood. |
+| C | Has a material implementation weakness or ongoing cost, while the essential behavior is established. |
+| D | Has a proven failure of essential behavior, a Blocker, or unsafe exposure. |
+
+Apply the worst demonstrated condition. Do not average a serious defect away
+with strengths elsewhere. A permitted exception records an accepted weakness;
+it does not improve the quality grade. Use `UNGRADED` when the evidence cannot
+distinguish the applicable levels, while reporting any established grade
+ceiling and findings.
+
+### Project or release: health
+
+Apply the quality scale to the current assessed scope using direct evidence
+of working behavior, reliability, test trust, and outstanding debt. Compare
+with the previous release or another stated baseline when judging change.
+Do not infer whole-project health from a few reviewed PRs or from issue-value
+grades. State limits on coverage: narrow positive evidence cannot establish
+good whole-project health, while a demonstrated release-relevant Blocker
+establishes D even when the remaining scope is unassessed. An empty set of
+changes proves no health grade by itself.
+
+## Report the decision
+
+Give the scope and revision, the grade for each requested dimension, a short
+rationale tied to decisive evidence, consequential findings, and unresolved
+questions. Explain what improvement or evidence would change the result.
+Use a compact narrative or table; no special record format is required.
+
+For implementation or release assessments, report readiness separately:
+
+- **READY:** Relevant requirements are established, applicable required
+  checks pass, and no unresolved finding requires action before delivery
+  under the project's rules. Disclose any accepted compromises.
+- **REWORK:** A known defect, unmet requirement, or applicable policy failure
+  requires correction. A D-quality artifact is always REWORK.
+- **NEEDS EVIDENCE:** A consequential unknown prevents deciding readiness.
+
+Report known reasons for REWORK even when other evidence is missing. A grade
+or READY assessment does not grant permission to merge, release, change
+policy, or publish findings; existing user and repository approvals apply.
+
+When consensus is requested, compare independently produced assessments of
+the same scope, revision, criteria, and evidence. Resolve factual differences
+against the artifacts and explain remaining disagreement. Matching letters
+alone do not establish consensus, and rereading one's own work is not an
+independent review. If another reviewer is unavailable, return the available
+assessment and state that consensus has not been established.
