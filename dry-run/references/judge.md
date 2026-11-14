@@ -1,7 +1,5 @@
 # Judge rubric
 
-Version: `0.2.0`
-
 Compare the delivery with the accepted specification: the stories plus the
 spec changes the spec writer accepted. Additional context the spec writer
 did not promote is not a requirement. Environment preparation is part of
@@ -25,10 +23,6 @@ containing:
 - What the trial ran, the observed results, and any friction that appeared
   again during delivery.
 - The delivery revision, the checks that ran, and their observed results.
-- The models used for the spec author, the implementer, and the judge, or
-  `unknown` when the environment does not identify one. Note a separate
-  trial implementer and delivery implementer when they differ.
-- This rubric's version.
 
 Ask the judge to apply the scores and verdict below, to cite evidence for
 every score, and to leave a score unset when the evidence is missing.
@@ -37,15 +31,15 @@ Omit the preferred verdict, credentials, and secret values. A summary of
 the trial may cite files. The brief must not tell the judge to transplant
 the trial.
 
-If the assigned judge cannot be run, do not execute this brief with the
-spec author, the implementer, or the model that is currently writing. Leave
-the comparison pending.
+Use this brief only when the user supplied an independent reviewer. When
+that reviewer is the spec author or the implementer, skip the comparison.
+Do not relabel their review as a judge verdict.
 
 ## Scores
 
 Score each dimension from 0 to 4. Higher is better. A number without a
 citation is not a score. Do not average the five scores into a benchmark,
-and do not treat them as a property of a model or a model family.
+and do not treat them as a property of who did the work.
 
 | Score | Anchor |
 | --- | --- |
@@ -106,7 +100,7 @@ iteration, not a missed product requirement.
 
 ## What the judge returns
 
-Return the rubric version, each score with the citation that supports it,
-the rediscovered frictions, the verdict and the rule that selected it, and
-what evidence would change the verdict. Do not modify files. Do not supply
-a score the brief cannot support.
+Return each score with the citation that supports it, the rediscovered
+frictions, the verdict and the rule that selected it, and what evidence
+would change the verdict. Do not modify files. Do not supply a score the
+brief cannot support.

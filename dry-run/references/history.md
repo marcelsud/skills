@@ -1,9 +1,10 @@
 # History
 
-Append one record after each judge verdict, including `inconclusive`. The
-history is a file or spreadsheet the user or the project designates, such
-as CSV or JSONL. Use the columns below. Do not create a database for this
-workflow, and do not store the history in this skill.
+Append one record after delivery, including a skipped judge and a verdict
+of `inconclusive`. The history is a file or spreadsheet the user or the
+project designates, such as CSV or JSONL. Use the columns below. Do not
+create a database for this workflow, and do not store the history in this
+skill.
 
 If no location has been chosen, ask. Until the user names one, keep the
 record in the conversation and do not claim it was persisted.
@@ -14,13 +15,12 @@ record in the conversation and do not claim it was persisted.
 | --- | --- |
 | `date` | Date the verdict was recorded. |
 | `task_id` | Task or story identifier. |
-| `models` | Spec author, implementer, and judge. Note a separate trial or delivery implementer when they differ. Use `unknown` when the environment does not identify the model. Never invent a model name. |
+| `roles` | Who filled the spec author, the implementer, and the judge: `same-session`, `independent`, or `skipped`. Do not record a model name. |
 | `problems_found` | Short description of the dry-run frictions. |
 | `root_cause` | Primary category: `env/config`, `spec gap`, `skill gap`, `tooling`, or `repo convention`. |
 | `signature` | Stable problem-class label copied from the friction report. |
 | `judge_scores` | The five rubric scores, or `unset` when the judge did not run. |
-| `rubric_version` | Judge rubric version used for those scores. |
-| `verdict` | `improved`, `copied`, `regressed`, `mixed`, or `inconclusive`. |
+| `verdict` | `improved`, `copied`, `regressed`, `mixed`, `inconclusive`, or `skipped`. |
 | `action_taken` | The process change that followed, such as a skill update, a spec-template update, an environment prepared for the next iteration, or a learnings-log lesson the spec writer will reuse. Use `none` when no process change was made. |
 | `recurrence` | `true`, `false`, or `unknown`. |
 | `rediscovered` | Frictions from this task's dry run that appeared again during delivery, or `none`. |
@@ -56,13 +56,12 @@ history as if it were a result.
 ```text
 date: EXAMPLE
 task_id: EXAMPLE-STORY
-models: spec_author=example-spec-model; implementer=example-implementer-model; judge=example-judge-model
+roles: spec_author=same-session; implementer=same-session; judge=skipped
 problems_found: EXAMPLE. The stories assumed a setting the environment did not define, and the trial invented a default.
 root_cause: env/config
 signature: assumed-setting-absent
 judge_scores: unset
-rubric_version: 0.2.0
-verdict: inconclusive
+verdict: skipped
 action_taken: none
 recurrence: false
 rediscovered: none

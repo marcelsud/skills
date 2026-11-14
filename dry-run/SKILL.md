@@ -1,6 +1,6 @@
 ---
 name: dry-run
-description: Trial a specification with a disposable end-to-end implementation, then suggest only the spec changes and comments the frictions justify. Prepare the environment for the next iteration, implement the accepted revision, and have a different model judge the result. Use when stress-testing stories before delivery, or when asked to dry-run a change.
+description: Trial a specification with a disposable end-to-end implementation, then suggest only the spec changes and comments the frictions justify. Prepare the environment for the next iteration and implement the accepted revision. Use when stress-testing stories before delivery, or when asked to dry-run a change.
 ---
 
 # Dry run
@@ -10,45 +10,37 @@ then suggest the few changes that finding justifies. The trial's value is
 the friction it records. Its diff is evidence, not the deliverable. A
 specification cannot hold every implementation detail.
 
-Marcelo Santos's dry-run technique keeps that trial off the delivery branch.
-The spec author who wrote the stories reviews the trial. A different model
-judges the delivery later, and each verdict is kept so the process itself
-can improve.
+Keep the trial off the delivery branch. The spec author who wrote the
+stories reviews the trial. An independent judge is optional. When one
+reviews the delivery, keep that verdict so the process itself can improve.
 
 ## Decide how far to go
 
 When the user asks only for the trial, stop after the friction report, the
 spec-author review, the suggestions, and the learnings entries. When the
 user asks for the full technique, continue through the spec writer's
-decisions, environment preparation, delivery, the judge, and history.
+decisions, environment preparation, delivery, and history. Include the
+judge when an independent reviewer is available.
 
 The trial may change only its disposable workspace. Delivery edits follow
 the user's authorization and the project's conventions. Do not merge,
 cherry-pick, or copy the trial onto the delivery branch and treat that copy
 as the implementation.
 
-## Assign the roles
+## Keep the roles distinct
 
-Use the models the user assigns to the spec author, the implementer, and
-the judge. Ask when a role is unassigned. Keep the user's choices, and do
-not silently replace a chosen model.
+The spec author writes the stories and reviews the trial. The implementer
+builds the trial and the delivery. The same participant may do both. Do
+not ask the environment to switch models; some harnesses cannot.
 
-The spec author writes the stories and is the only role that reviews the
-trial. The implementer builds the trial and, unless the user assigns a
-different model, the delivery. The judge compares the trial with the
-delivery and must be a different model from the spec author and from every
-implementer of either workspace. Prefer a judge from a different model
-family so the comparison is not a self-grade. A named family is not
-permission to pick an unrequested model inside it.
+The spec author does not accept their own suggestions. The spec writer
+decides.
 
-The user may, for example, assign a spec author such as Claude Opus and a
-judge from another family such as an OpenAI GPT model. Those names illustrate
-a configurable split. They are not models to select when the user has not
-chosen.
-
-If the spec-author model or the judge cannot be run, leave that stage
-pending. Do not fill it with the current model and present the result as
-that role's work.
+A judge is optional. Use an independent reviewer when the user supplies
+one. Do not require the harness to choose or launch a model for that
+review. When no independent judge is available, skip the comparison. Do
+not present the spec author's or the implementer's review as a judge
+verdict.
 
 ## Write the stories and run the trial
 
@@ -76,8 +68,8 @@ the presence of a test.
 
 ## Review the trial as the spec author
 
-The model that wrote the stories reviews the friction report and the trial
-evidence. The review does not polish the trial's code.
+The spec author who wrote the stories reviews the friction report and the
+trial evidence. The review does not polish the trial's code.
 
 For each friction, the spec author answers three questions:
 
@@ -91,8 +83,8 @@ A deviation stays a deviation. Do not turn an unforced choice into a
 suggested requirement. These answers feed the suggestions. They do not edit
 the specification.
 
-If that model is unavailable, leave the review pending. Do not substitute
-the implementer or the judge.
+If the spec author cannot review, leave the review pending. Do not
+substitute the implementer or a judge.
 
 ## Suggest changes and prepare the next iteration
 
@@ -144,9 +136,10 @@ the delivery change. Claim a check only after it has been run.
 
 ## Judge the delivery
 
-Have the assigned judge compare the trial with the delivery. Read [the
-judge rubric](references/judge.md) and brief the judge with the material
-it names. The judge is read-only.
+Judging is optional. When the user supplies an independent reviewer, have
+them compare the trial with the delivery. Read the [judge
+rubric](references/judge.md) and brief the reviewer with the material it
+names. The reviewer is read-only.
 
 The comparison covers adherence to the accepted specification, deviations,
 test solidity, evident rework, and whether the improvement is real.
@@ -155,15 +148,16 @@ Copying a sound approach can still be an improvement when the accepted
 specification calls for it and the trial's mistakes stay behind. A comment
 the spec writer did not promote is not a missed requirement.
 
-Record the judge's scores only with the evidence the judge cites. Do not
-invent scores, model names, or benchmark results. If the judge cannot be
-run, report the comparison pending and leave the scores unset.
+Record scores only with the evidence the reviewer cites. Do not invent
+scores or benchmark results. When no independent judge is available, skip
+this stage, leave the scores unset, and record the verdict as skipped.
 
 ## Record the verdict and improve the process
 
-Append the verdict to the persistent history described in
-[history](references/history.md), including a verdict of inconclusive.
-Record the models actually used for each role.
+Append a record to the persistent history described in
+[history](references/history.md), including a skipped judge and a verdict
+of inconclusive. Record who filled each role as `same-session`,
+`independent`, or `skipped`. Do not record a model name.
 
 Before appending, compare the new root-cause category and signature with
 earlier records. When the same pair recurs after a process fix was
@@ -174,5 +168,5 @@ of the current task does not clear that recurrence.
 
 Report the stage reached, where the friction report, suggestions, and
 learnings log live, which suggestions are still pending, the environment
-preparation still unfinished, the verdict or why judging is pending,
+preparation still unfinished, the verdict or that judging was skipped,
 whether history was updated, and any recurrence.
