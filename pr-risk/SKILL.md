@@ -76,6 +76,11 @@ Return a single assessment containing:
 State verification limits, including any focus that was applied and any
 evidence that could not be gathered.
 
+For a more detailed report against product requirements, optionally use
+the [spec-gap skill](../spec-gap/SKILL.md) when available to assess
+coverage, gaps, and extras. Keep merge risk and authorization as separate
+decisions.
+
 ## Authorize the merge
 
 The reviewer does not merge. After the review:
